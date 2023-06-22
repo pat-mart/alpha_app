@@ -29,7 +29,7 @@ class PlanCardState extends State<PlanCard> {
               child: SizedBox (
                   width: double.infinity,
                   height: 120,
-                  child: Text(widget.plan.target.name)
+                  child: Text(widget.plan.target.name, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: Colors.white))
               )
           ),
           const Padding(padding: EdgeInsets.only(bottom: 18))

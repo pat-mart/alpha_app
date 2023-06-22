@@ -2,7 +2,7 @@ import 'package:astro_planner/models/setup_m.dart';
 import 'package:astro_planner/models/sky_object_m.dart';
 
 import 'package:astro_planner/util/catalog_types.dart';
-import 'package:astro_planner/views/plan_v.dart';
+import 'package:astro_planner/views/smallwidgets/plan_v.dart';
 
 import 'package:flutter/material.dart';
 
@@ -10,14 +10,14 @@ import '../../util/catalog_name.dart';
 import '../../util/telescope.dart';
 import '../../viewmodels/plan_vm.dart';
 
-class PlansList extends StatefulWidget {
-  const PlansList({super.key});
+class PlansScreen extends StatefulWidget {
+  const PlansScreen({super.key});
 
   @override
-  State createState() => PlanView();
+  State createState() => _PlansScreenState();
 }
 
-class PlanView extends State<PlansList>{
+class _PlansScreenState extends State<PlansScreen>{
 
   final PlanViewModel planVm = PlanViewModel();
 
@@ -36,7 +36,7 @@ class PlanView extends State<PlansList>{
                     onPressed: () => setState(() {
                       planVm.addPlan(
                         SkyObject('Orion Nebula', CatalogName(CatalogTypes.messier, 31)),
-                        SetupModel(Telescope('WO Z61', 61, 360), 1.6, true)
+                        SetupModel('Setup 1', Telescope('WO Z61', 61, 360), 1.6, true, true)
                       );
                     }),
                     style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll<Color>(Colors.black)),

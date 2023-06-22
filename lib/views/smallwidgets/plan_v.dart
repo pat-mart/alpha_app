@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../models/plan_m.dart';
+import '../../models/plan_m.dart';
 
 class PlanCard extends StatefulWidget {
 
@@ -9,10 +9,10 @@ class PlanCard extends StatefulWidget {
   const PlanCard({super.key, required this.plan});
 
   @override
-  State<StatefulWidget> createState() => PlanCardState();
+  State<StatefulWidget> createState() => _PlanCardState();
 }
 
-class PlanCardState extends State<PlanCard> {
+class _PlanCardState extends State<PlanCard> {
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class PlanCardState extends State<PlanCard> {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
               child: SizedBox (
                   width: double.infinity,
-                  height: 120,
+                  height: 128,
                   child: Text(widget.plan.target.name, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: Colors.white))
               )
           ),

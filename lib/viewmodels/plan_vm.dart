@@ -15,6 +15,11 @@ class PlanViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void addPlanFromModel(Plan plan){
+    _planList.add(plan);
+    notifyListeners();
+  }
+
   void removeObject(int index) {
     _planList.removeAt(index);
     notifyListeners();

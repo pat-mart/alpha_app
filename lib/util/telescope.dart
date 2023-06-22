@@ -20,4 +20,9 @@ class Telescope {
   double get fStop => _fStop;
 
   double get apertureMm => _apertureMm;
+
+  @override
+  String toString(){
+    return '$name $focalLengthMm';
+  }
 }

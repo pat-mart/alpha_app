@@ -1,4 +1,4 @@
-import 'package:astro_planner/views/screens/plans_screen.dart';
+import 'package:astro_planner/views/parent_screen.dart';
 
 import 'package:flutter/material.dart';
 
@@ -14,7 +14,7 @@ class Main extends StatelessWidget {
     return MaterialApp (
       theme: ThemeData(scaffoldBackgroundColor: Colors.black12),
       home: const Scaffold (
-        body: PlansList()
+        body: ParentScreen()
       )
     );
   }

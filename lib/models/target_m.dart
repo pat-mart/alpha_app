@@ -1,17 +1,17 @@
 import 'dart:core';
 
-import 'package:astro_planner/util/catalog_types.dart';
+import 'package:astro_planner/util/enums/catalog_types.dart';
 import 'package:http/http.dart' as http;
 
-import '../util/catalog_name.dart';
+import '../util/plan/catalog_name.dart';
 
 class SkyObject {
-
-  double _magnitude = 0;
 
   late String _name;
 
   late CatalogName _catName;
+
+  double _magnitude = 0;
 
   SkyObject(this._name, this._catName);
 

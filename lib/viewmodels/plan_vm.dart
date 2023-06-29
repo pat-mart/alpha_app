@@ -1,6 +1,4 @@
 import 'package:astro_planner/models/plan_m.dart';
-import 'package:astro_planner/models/setup_m.dart';
-import 'package:astro_planner/models/sky_object_m.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -10,12 +8,15 @@ class PlanViewModel extends ChangeNotifier {
 
   List<Plan> get planList => _planList;
 
-  void addPlan(SkyObject skyObject, SetupModel setup) {
-    _planList.add(Plan(skyObject, setup));
-    notifyListeners();
+  static final PlanViewModel _instance = PlanViewModel._internal();
+
+  factory PlanViewModel() {
+    return _instance;
   }
 
-  void addPlanFromModel(Plan plan){
+  PlanViewModel._internal();
+
+  void addPlan(Plan plan){
     _planList.add(plan);
     notifyListeners();
   }
@@ -25,8 +26,8 @@ class PlanViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void editObject(int index, SkyObject skyObject, SetupModel setup){
-    _planList[index] = Plan(skyObject, setup);
+  void editObject(int index, Plan newPlan){
+    _planList[index] = newPlan;
     notifyListeners();
   }
 

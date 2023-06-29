@@ -13,6 +13,8 @@ class SetupCard extends StatefulWidget {
 
 class _SetupCardState extends State<SetupCard> {
 
+  int fontSize = 16;
+
   @override
   Widget build(BuildContext context){
     return Card(
@@ -20,49 +22,79 @@ class _SetupCardState extends State<SetupCard> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
       child: SizedBox (
         width: double.infinity,
-        height: 100,
-        child: Column (
-          children: [
-            Row(
-              children: [
-                Text(
-                  widget.setupModel.setupName,
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)
-                ),
-                const Padding(padding: EdgeInsets.only(bottom: 14))
-              ],
-            ),
-            Row(
-              children: <Widget> [
-                const Icon(Icons.insights, size: 18, color: Colors.white),
-                Text(
-                  widget.setupModel.telescope.toString(),
-                  style: const TextStyle(fontSize: 14, color: Colors.white)
-                ),
-                const Padding(padding: EdgeInsets.only(right: 16)),
-                const Icon(Icons.local_see_outlined),
-                Text(
-                  widget.setupModel.telescope.cameraName,
-                  style: const TextStyle(fontSize: 14, color: Colors.white)
-                )
-              ]
-            ),
-            Row(
-              children: <Widget> [
-                const Icon(Icons.looks, size: 18, color: Colors.white),
-                Text(
-                    (widget.setupModel.isEq) ? 'Equatorial' : 'Alt-azimuth',
-                    style: const TextStyle(fontSize: 14, color: Colors.white)
-                ),
-                const Padding(padding: EdgeInsets.only(right: 16)),
-                const Icon(Icons.motion_photos_on_outlined),
-                Text(
-                    (widget.setupModel.isGuided) ? 'Auto-guided' : 'Not auto-guided',
-                    style: const TextStyle(fontSize: 14, color: Colors.white)
-                )
-              ]
-            )
-          ],
+        height: 164,
+        child: Container(
+          margin: const EdgeInsets.only(left: 12, right: 12, top: 0),
+          child: Column (
+            children: [
+              Row(
+                children: [
+                  Text( //Setup title
+                    widget.setupModel.setupName,
+                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)
+                  ),
+                  const Padding(padding: EdgeInsets.only(bottom: 50))
+                ],
+              ),
+              Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget> [
+                      Row(
+                        children: [
+                          const Icon(Icons.insights, size: 18, color: Colors.white),
+                          const Padding(padding: EdgeInsets.only(left: 8)),
+                          Text( // Telescope information
+                              widget.setupModel.telescope.toString(),
+                              style: const TextStyle(fontSize: 14, color: Colors.white)
+                          ),
+                        ],
+                      ),
+                      const Padding(padding: EdgeInsets.only(bottom: 16)),
+                      Row(
+                        children: [
+                          const Icon(Icons.looks, size: 18, color: Colors.white),
+                          const Padding(padding: EdgeInsets.only(left: 8)),
+                          Text(
+                              (widget.setupModel.isEq) ? 'Equatorial' : 'Alt-azimuth',
+                              style: const TextStyle(fontSize: 14, color: Colors.white)
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const Padding(padding: EdgeInsets.only(right: 32)),
+                  Column (
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget> [
+                      Row(
+                        children: [
+                          const Icon(Icons.local_see_outlined),
+                          const Padding(padding: EdgeInsets.only(left: 8)),
+                          Text( // Camera information
+                              widget.setupModel.camera.cameraName,
+                              style: const TextStyle(fontSize: 14, color: Colors.white)
+                          ),
+                        ],
+                      ),
+                      const Padding(padding: EdgeInsets.only(bottom: 16)),
+                      Row(
+                        children: [
+                          const Icon(Icons.motion_photos_on_outlined,),
+                          const Padding(padding: EdgeInsets.only(left: 8)),
+                          Text(
+                              (widget.setupModel.isGuided) ? 'Auto-guided' : 'Not auto-guided',
+                              style: const TextStyle(fontSize: 14, color: Colors.white)
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
         )
       )
     );

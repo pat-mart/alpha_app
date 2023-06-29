@@ -1,23 +1,24 @@
-import 'package:astro_planner/util/telescope.dart';
+import 'package:astro_planner/util/setup/telescope.dart';
+
+import '../util/setup/camera.dart';
 
 class SetupModel {
+
   Telescope _telescope;
+
+  Camera _camera;
 
   String _setupName;
 
-  double _cropFactor = 1;
+  bool _isGuided, _isEq;
 
-  bool _isGuided;
-
-  bool _isEq;
-
-  SetupModel(this._setupName, this._telescope, this._cropFactor, this._isGuided, this._isEq);
+  SetupModel(this._setupName, this._telescope, this._camera, this._isGuided, this._isEq);
 
   Telescope get telescope => _telescope;
 
-  String get setupName => _setupName;
+  Camera get camera => _camera;
 
-  double get cropFactor => _cropFactor;
+  String get setupName => _setupName;
 
   bool get isGuided => _isGuided;
 

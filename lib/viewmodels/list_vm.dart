@@ -4,12 +4,12 @@ class ListViewModel<Model> extends ChangeNotifier {
 
   List<Model> list = [];
 
-  void addSetup(Model model){
+  void addModel(Model model){
     list.add(model);
     notifyListeners();
   }
 
-  void removeSetup(int index){
+  void removeModel(int index){
     list.removeAt(index);
     notifyListeners();
   }

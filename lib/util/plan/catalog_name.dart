@@ -1,8 +1,9 @@
-import 'catalog_types.dart';
+import '../enums/catalog_types.dart';
 
 class CatalogName {
 
   late final CatalogTypes _type;
+
   late final int _num;
 
   CatalogName(this._type, this._num);

@@ -1,21 +1,14 @@
-import 'package:flutter/material.dart';
 
-class ListViewModel<Model> extends ChangeNotifier {
+abstract class ListViewModel<Model> {
 
-  List<Model> list = [];
+  late List<Model> _list;
 
-  void addModel(Model model){
-    list.add(model);
-    notifyListeners();
-  }
+  List<Model> get modelList => _list;
 
-  void removeModel(int index){
-    list.removeAt(index);
-    notifyListeners();
-  }
+  void addToList(Model model);
 
-  void clearList(){
-    list.clear();
-    notifyListeners();
-  }
+  void removeModelAt(int index);
+
+  void debugClearList();
+
 }

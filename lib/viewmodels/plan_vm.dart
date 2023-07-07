@@ -2,11 +2,11 @@ import 'package:astro_planner/models/plan_m.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class PlanViewModel extends ChangeNotifier {
+import 'list_vm.dart';
+
+class PlanViewModel extends ChangeNotifier implements ListViewModel<Plan> {
 
   final List<Plan> _planList = [];
-
-  List<Plan> get planList => _planList;
 
   static final PlanViewModel _instance = PlanViewModel._internal();
 
@@ -16,23 +16,29 @@ class PlanViewModel extends ChangeNotifier {
 
   PlanViewModel._internal();
 
-  void addPlan(Plan plan){
+  @override
+  List<Plan> get modelList => _planList;
+
+  @override
+  void addToList(Plan plan){
     _planList.add(plan);
     notifyListeners();
   }
 
-  void removeObject(int index) {
+  @override 
+  void removeModelAt(int index) {
     _planList.removeAt(index);
     notifyListeners();
   }
 
-  void editObject(int index, Plan newPlan){
-    _planList[index] = newPlan;
+  @override
+  void debugClearList(){
+    _planList.clear();
     notifyListeners();
   }
 
-  void debugClearList(){
-    _planList.clear();
+  void editPlan(int index, Plan newPlan){
+    _planList[index] = newPlan;
     notifyListeners();
   }
 }

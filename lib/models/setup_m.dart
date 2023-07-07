@@ -2,7 +2,7 @@ import 'package:astro_planner/util/setup/telescope.dart';
 
 import '../util/setup/camera.dart';
 
-class SetupModel {
+class Setup {
 
   Telescope _telescope;
 
@@ -12,7 +12,7 @@ class SetupModel {
 
   bool _isGuided, _isEq;
 
-  SetupModel(this._setupName, this._telescope, this._camera, this._isGuided, this._isEq);
+  Setup(this._setupName, this._telescope, this._camera, this._isGuided, this._isEq);
 
   Telescope get telescope => _telescope;
 

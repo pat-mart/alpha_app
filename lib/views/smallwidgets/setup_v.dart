@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class SetupCard extends StatefulWidget {
 
-  final SetupModel setupModel;
+  final Setup setupModel;
 
   const SetupCard({super.key, required this.setupModel});
 

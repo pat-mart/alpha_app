@@ -3,11 +3,20 @@ import 'package:flutter/material.dart';
 import '../models/setup_m.dart';
 
 class SetupViewModel extends ChangeNotifier {
-  final List<SetupModel> _setupList = [];
 
-  List<SetupModel> get setupList => _setupList;
+  final List<Setup> _setupList = [];
 
-  void addSetup(SetupModel newSetup){
+  List<Setup> get setupList => _setupList;
+
+  static final SetupViewModel _instance = SetupViewModel._internal();
+
+  factory SetupViewModel() {
+    return _instance;
+  }
+
+  SetupViewModel._internal();
+
+  void addSetup(Setup newSetup){
     _setupList.add(newSetup);
     notifyListeners();
   }

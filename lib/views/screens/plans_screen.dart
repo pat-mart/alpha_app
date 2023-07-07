@@ -25,14 +25,14 @@ class _PlansScreenState extends State<PlansScreen>{
 
     return CupertinoPageScaffold(
       child: CustomScrollView(
+        scrollBehavior: const CupertinoScrollBehavior(),
         slivers: <Widget>[
           CupertinoSliverNavigationBar(
             backgroundColor: CupertinoColors.black,
             padding: EdgeInsetsDirectional.zero,
             largeTitle: const Text('My plans'),
-            leading: const Icon(Icons.add_circle_outline),
             trailing: IconButton(
-              icon: const Icon(CupertinoIcons.add_circled, size: 36),
+              icon: const Icon(CupertinoIcons.add_circled, size: 32),
               onPressed: () {
                 setState(() {
                   showCupertinoModalPopup(
@@ -48,8 +48,9 @@ class _PlansScreenState extends State<PlansScreen>{
             ),
           ),
 
-          SliverFillRemaining(
+          SliverToBoxAdapter(
             child: ListView.builder(
+              shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: planVm.modelList.length,
               itemBuilder: (BuildContext context, int index) {

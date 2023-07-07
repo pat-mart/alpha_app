@@ -1,6 +1,7 @@
 import 'package:astro_planner/viewmodels/plan_vm.dart';
 import 'package:astro_planner/views/screens/plans_screen.dart';
 import 'package:astro_planner/views/screens/setups_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_octicons/flutter_octicons.dart';
 
@@ -23,29 +24,30 @@ class ParentScreenState extends State<ParentScreen> {
 
   @override
   Widget build(BuildContext context) {
-      return Scaffold (
-          body: IndexedStack(
-            index: _cIndex,
-            children: _tabs,
-          ),
-          bottomNavigationBar: BottomNavigationBar (
+      return CupertinoTabScaffold (
+          tabBar: CupertinoTabBar (
+            activeColor: CupertinoColors.activeBlue,
             currentIndex:  _cIndex,
             onTap: (int index) => setState(() => _cIndex = index),
-            backgroundColor: Colors.black26,
-            selectedItemColor: Colors.blueAccent,
-            unselectedItemColor: Colors.white,
-            iconSize: 32,
+            backgroundColor: CupertinoColors.black,
+            iconSize: 36,
+            height: 52,
             items : const <BottomNavigationBarItem> [
               BottomNavigationBarItem(
-                icon: Icon(Icons.list, color: Colors.white),
-                label: 'Plans'
+                icon: Icon(CupertinoIcons.list_bullet, color: Colors.white),
+                label: 'My plans'
               ),
               BottomNavigationBarItem(
                 icon: Icon(OctIcons.telescope_24, color: Colors.white),
-                label: 'Setups',
+                label: 'My setups',
               )
             ]
           ),
+          tabBuilder: (context, index){
+            return CupertinoTabView(
+              builder: (context) => _tabs[index]
+            );
+          }
         );
   }
 }

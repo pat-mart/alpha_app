@@ -9,22 +9,39 @@ class PlanTimespan {
 
   late final Duration _imagingDuration;
 
-  late DateTimeRange _dateTimeRange;
+  late DateTimeRange _dateRange;
 
   final List<String> _daysOfWeek = [];
 
   PlanTimespan(this._startDateTime, this._imagingDuration){
-    _dateTimeRange = DateTimeRange(
+    _dateRange = DateTimeRange(
         start: _startDateTime,
         end: _startDateTime.add(_imagingDuration)
     );
     _daysOfWeek.add(DateFormat('EEEE').format(_startDateTime));
-    _daysOfWeek.add(DateFormat('EEEE').format(_dateTimeRange.end));
+    _daysOfWeek.add(DateFormat('EEEE').format(_dateRange.end));
   }
+
+  //Working as of 7/4/23
+  int get numDays {
+    if(dateRange.end.day == _startDateTime.day){
+      return 1;
+    }
+    else if(dateRange.end.difference(_startDateTime).inDays == 0){
+      return 2;
+    }
+    else {
+      return dateRange.end.difference(_startDateTime).inDays + 2;
+    }
+  }//Finds days between start & end
 
   DateTime get startDate => _startDateTime;
 
-  DateTimeRange get dateRange => _dateTimeRange;
+  DateTimeRange get dateRange => _dateRange;
 
-  List<String> get daysOfWeek => _daysOfWeek;
+  String get formattedRange {
+    DateFormat format = DateFormat('EEEE, MMMM d');
+
+    return '${format.format(_startDateTime)} to ${format.format(_dateRange.end)}';
+  }
 }

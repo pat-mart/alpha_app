@@ -1,38 +1,57 @@
 import 'package:astro_planner/models/setup_m.dart';
-import 'package:astro_planner/models/target_m.dart';
+import 'package:astro_planner/models/sky_obj_m.dart';
+import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-import '../util/enums/weather_types.dart';
 import '../util/plan/plan_timespan.dart';
+import 'json_data/weather_data.dart';
 
 class Plan {
 
   SkyObject _target;
 
-  SetupModel _setup;
+  Setup _setup;
 
   PlanTimespan _timespan;
 
-  late WeatherTypes _weather;
+  double _latitude, _longitude;
 
-  final String apiKey = '6556c094f33b40a0976230554232406';
+  final String weatherKey = '6556c094f33b40a0976230554232406';
 
-  Plan(this._target, this._setup, this._timespan);
+  Plan(this._target, this._setup, this._timespan, this._latitude, this._longitude);
 
   SkyObject get target => _target;
 
-  SetupModel get setup => _setup;
+  Setup get setup => _setup;
 
   PlanTimespan get timespan => _timespan;
 
-  void getWeather() async {
-    final response = await http.get(Uri.parse('https://api.weatherapi.com/v1/astronomy.json?key=6556c094f33b40a0976230554232406&q=Jacksonville&dt=2023-06-25'));
-  }
+  String get formattedStartDate => DateFormat('yyyy-MM-d').format(timespan.startDate);
 
-  Future<http.Response> _getData(double latitude, double longitude) async { //Time will be starting date as defined in Timespan
-    final url = Uri.https('api.weatherapi.com', '/v1/astronomy.json?key=6556c094f33b40a0976230554232406&q=Sea Cliff&dt=2023-06-25');
+  String get formattedEndDate => DateFormat('yyyy-MM-d').format(timespan.dateRange.end);
+
+  Future<WeatherData> getFromWeatherApi({required RequestType requestType}) async {
+
+    Uri url;
+
+    if(requestType == RequestType.astro) {
+      url = Uri.parse('https://api.weatherapi.com/v1/astronomy.json?key=$weatherKey&q=$_latitude, $_longitude&dt=$formattedStartDate');
+    }
+    else {
+      url = Uri.parse('https://api.weatherapi.com/v1/forecast.json?key=$weatherKey&q=$_latitude, $_longitude&days=${timespan.numDays}&aqi=no&alerts=no');
+    }
+
     final response = await http.get(url);
 
-    return response;
+    if(response.statusCode == 200){
+      return WeatherData.fromJson(jsonDecode(response.body), this);
+    }
+    throw Exception('Error code ${response.statusCode}');
   }
+}
+
+enum RequestType{
+  astro,
+  forecast
 }

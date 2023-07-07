@@ -1,11 +1,12 @@
 import 'package:astro_planner/util/enums/camera_types.dart';
-import 'package:astro_planner/viewmodels/list_vm.dart';
 import 'package:astro_planner/views/smallwidgets/setup_v.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/setup_m.dart';
 import '../../util/setup/camera.dart';
 import '../../util/setup/telescope.dart';
+import '../../viewmodels/setup_vm.dart';
 
 class SetupsScreen extends StatefulWidget {
   const SetupsScreen({super.key});
@@ -16,7 +17,7 @@ class SetupsScreen extends StatefulWidget {
 
 class _SetupsScreenState extends State<SetupsScreen> {
 
-  ListViewModel<SetupModel> setupVm = ListViewModel();
+  SetupViewModel setupVm = SetupViewModel();
 
   @override
   Widget build(BuildContext context) {
@@ -29,27 +30,27 @@ class _SetupsScreenState extends State<SetupsScreen> {
             children: [
               const Text('My Setups', style: TextStyle(fontSize:  36, fontWeight: FontWeight.bold, color: Colors.white)),
               IconButton(
-                  icon: const Icon(Icons.add_circle_outline, color: Colors.white, size: 36),
-                  style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll<Color>(Colors.black)),
-                  padding: EdgeInsets.zero,
-                  onPressed: () => setState(() {
-                    setupVm.addModel(
-                      SetupModel(
-                        'Setup 1',
-                        Telescope('Celestron RASA', 100, 200),
-                        Camera('Canon EOS 7D', 1.6, CameraTypes.dslr),
-                        true, true)
-                    );
-                  })
+                icon: const Icon(CupertinoIcons.add_circled, color: Colors.white, size: 36),
+                style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll<Color>(Colors.black)),
+                padding: EdgeInsets.zero,
+                onPressed: () => setState(() {
+                  setupVm.addSetup(
+                    Setup(
+                      'Setup 1',
+                      Telescope('Celestron RASA', 100, 200),
+                      Camera('Canon EOS 7D', 1.6, CameraTypes.dslr),
+                      true, true)
+                  );
+                })
               )
             ],
           ),
           ListView.builder(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            itemCount: setupVm.list.length,
+            itemCount: setupVm.setupList.length,
             itemBuilder: (BuildContext context, int index) {
-              return SetupCard(setupModel: setupVm.list.elementAt(index));
+              return SetupCard(setupModel: setupVm.setupList.elementAt(index));
             },
           )
         ],

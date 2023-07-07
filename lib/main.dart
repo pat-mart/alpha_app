@@ -1,4 +1,5 @@
 import 'package:astro_planner/views/parent_screen.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,10 +17,13 @@ class Main extends StatelessWidget {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    return MaterialApp (
-      theme: ThemeData(scaffoldBackgroundColor: Colors.black12),
-      home: const Scaffold (
-        body: ParentScreen()
+    return CupertinoApp (
+      theme: const CupertinoThemeData(brightness: Brightness.dark),
+      home: Container(
+        margin: const EdgeInsets.only(left: 14, right: 14),
+        child: const Scaffold (
+          body: ParentScreen()
+        ),
       )
     );
   }

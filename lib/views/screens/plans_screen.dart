@@ -16,8 +16,6 @@ class PlansScreen extends StatefulWidget {
 
 class _PlansScreenState extends State<PlansScreen>{
 
-  final PlanViewModel planVm = PlanViewModel();
-
   void refresh() => setState(() {});
 
   @override
@@ -31,34 +29,39 @@ class _PlansScreenState extends State<PlansScreen>{
             backgroundColor: CupertinoColors.black,
             padding: EdgeInsetsDirectional.zero,
             largeTitle: const Text('My plans'),
-            trailing: IconButton(
-              icon: const Icon(CupertinoIcons.add_circled, size: 32),
-              onPressed: () {
-                setState(() {
-                  showCupertinoModalPopup(
-                    context: context,
-                    barrierDismissible: false,
-                    barrierColor: const Color(0xBB000000),
-                    builder: (BuildContext context) {
-                      return Sheet(child: PlanSheet(onAddPlan: refresh));
-                    }
-                  );
-                });
-              },
+            trailing: Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: IconButton(
+                icon: const Icon(CupertinoIcons.add_circled, size: 32),
+                onPressed: () {
+                  setState(() {
+                    showCupertinoModalPopup(
+                      context: context,
+                      barrierDismissible: false,
+                      barrierColor: const Color(0xBB000000),
+                      builder: (BuildContext context) {
+                        return Sheet(child: PlanSheet(onAddPlan: refresh));
+                      }
+                    );
+                  });
+                },
+              ),
             ),
           ),
 
           SliverToBoxAdapter(
-            child: ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: planVm.modelList.length,
-              itemBuilder: (BuildContext context, int index) {
-                return PlanCard(
-                  plan: planVm.modelList.elementAt(index),
-                  onDelete: () => setState(() => planVm.removeModelAt(index))
-                );
-              }
+            child: Container(
+              margin: const EdgeInsets.only(left: 14, right: 14),
+              child: Consumer<PlanViewModel>(
+                builder: (context, planVm, _) => ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: planVm.modelList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return PlanCard(plan: planVm.modelList.elementAt(index), index: index);
+                  }
+                ),
+              ),
             ),
           )]
       ),

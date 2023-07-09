@@ -25,7 +25,7 @@ class PlanViewModel extends ChangeNotifier implements ListViewModel<Plan> {
     notifyListeners();
   }
 
-  @override 
+  @override
   void removeModelAt(int index) {
     _planList.removeAt(index);
     notifyListeners();
@@ -35,6 +35,10 @@ class PlanViewModel extends ChangeNotifier implements ListViewModel<Plan> {
   void debugClearList(){
     _planList.clear();
     notifyListeners();
+  }
+
+  void removeModel(Plan plan){
+    _planList.remove(plan);
   }
 
   void editPlan(int index, Plan newPlan){

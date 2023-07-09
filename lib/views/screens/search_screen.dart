@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -10,20 +11,25 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
-    return const CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
+    // final _vm = Provider.of<PlanViewModel>(context);
+
+    return CupertinoPageScaffold(
+      navigationBar: const CupertinoNavigationBar(
         previousPageTitle: 'Cancel',
       ),
-      child: Column(
-        children: <Widget> [
-          Expanded(
-            child: CupertinoSearchTextField(
-              placeholder: 'Placeholder',
-              autofocus: true,
-            ),
-          )
-        ],
-      )
+      child: SafeArea(
+        child: Container(
+          margin: const EdgeInsets.only(left: 14, right: 14, top: 16),
+          child: const Column(
+            children: [
+              CupertinoSearchTextField(
+                placeholder: 'Search for a target',
+                autofocus: true,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

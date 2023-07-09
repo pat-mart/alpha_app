@@ -3,7 +3,7 @@ import 'package:astro_planner/util/enums/camera_types.dart';
 import 'package:astro_planner/util/enums/catalog_types.dart';
 import 'package:astro_planner/util/plan/plan_timespan.dart';
 import 'package:astro_planner/util/setup/camera.dart';
-import 'package:astro_planner/viewmodels/target_search_vm.dart';
+import 'package:astro_planner/viewmodels/search_vm.dart';
 import 'package:astro_planner/views/screens/search_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,20 +26,12 @@ class PlanSheet extends StatefulWidget {
 
 class _PlanSheetState extends State<PlanSheet> {
 
-  final TargetSearchViewModel _searchVm = TargetSearchViewModel();
-  late FocusNode _focusNode;
+  final SearchViewModel _searchVm = SearchViewModel();
   late TextEditingController _searchController;
-
-  void _unfocusSearch() {
-    if(_focusNode.hasFocus){
-      _focusNode.unfocus();
-    }
-  }
 
   @override
   void initState(){
     super.initState();
-    _focusNode = FocusNode();
     _searchController = _searchVm.controller;
   }
 
@@ -80,17 +72,19 @@ class _PlanSheetState extends State<PlanSheet> {
                 child: Text('Target', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: CupertinoColors.white)),
               ),
               Expanded(
-                child: CupertinoSearchTextField(
-                  enabled: false,
-                  padding: const EdgeInsetsDirectional.fromSTEB(5.5, 10, 5.5, 10),
-                  placeholder: 'Search for a target',
+                child: GestureDetector(
                   onTap: () {
-                    _unfocusSearch();
                     Navigator.push(
                       context,
                       CupertinoPageRoute(builder: (context) => const SearchScreen())
                     );
                   },
+                  behavior: HitTestBehavior.opaque,
+                  child: const CupertinoSearchTextField(
+                    enabled: false,
+                    padding: EdgeInsetsDirectional.fromSTEB(5.5, 10, 5.5, 10),
+                    placeholder: 'Search for a target',
+                  ),
                 ),
               )
             ],

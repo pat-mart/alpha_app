@@ -1,7 +1,6 @@
 import 'dart:core';
 
 import 'package:astro_planner/util/enums/catalog_types.dart';
-import 'package:http/http.dart' as http;
 
 import '../util/plan/catalog_name.dart';
 
@@ -27,7 +26,7 @@ class SkyObject {
     return '${_catName.type.asString()} ${_catName.num}';
   }
 
-  Future<http.Response> getApiData() async {
-    return http.get(Uri());
-  }
+  // Future<PlanetData> getApiData() async {
+  //
+  // }
 }

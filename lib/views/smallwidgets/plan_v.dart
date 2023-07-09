@@ -1,5 +1,7 @@
+import 'package:astro_planner/viewmodels/plan_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/json_data/weather_data.dart';
 import '../../models/plan_m.dart';
@@ -8,9 +10,9 @@ class PlanCard extends StatefulWidget {
 
   final Plan plan;
 
-  final VoidCallback onDelete;
+  final int index;
 
-  const PlanCard({super.key, required this.plan, required this.onDelete});
+  const PlanCard({super.key, required this.plan, required this.index});
 
   @override
   State<StatefulWidget> createState() => _PlanCardState();
@@ -28,6 +30,8 @@ class _PlanCardState extends State<PlanCard> {
   @override
   Widget build(BuildContext context) {
     Plan plan = widget.plan;
+    final _planVm = Provider.of<PlanViewModel>(context);
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Column(
@@ -73,7 +77,7 @@ class _PlanCardState extends State<PlanCard> {
                   ),
                   IconButton(
                     icon: const Icon(CupertinoIcons.delete, size: 18, color: CupertinoColors.destructiveRed),
-                    onPressed: widget.onDelete
+                    onPressed: () => _planVm.removeModelAt(widget.index)
                   )
                 ],
               )

@@ -3,23 +3,23 @@ import 'package:flutter/cupertino.dart';
 import '../models/sky_obj_m.dart';
 import 'list_vm.dart';
 
-class TargetSearchViewModel extends ChangeNotifier implements ListViewModel<SkyObject> {
+class SearchViewModel extends ChangeNotifier implements ListViewModel<SkyObject> {
 
   final List<SkyObject> _list = [];
 
-  static final TargetSearchViewModel _instance = TargetSearchViewModel._internal();
+  static final SearchViewModel _instance = SearchViewModel._internal();
 
   final TextEditingController _searchController = TextEditingController();
 
   String searchQuery = '';
 
-  TargetSearchViewModel._internal(){
+  SearchViewModel._internal(){
     _searchController.addListener(() {
       updateQuery(_searchController.text);
     });
   }
 
-  factory TargetSearchViewModel(){
+  factory SearchViewModel(){
     return _instance;
   }
 

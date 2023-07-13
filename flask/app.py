@@ -1,21 +1,27 @@
+from dataclasses import dataclass
+
+from astropy.time import Time
 from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
-from flask_marshmallow import Marshmallow
 
 import os
 
+from flask_sqlalchemy import SQLAlchemy
+
+from data.geo_coord import GeoCoord
+from data.obj_data import transform_coord
+
 app = Flask(__name__)
-basedir = os.path.abspath(os.path.dirname(__file__))
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'db.sqlite')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-db = SQLAlchemy(app)
-ma = Marshmallow(app)
 
 @app.route('/')
 def hello_world():  # put application's code here
+    print(transform_coord(Time('21:33:00'), obj_name='M33', geo_coord=GeoCoord(lat=40.8, long=-70.1), elev=10.1))
     return 'Hello World!'
 
-if __name__ == '__main__':
-    app.run()
+
+@app.route('/search', methods=['GET'])
+def get_obj_data():
+    args = request.args.to_dict()
+
+
+app.app_context().push()

@@ -3,9 +3,8 @@ import sys
 from astropy.coordinates import EarthLocation
 from astropy.time import Time
 from flask import Flask, request
-import random
 
-from data.sky_obj import transform_coord
+from data.sky_obj import SkyObject
 
 app = Flask(__name__)
 
@@ -16,13 +15,18 @@ app = Flask(__name__)
 def get_obj_pos():
     args = request.args
 
-    s_time =
-    data = transform_coord()
 
 @app.route('/')
 def hello_world():
-    print(transform_coord(Time('2023-07-13T21:30:21.0'), 'M31', EarthLocation(lon=-70.1, lat=40.1, height=10)),
-          file=sys.stdout)
+    sky_obj = SkyObject(
+        start_time=Time('2023-7-14T14:15:31.0'),
+        obj_name="M42",
+        coords=(40.08, -70.1),
+        elev=10.2
+    )
+
+    print(sky_obj.hours_visible, file=sys.stdout)
+
     return 'Hello World!'
 
 

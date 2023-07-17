@@ -1,7 +1,3 @@
-import sys
-from datetime import timedelta
-
-from astropy.coordinates import EarthLocation
 from astropy.time import Time
 from flask import Flask, request
 
@@ -20,15 +16,15 @@ def get_obj_pos():
 @app.route('/')
 def hello_world():
     sky_obj = SkyObject(
-        start_time=Time('2023-7-15T14:15:31.0'),
-        duration=timedelta(hours=5, minutes=30),
+        start_time=Time('2023-7-15T21:15:31.0'),
+        end_time=Time('2023-7-16T01:12:00.0'),
         obj_name="M31",
         coords=(40.8, -73.1),
     )
 
-    print(sky_obj.hours_visible, file=sys.stdout)
+    print(sky_obj.suggested_hours, sky_obj.hours_visible)
 
-    return 'Hello World!'
+    return "<h1>Hello world!</h1>"
 
 
 if __name__ == '__main__':

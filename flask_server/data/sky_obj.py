@@ -153,12 +153,10 @@ class SkyObject:
         for t_point in points:
 
             t = Time(t_point)
-            dt = t.to_datetime()
 
             altitude = self.observer_loc.altaz(time=t - timedelta(hours=self.utc_offset), target=self.target).alt
 
             if altitude > alt_threshold:
-                print(t)
                 times.append(t_point.time().isoformat())
 
         return times

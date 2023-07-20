@@ -18,11 +18,9 @@ def hello_world():
     sky_obj = SkyObject(
         start_time=Time('2023-7-15T21:15:31.0'),
         end_time=Time('2023-7-16T01:12:00.0'),
-        obj_name="California Nebula",
-        coords=(40.8, -73.1),
+        obj_name="LMC",
+        coords=(89.9, -73.1),
     )
-
-    print(sky_obj.suggested_hours, sky_obj.hours_visible)
 
     return "<h1>{{sky_obj.}}</h1>"
 

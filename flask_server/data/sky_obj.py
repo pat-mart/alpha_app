@@ -146,10 +146,10 @@ class SkyObject:
         return obj_coords.transform_to(AltAz(obstime=peak_iso - self.utc_offset, location=self.geo_loc)).alt
 
     @property
-    def suggested_hours(self) -> [datetime]:
+    def suggested_hours(self) -> [datetime] or str:
 
         if self.hours_visible[0] == -1:
-            return []
+            return "Not visible"
 
         alt_threshold = 20.0 * u.deg
 

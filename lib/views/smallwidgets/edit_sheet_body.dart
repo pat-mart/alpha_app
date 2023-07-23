@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../screens/sheet.dart';
+import '../screens/empty_modal_sheet.dart';
 
 class EditSheet extends StatefulWidget {
 
@@ -16,7 +16,7 @@ class EditSheet extends StatefulWidget {
 class _EditSheetState extends State<EditSheet> {
   @override
   Widget build(BuildContext context) {
-    return Sheet (
+    return EmptyModalSheet (
       child: Column (
         children: [
           Row (

@@ -18,12 +18,8 @@ def get_obj_pos():
     lat = args.get('lat')
     lon = args.get('lon')
 
-    print(start_time, type(start_time))
-
     start = Time(start_time)
     end = Time(end_time)
-
-    print(start_time == '2023-7-15T21:15:31.0')
 
     obj = SkyObject(
         start_time=start,
@@ -32,13 +28,19 @@ def get_obj_pos():
         coords=(float(lat), float(lon))
     )
 
+    if obj.hours_visible[0] != -1:
+        str_hrs = [x.isoformat() for x in obj.hours_visible]
+    else:
+        str_hrs = ['Target is never observable']
+
     obj_data = {
         'Object name': obj.obj_name,
-        'Start time': str(obj.start_time.iso),
-        'End time': str(obj.end_time.iso),
+        'Start time': obj.start_time.iso,
+        'End time': obj.end_time.iso,
         'Coordinates': obj.coords,
-        'Hours visible': obj.hours_visible,
-        'Hours suggested': obj.hours_visible
+        'UTC offset': obj.utc_offset,
+        'Hours visible': str_hrs,
+        'Hours suggested': obj.suggested_hours
     }
 
     return jsonify(obj_data)
@@ -46,15 +48,9 @@ def get_obj_pos():
 
 @app.route('/')
 def hello_world():
-    x = SkyObject(
-        start_time=Time('2023-7-15T21:15:31.0'),
-        end_time=Time('2023-7-16T01:12:00.0'),
-        obj_name="LMC",
-        coords=(-89, -120),
-    )
 
     return "<h1>Pat</h1>"
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(threaded=True)

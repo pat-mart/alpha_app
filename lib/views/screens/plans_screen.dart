@@ -1,4 +1,4 @@
-import 'package:astro_planner/views/screens/sheet.dart';
+import 'package:astro_planner/views/screens/empty_modal_sheet.dart';
 import 'package:astro_planner/views/smallwidgets/plan_sheet_body.dart';
 import 'package:astro_planner/views/smallwidgets/plan_v.dart';
 import 'package:flutter/cupertino.dart';
@@ -40,7 +40,7 @@ class _PlansScreenState extends State<PlansScreen>{
                       barrierDismissible: false,
                       barrierColor: const Color(0xBB000000),
                       builder: (BuildContext context) {
-                        return Sheet(child: PlanSheet(onAddPlan: refresh));
+                        return EmptyModalSheet(child: PlanSheet(onAddPlan: refresh));
                       }
                     );
                   });

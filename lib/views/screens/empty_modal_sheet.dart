@@ -1,17 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class Sheet extends StatefulWidget {
+class EmptyModalSheet extends StatefulWidget {
 
   final Widget child;
 
-  const Sheet({super.key, required this.child});
+  const EmptyModalSheet({super.key, required this.child});
 
   @override
-  State createState() => _SheetState();
+  State createState() => _EmptyModalSheetState();
 }
 
-class _SheetState extends State<Sheet> {
+class _EmptyModalSheetState extends State<EmptyModalSheet> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPopupSurface(

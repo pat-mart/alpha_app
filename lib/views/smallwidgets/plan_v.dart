@@ -30,7 +30,7 @@ class _PlanCardState extends State<PlanCard> {
   @override
   Widget build(BuildContext context) {
     Plan plan = widget.plan;
-    final _planVm = Provider.of<PlanViewModel>(context);
+    final planVm = Provider.of<PlanViewModel>(context);
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
@@ -77,7 +77,7 @@ class _PlanCardState extends State<PlanCard> {
                   ),
                   IconButton(
                     icon: const Icon(CupertinoIcons.delete, size: 18, color: CupertinoColors.destructiveRed),
-                    onPressed: () => _planVm.removeModelAt(widget.index)
+                    onPressed: () => planVm.removeModelAt(widget.index)
                   )
                 ],
               )

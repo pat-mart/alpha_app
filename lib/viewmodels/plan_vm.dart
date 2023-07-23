@@ -39,6 +39,7 @@ class PlanViewModel extends ChangeNotifier implements ListViewModel<Plan> {
 
   void removeModel(Plan plan){
     _planList.remove(plan);
+    notifyListeners();
   }
 
   void editPlan(int index, Plan newPlan){

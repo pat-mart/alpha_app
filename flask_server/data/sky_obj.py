@@ -171,11 +171,11 @@ class SkyObject:
             altitude = self.observer_loc.altaz(time=t - timedelta(hours=self.utc_offset), target=self.target).alt
 
             if altitude > alt_threshold:
-                if len(times) >= 2 and times[times_i] - t_interval == times[times_i - 1]:
+                if len(times) >= 2 and times[times_i] - t_interval == times[times_i - 1]:  # Ensures no gaps
                     times.append(t_point)
                     times_i += 1
                 elif len(times) < 2:
                     times.append(t_point)
                     times_i += 1
 
-        return times
+        return [t.isoformat() for t in times]

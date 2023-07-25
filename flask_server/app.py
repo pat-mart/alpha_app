@@ -10,6 +10,7 @@ app = Flask(__name__)
 # example search endpoint:
 # api/search?objname=M31&starttime=2023-7-15T21:15:31.0&endtime=2023-7-16T01:12:00.0&lat=10.10&lon=10.10
 def get_obj_pos():
+
     args = request.args
 
     obj_name = args.get('objname')
@@ -33,14 +34,16 @@ def get_obj_pos():
     else:
         str_hrs = ['Target is never observable']
 
+    peak_alt_az = obj.peak_alt_az
+
     obj_data = {
-        'Object name': obj.obj_name,
-        'Start time': obj.start_time.iso,
-        'End time': obj.end_time.iso,
-        'Coordinates': obj.coords,
-        'UTC offset': obj.utc_offset,
-        'Hours visible': str_hrs,
-        'Hours suggested': obj.suggested_hours
+        'obj_name': obj.obj_name,
+        'time_start': obj.start_time.iso,
+        'time_end': obj.end_time.iso,
+        'coords': obj.coords,
+        'utc_offset': obj.utc_offset,
+        'viewing_hours': {'h_visible': str_hrs, 'h_suggested': obj.suggested_hours},
+        'peak': {'alt': peak_alt_az[0], 'az': peak_alt_az[1], 'time': obj.peak_time}
     }
 
     return jsonify(obj_data)
@@ -53,4 +56,4 @@ def hello_world():
 
 
 if __name__ == '__main__':
-    app.run(threaded=True)
+    app.run()

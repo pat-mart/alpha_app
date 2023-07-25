@@ -30,7 +30,10 @@ class SearchViewModel extends ChangeNotifier implements ListViewModel<SkyObject>
 
   TextEditingController get controller => _searchController;
 
-  void clearInput () => controller.clear();
+  void clearInput () {
+    controller.clear();
+    notifyListeners();
+  }
 
   @override
   List<SkyObject> get modelList => _list;
@@ -38,15 +41,18 @@ class SearchViewModel extends ChangeNotifier implements ListViewModel<SkyObject>
   @override
   void addToList(SkyObject target) {
     _list.add(target);
+    notifyListeners();
   }
 
   @override
   void removeModelAt(int index) {
     _list.removeAt(index);
+    notifyListeners();
   }
 
   @override
   void debugClearList() {
     _list.clear();
+    notifyListeners();
   }
 }

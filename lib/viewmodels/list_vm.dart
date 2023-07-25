@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 abstract class ListViewModel<Model> {
 
   late List<Model> _list;

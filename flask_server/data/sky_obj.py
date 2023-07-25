@@ -114,7 +114,9 @@ class SkyObject:
         sunrise_t = self.sunrise_t
         sunset_t = self.sunset_t
 
-        if rise_time > sunset_t and set_time < sunrise_t:  # Object rises and sets between sunset and sunrise
+        rises_before_sunset = rise_time > sunset_t
+
+        if rises_before_sunset and set_time < sunrise_t:  # Object rises and sets between sunset and sunrise
             return [rise_time, set_time]
 
         elif rise_time > sunrise_t and set_time > sunset_t:  # Object rises during day, sets at night
@@ -123,7 +125,7 @@ class SkyObject:
         elif rise_time < sunrise_t and set_time < sunset_t:  # Object rises at night (early morning), sets during day
             return [rise_time, sunrise_t]
 
-        elif rise_time > sunset_t and set_time > sunrise_t:  # Object rises at night (after sunset), sets during day
+        elif rises_before_sunset and set_time > sunrise_t:  # Object rises at night (after sunset), sets during day
             return [rise_time, sunrise_t]
 
         return [-1, -1]
@@ -135,15 +137,22 @@ class SkyObject:
         return obj_coords.transform_to(AltAz(obstime=self.start_time - self.utc_offset, location=self.geo_loc))
 
     @property
-    def peak_alt(self) -> float:
-        loc = self.observer_loc
-
-        peak_iso = loc.target_meridian_transit_time(
-            self.start_time, self.target, which='nearest') + timedelta(hours=self.utc_offset)
+    def peak_alt_az(self) -> [float]:
+        peak_iso = self.peak_time
 
         obj_coords = SkyCoord.from_name(self.obj_name)
 
-        return obj_coords.transform_to(AltAz(obstime=peak_iso - self.utc_offset, location=self.geo_loc)).alt
+        alt = obj_coords.transform_to(AltAz(obstime=peak_iso, location=self.geo_loc)).alt
+        az = obj_coords.transform_to(AltAz(obstime=peak_iso, location=self.geo_loc)).az
+
+        return [str(alt), str(az)]
+
+    @property
+    def peak_time(self) -> str:
+        loc = self.observer_loc
+        time = loc.target_meridian_transit_time(self.start_time, self.target) + timedelta(hours=self.utc_offset)
+
+        return time.iso
 
     @property
     def suggested_hours(self) -> [datetime] or str:
@@ -156,7 +165,7 @@ class SkyObject:
         start_dt = datetime.combine(self.start_time.to_datetime().date(), self.hours_visible[0])
         end_dt = datetime.combine(self.end_time.to_datetime().date(), self.hours_visible[1])
 
-        t_interval = ((end_dt - start_dt) / 15)  # 15 to hold balance between precision and speed.
+        t_interval = ((end_dt - start_dt) / 15)  # 10 to hold balance between precision and speed.
 
         points = [start_dt + (i * t_interval) for i in range(1, 15)]
 
@@ -178,4 +187,4 @@ class SkyObject:
                     times.append(t_point)
                     times_i += 1
 
-        return [t.isoformat() for t in times]
+        return [times[0].isoformat(), times[1].isoformat()]

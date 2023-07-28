@@ -6,6 +6,8 @@ import '../util/plan/catalog_name.dart';
 
 class SkyObject {
 
+  String _customCatName = '';
+
   late String _name;
 
   late CatalogName _catName;
@@ -13,6 +15,8 @@ class SkyObject {
   double _magnitude = 0;
 
   SkyObject(this._name, this._catName);
+
+  SkyObject.customCatalogName(this._name, this._customCatName);
 
   SkyObject.fromCatalogName(this._catName){
     _name = _catName.toString();
@@ -23,10 +27,12 @@ class SkyObject {
   double get magnitude => _magnitude;
 
   String getFormattedCatalogName() {
-    return '${_catName.type.asString()} ${_catName.num}';
+    if(_customCatName != ''){
+      return _customCatName;
+    }
+    else if(_catName.type != CatalogTypes.messier){
+      return '${_catName.type.asTitleized()} ${_catName.num}';
+    }
+    return '${_catName.type.asUppercase()} ${_catName.num}';
   }
-
-  // Future<PlanetData> getApiData() async {
-  //
-  // }
 }

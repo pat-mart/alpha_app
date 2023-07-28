@@ -1,19 +1,18 @@
+import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 
-import '../models/sky_obj_m.dart';
-import 'list_vm.dart';
-
-class SearchViewModel extends ChangeNotifier implements ListViewModel<SkyObject> {
-
-  final List<SkyObject> _list = [];
+class SearchViewModel extends ChangeNotifier {
 
   static final SearchViewModel _instance = SearchViewModel._internal();
 
   final TextEditingController _searchController = TextEditingController();
 
-  String searchQuery = '';
+  late List<List<dynamic>> _csvData = [];
 
-  SearchViewModel._internal(){
+  String _predictiveQuery = '';
+
+  SearchViewModel._internal() {
     _searchController.addListener(() {
       updateQuery(_searchController.text);
     });
@@ -23,36 +22,29 @@ class SearchViewModel extends ChangeNotifier implements ListViewModel<SkyObject>
     return _instance;
   }
 
-  void updateQuery(String query){
-    searchQuery = query;
-    notifyListeners();
+  Future<void> loadCsvData() async {
+    final astroData = await rootBundle.loadString('a_p_data');
+
+    List<List<dynamic>> data = const CsvToListConverter().convert(astroData);
+
+    
   }
 
-  TextEditingController get controller => _searchController;
+  void updateQuery(String query){
+    _searchController.text = query;
+    notifyListeners();
+  }
 
   void clearInput () {
     controller.clear();
     notifyListeners();
   }
 
-  @override
-  List<SkyObject> get modelList => _list;
-
-  @override
-  void addToList(SkyObject target) {
-    _list.add(target);
-    notifyListeners();
+  void onChangeText() {
+    //Eventually implement CSV matching here
   }
 
-  @override
-  void removeModelAt(int index) {
-    _list.removeAt(index);
-    notifyListeners();
-  }
+  String get _currentQuery => _searchController.text;
 
-  @override
-  void debugClearList() {
-    _list.clear();
-    notifyListeners();
-  }
+  TextEditingController get controller => _searchController;
 }

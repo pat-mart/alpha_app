@@ -1,5 +1,6 @@
+import 'package:astro_planner/viewmodels/search_vm.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -11,11 +12,13 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
-    // final _vm = Provider.of<PlanViewModel>(context);
+
+    final vm = Provider.of<SearchViewModel>(context);
 
     return CupertinoPageScaffold(
       navigationBar: const CupertinoNavigationBar(
         previousPageTitle: 'Cancel',
+        backgroundColor: CupertinoColors.black,
       ),
       child: SafeArea(
         child: Container(

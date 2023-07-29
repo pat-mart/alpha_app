@@ -40,7 +40,7 @@ class _PlansScreenState extends State<PlansScreen>{
                       barrierDismissible: false,
                       barrierColor: const Color(0xBB000000),
                       builder: (BuildContext context) {
-                        return EmptyModalSheet(child: PlanSheet(onAddPlan: refresh));
+                        return const EmptyModalSheet(child: PlanSheet());
                       }
                     );
                   });

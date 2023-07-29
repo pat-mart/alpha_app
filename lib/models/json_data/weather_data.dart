@@ -1,4 +1,6 @@
 
+import 'package:flutter/cupertino.dart';
+
 import '../plan_m.dart';
 
 class WeatherData {
@@ -10,6 +12,7 @@ class WeatherData {
   factory WeatherData.fromJson(Map<String, dynamic> json, Plan plan) {
 
     int startHour = plan.timespan.dateRange.start.hour;
+    int endHour = plan.timespan.dateRange.end.hour;
 
     List<dynamic> allConditionsJoined = (json['forecast']['forecastday'] as List).expand((day) => day['hour'])
       .toList()
@@ -17,7 +20,9 @@ class WeatherData {
       .toList();
     //Consolidates every condition at every hour of all days involved in the span
 
-    final bool isClear = allConditionsJoined.sublist(startHour).every((condition) => condition == 'Clear');
+    print(allConditionsJoined.sublist(startHour, endHour));
+
+    final bool isClear = allConditionsJoined.sublist(startHour, endHour).every((condition) => condition == 'Clear');
 
     return WeatherData(weatherType: (isClear) ? WeatherTypes.good : WeatherTypes.bad);
   }

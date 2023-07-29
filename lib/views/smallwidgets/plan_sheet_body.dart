@@ -7,6 +7,7 @@ import 'package:astro_planner/viewmodels/search_vm.dart';
 import 'package:astro_planner/views/screens/search_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/plan_m.dart';
 import '../../models/sky_obj_m.dart';
@@ -16,9 +17,7 @@ import '../../viewmodels/plan_vm.dart';
 
 class PlanSheet extends StatefulWidget {
 
-  final VoidCallback onAddPlan;
-
-  const PlanSheet({super.key, required this.onAddPlan});
+  const PlanSheet({super.key});
 
   @override
   State<StatefulWidget> createState() => _PlanSheetState();
@@ -37,6 +36,9 @@ class _PlanSheetState extends State<PlanSheet> {
 
   @override
   Widget build(BuildContext context) {
+
+    final SearchViewModel searchVm = Provider.of<SearchViewModel>(context);
+
     return Column (
       children: <Widget> [
         Row(
@@ -73,11 +75,16 @@ class _PlanSheetState extends State<PlanSheet> {
               ),
               Expanded(
                 child: GestureDetector(
-                  onTap: () {
+                  onTap: () async {
                     Navigator.push(
                       context,
                       CupertinoPageRoute(builder: (context) => const SearchScreen())
                     );
+                    Image.asset('../assets/M31.jpg');
+
+                    if(_searchVm.csvData.isEmpty){
+                      await _searchVm.loadCsvData();
+                    }
                   },
                   behavior: HitTestBehavior.opaque,
                   child: const CupertinoSearchTextField(
@@ -96,12 +103,11 @@ class _PlanSheetState extends State<PlanSheet> {
                 Plan(
                   SkyObject('Orion nebula', CatalogName(CatalogTypes.messier, 41)),
                   Setup('Setup 2', Telescope('Celestron', 61, 360), Camera('Canon EOS 7D', 1.6, CameraTypes.dslr), true, true),
-                  PlanTimespan(DateTime(2023, 7, 8, 21, 30), const Duration(hours: 6, minutes: 30)),
-                  40.03,
-                  -73.10
+                  PlanTimespan(DateTime(2023, 7, 28, 21, 30), const Duration(minutes: 30)),
+                  40.844,
+                  -73.65
                 )
               );
-              widget.onAddPlan(); //Triggers callback
               Navigator.pop(context);
             },
             child: const Text('Add to plans', style: TextStyle(color: CupertinoColors.white))

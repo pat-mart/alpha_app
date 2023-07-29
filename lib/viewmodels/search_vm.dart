@@ -1,3 +1,4 @@
+import 'package:astro_planner/util/plan/csv_row.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -8,31 +9,46 @@ class SearchViewModel extends ChangeNotifier {
 
   final TextEditingController _searchController = TextEditingController();
 
-  late List<List<dynamic>> _csvData = [];
+  List<CsvRow> _csvData = [];
+  late List<CsvRow> _results = [];
 
-  String _predictiveQuery = '';
-
-  SearchViewModel._internal() {
-    _searchController.addListener(() {
-      updateQuery(_searchController.text);
-    });
-  }
+  SearchViewModel._internal();
 
   factory SearchViewModel(){
     return _instance;
   }
 
   Future<void> loadCsvData() async {
-    final astroData = await rootBundle.loadString('a_p_data');
+    final astroData = await rootBundle.loadString('lib/assets/a_p_data.csv');
 
     List<List<dynamic>> data = const CsvToListConverter().convert(astroData);
 
-    
+    _csvData = data.map(
+      (row) {
+        if(row[5] is!String) {
+          return CsvRow(
+              catalogName: row[0],
+              catalogAlias: (row[2] != null) ? '' : row[2],
+              objType: row[3],
+              constellation: row[4],
+              magnitude: row[5],
+              properName: row[6]
+          );
+        }
+        return CsvRow.empty();
+      }
+    ).toList();
   }
 
-  void updateQuery(String query){
-    _searchController.text = query;
-    notifyListeners();
+  List<List<dynamic>> sortedCsvData({sortIndex}) {
+    if(csvData.isEmpty){
+      throw Exception('CSV values not initialized');
+    }
+    return [];
+  }
+
+  void loadSearchResults(String q){
+
   }
 
   void clearInput () {
@@ -40,11 +56,7 @@ class SearchViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onChangeText() {
-    //Eventually implement CSV matching here
-  }
-
-  String get _currentQuery => _searchController.text;
-
   TextEditingController get controller => _searchController;
+
+  List<CsvRow> get csvData => _csvData;
 }

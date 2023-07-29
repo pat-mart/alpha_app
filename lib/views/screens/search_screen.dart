@@ -10,10 +10,11 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+
   @override
   Widget build(BuildContext context) {
 
-    final vm = Provider.of<SearchViewModel>(context);
+    final searchVm = Provider.of<SearchViewModel>(context);
 
     return CupertinoPageScaffold(
       navigationBar: const CupertinoNavigationBar(
@@ -23,9 +24,12 @@ class _SearchScreenState extends State<SearchScreen> {
       child: SafeArea(
         child: Container(
           margin: const EdgeInsets.only(left: 14, right: 14, top: 16),
-          child: const Column(
+          child: Column(
             children: [
               CupertinoSearchTextField(
+                controller: searchVm.controller,
+                onSuffixTap: searchVm.clearInput,
+                onChanged: searchVm.loadSearchResults,
                 placeholder: 'Search for a target',
                 autofocus: true,
               ),

@@ -1,28 +1,27 @@
-import 'package:astro_planner/util/plan/catalog_name.dart';
-
 class CsvRow{
 
-  final Map<String, ObjTypes> objDict = {
-    'Galaxy': ObjTypes.galaxy,
-    'Planetary Nebula': ObjTypes.p_nebula,
-    'Nebula': ObjTypes.nebula,
-    'Open Cluster': ObjTypes.o_cluster,
+  late String catalogName;
+  late String catalogAlias;
 
-  };
+  late String objType;
+  late String constellation;
 
-  String catalogName;
-  String catalogAlias;
+  late num magnitude;
 
-  CsvRow(this.catalogName, this.catalogAlias);
-}
+  late String properName;
 
-enum ObjTypes {
-  galaxy,
-  p_nebula,
-  nebula,
-  o_cluster,
-  g_cluster,
-  c_nebulosity,
-  asterism,
-  star
+  CsvRow({required this.catalogName, required this.catalogAlias, required this.objType, required this.constellation,
+      required this.magnitude, required this.properName});
+
+  CsvRow.empty(){
+    catalogName = '';
+    catalogAlias = '';
+
+    objType = '';
+    constellation = '';
+
+    magnitude = 0;
+
+    properName = '';
+  }
 }

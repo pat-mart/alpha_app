@@ -21,7 +21,7 @@ class SkyObject:
     :param coords: The (latitude, longitude) coordinate pair of the observation site
     """
 
-    def __init__(self, start_time: Time, end_time: Time, obj_name: str, coords: (float, float)):
+    def __init__(self, start_time: Time, end_time: Time, obj_name: str, coords: (float, float), threshold: float):
         self.start_time = start_time
         self.end_time = end_time
         self.obj_name = obj_name
@@ -30,6 +30,7 @@ class SkyObject:
 
         self.target = FixedTarget.from_name(obj_name)
         self.observer_loc = Observer(latitude=coords[0], longitude=coords[1])
+        self.threshold = threshold
 
         self.needs_mer_flip = False
 
@@ -157,7 +158,10 @@ class SkyObject:
     @property
     def suggested_hours(self) -> [datetime] or str:
 
-        if self.hours_visible[0] == -1:
+        if self.threshold <= -1:
+            return [-1]
+
+        elif self.hours_visible[0] == -1:
             return "Not visible"
 
         alt_threshold = 20.0 * u.deg
@@ -165,9 +169,9 @@ class SkyObject:
         start_dt = datetime.combine(self.start_time.to_datetime().date(), self.hours_visible[0])
         end_dt = datetime.combine(self.end_time.to_datetime().date(), self.hours_visible[1])
 
-        t_interval = ((end_dt - start_dt) / 15)  # 10 to hold balance between precision and speed.
+        t_interval = ((end_dt - start_dt) / 10)  # 10 to hold balance between precision and speed.
 
-        points = [start_dt + (i * t_interval) for i in range(1, 15)]
+        points = [start_dt + (i * t_interval) for i in range(1, 10)]
 
         times = []
 
@@ -177,7 +181,7 @@ class SkyObject:
 
             t = Time(t_point).to_datetime()
 
-            altitude = self.observer_loc.altaz(time=t - timedelta(hours=self.utc_offset), target=self.target).alt
+            altitude = self.observer_loc.altaz(time=t-timedelta(hours=self.utc_offset), target=self.target).alt
 
             if altitude > alt_threshold:
                 if len(times) >= 2 and times[times_i] - t_interval == times[times_i - 1]:  # Ensures no gaps

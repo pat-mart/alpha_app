@@ -1,18 +1,21 @@
-import 'package:astro_planner/util/plan/csv_row.dart';
+import 'package:astro_planner/models/csv_row.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
 class SearchViewModel extends ChangeNotifier {
 
-  static final SearchViewModel _instance = SearchViewModel._internal();
+  static final SearchViewModel _instance = SearchViewModel._();
 
   final TextEditingController _searchController = TextEditingController();
 
-  List<CsvRow> _csvData = [];
-  late List<CsvRow> _results = [];
+  final List<CsvRow> _csvData = [];
+  List<CsvRow> resultsList = [];
 
-  SearchViewModel._internal();
+  final Map<String, CsvRow> _searchMap = {};
+  final Map<String, CsvRow> _results = {};
+
+  SearchViewModel._();
 
   factory SearchViewModel(){
     return _instance;
@@ -23,32 +26,53 @@ class SearchViewModel extends ChangeNotifier {
 
     List<List<dynamic>> data = const CsvToListConverter().convert(astroData);
 
-    _csvData = data.map(
-      (row) {
-        if(row[5] is!String) {
-          return CsvRow(
-              catalogName: row[0],
-              catalogAlias: (row[2] != null) ? '' : row[2],
-              objType: row[3],
-              constellation: row[4],
-              magnitude: row[5],
-              properName: row[6]
-          );
-        }
-        return CsvRow.empty();
+    if (_searchMap.isEmpty) {
+      for (List<dynamic> row in data) {
+        String key = (row[2] != 'Star')
+            ? ',${row[0]},${row[1]},${row[5].toString().toUpperCase()}'
+            : ',${row[1].toString().toUpperCase()} ${row[3].toUpperCase()},${row[0]},${row[5]}';
+        CsvRow value = CsvRow(
+            catalogName: row[0],
+            catalogAlias: (row[1] is String) ? row[1] : '',
+            objType: row[2],
+            constellation: row[3],
+            magnitude: (row[4] is num) ? row[4] : double.nan,
+            properName: row[5]
+        );
+        _searchMap[key] = value;
       }
-    ).toList();
-  }
-
-  List<List<dynamic>> sortedCsvData({sortIndex}) {
-    if(csvData.isEmpty){
-      throw Exception('CSV values not initialized');
     }
-    return [];
   }
 
-  void loadSearchResults(String q){
+  String _removeCommas(String query){
+    return query.replaceAll(',', '');
+  }
 
+  Map<String, CsvRow> _filteredResults (String query) {
+    int count = 0;
+
+    query = _removeCommas(query);
+
+    if(query.isEmpty){
+      return {};
+    }
+
+    _results.clear();
+
+    _searchMap.forEach((key, value) {
+      if(key.contains(',${query.toUpperCase()}') && count < 15){
+        _results[key] = value;
+        count++;
+      }
+    });
+
+    return _results;
+  }
+
+  void loadSearchResults(String query) {
+    resultsList = _filteredResults(query).values.toList();
+    print(resultsList);
+    notifyListeners();
   }
 
   void clearInput () {

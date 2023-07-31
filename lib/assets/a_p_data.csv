@@ -1,719 +1,720 @@
-NGC40,40,PK 120+9.1,Planetary Nebula,Cep,11,
-NGC55,55,Dunlop 507,Galaxy,Scl,8,
-NGC104,104,47 Tucanae,Globular Cluster,Tuc,4,
-NGC129,129,OCL 294,Open Cluster,Cas,6.5,
-NGC147,147,UGC 326;D3,Galaxy,Cas,9.3,
-NGC185,185,UGC 396,Galaxy,Cas,9.2,
-NGC188,188,OCL 309,Open Cluster,Cep,8.1,
-NGC205,205,M 110,Galaxy,And,8,
-NGC221,221,M 32,Galaxy,And,8.2,Le Gentil
-NGC224,224,M 31,Galaxy,And,3.5,Andromeda Galaxy
-NGC225,225,OCL 305,Open Cluster,Cas,7,
-NGC246,246,PK 118-74.1,Planetary Nebula,Cet,8,
-NGC247,247,ESO 540-22,Galaxy,Cet,8.9,
-NGC253,253,ESO 474-29,Galaxy,Scl,7.1,
-NGC281,281,IC 11,Cluster Nebulosity,Cas,7,
-NGC292,292,ESO 29-21,Galaxy,Hyd,2.2,"Small Magellanic Cloud,SMC"
-NGC300,300,ESO 295-20,Galaxy,Scl,9,
-NGC362,362,Dunlop 62,Globular Cluster,Tuc,6.6,
-NGC457,457,OCL 321,Open Cluster,Cas,6.4,
-NGC559,559,OCL 322,Open Cluster,Cas,9.5,
-NGC581,581,M 103,Open Cluster,Cas,7.4,
-NGC598,598,M 33,Galaxy,Tri,5.7,Triangulum Galaxy
-NGC628,628,M 74,Galaxy,Psc,9.2,
-NGC650,650,M 76,Planetary Nebula,Per,12,Little Dumbbell Nebula
-NGC654,654,OCL 330,Open Cluster,Cas,6.5,
-NGC663,663,OCL 333,Open Cluster,Cas,7.1,
-NGC752,752,OCL 363,Open Cluster,And,5.7,
-NGC869,869,OCL 350,Open Cluster,Per,4,
-NGC884,884,OCL 353,Open Cluster,Per,4,
-NGC891,891,UGC 1831,Galaxy,And,10,
-NGC1027,1027,OCL 357,Open Cluster,Cas,6.7,
-NGC1039,1039,M 34,Open Cluster,Per,5.2,
-NGC1068,1068,M 77,Galaxy,Cet,8.8,
-NGC1097,1097,ESO 416-20,Galaxy,For,9.3,
-NGC1261,1261,GCL 5,Globular Cluster,Hor,8.4,
-NGC1275,1275,3C84;UGC 2669,Galaxy,Per,11.6,
-NGC1342,1342,OCL 401,Open Cluster,Per,6.7,
-NGC1444,1444,OCL 394,Open Cluster,Per,6.6,
-NGC1502,1502,OCL 383,Open Cluster,Cam,5.7,
-NGC1528,1528,OCL 397,Open Cluster,Per,6.4,
-NGC1545,1545,OCL 399,Open Cluster,Per,6.2,
-NGC1582,1582,OCL 407,Open Cluster,Per,7,
-NGC1647,1647,OCL 457,Open Cluster,Tau,6.4,
-NGC1662,1662,OCL 470,Open Cluster,Ori,6.4,
-NGC1746,1746,OCL 452,Open Cluster,Tau,6,
-NGC1807,1807,OCL 462,Open Cluster,Tau,7,
-NGC1851,1851,Dunlop 508,Globular Cluster,Col,7.3,
-NGC1857,1857,OCL 428,Open Cluster,Aur,7,
-NGC1904,1904,M 79,Globular Cluster,Lep,8,
-NGC1912,1912,M 38,Open Cluster,Aur,6.4,
-NGC1952,1952,M 1,Nebula,Tau,8.4,Crab Nebula
-NGC1960,1960,M 36,Open Cluster,Aur,6,Pinwheel Cluster
-NGC1976,1976,M 42,Nebula,Ori,4,Orion Nebula
-NGC1981,1981,OCL 525,Open Cluster,Ori,4.6,
-NGC1982,1982,M 43,Nebula,Ori,9,De Mairan's Nebula
-NGC2068,2068,M 78,Nebula,Ori,8,
-NGC2070,2070,ESO 57-EN6,Cluster Nebulosity,Dor,8.2,
-NGC2099,2099,M 37,Open Cluster,Aur,5.6,
-NGC2129,2129,OCL 467,Open Cluster,Gem,6.7,
-NGC2168,2168,M 35,Open Cluster,Gem,5.1,
-NGC2169,2169,OCL 481,Open Cluster,Ori,5.9,
-NGC2175,2175,OCL 476,Open Cluster,Ori,6.8,
-NGC2232,2232,OCL 545,Open Cluster,Mon,3.9,
-NGC2244,2244,NGC 2239,Open Cluster,Mon,4.8,Rosetta Nebula
-NGC2264,2264,OCL 495,Cluster Nebulosity,Mon,3.9,
-NGC2281,2281,OCL 446,Open Cluster,Aur,5.4,
-NGC2287,2287,M 41,Open Cluster,CMa,4.5,Little Beehive Cluster
-NGC2301,2301,OCL 540,Open Cluster,Mon,6,
-NGC2323,2323,M 50,Open Cluster,Mon,5.9,
-NGC2343,2343,OCL 565,Open Cluster,Mon,6.7,
-NGC2354,2354,OCL 639,Open Cluster,CMa,6.5,
-NGC2360,2360,OCL 589,Open Cluster,CMa,7.2,
-NGC2362,2362,OCL 633,Cluster Nebulosity,CMa,4.1,
-NGC2392,2392,PK 197+17.1,Planetary Nebula,Gem,10,
-NGC2396,2396,OCL 579,Open Cluster,Pup,7,
-NGC2403,2403,UGC 3918,Galaxy,Cam,8.4,
-NGC2419,2419,GCL 12,Globular Cluster,Lyn,10.4,
-NGC2422,2422,M 47,Open Cluster,Pup,4.4,
-NGC2423,2423,OCL 592,Open Cluster,Pup,6.7,
-NGC2437,2437,M 46,Open Cluster,Pup,6.1,
-NGC2439,2439,OCL 688,Open Cluster,Pup,6.9,
-NGC2447,2447,M 93,Open Cluster,Pup,6.2,
-NGC2451,2451,OCL 716,Open Cluster,Pup,2.8,
-NGC2467,2467,OCL 668,Cluster Nebulosity,Pup,7,
-NGC2477,2477,OCL 720,Open Cluster,Pup,5.8,
-NGC2506,2506,OCL 593,Open Cluster,Mon,7.6,
-NGC2516,2516,OCL 776,Open Cluster,Car,3.8,
-NGC2527,2527,NGC 2520,Open Cluster,Pup,6.5,
-NGC2539,2539,OCL 611,Open Cluster,Pup,6.5,
-NGC2546,2546,OCL 726,Open Cluster,Pup,6.3,
-NGC2548,2548,M 48,Open Cluster,Hya,5.8,
-NGC2571,2571,OCL 701,Open Cluster,Pup,7,
-NGC2632,2632,M 44,Open Cluster,Cnc,3.1,Beehive Cluster
-NGC2682,2682,M 67,Open Cluster,Cnc,6.9,Bode's Galaxy
-NGC2775,2775,UGC 4820,Galaxy,Cnc,10.3,Cigar Galaxy
-NGC2867,2867,PK 278-5.1,Planetary Nebula,Car,10,
-NGC3031,3031,M 81,Galaxy,UMa,6.9,Bode's Galaxy
-NGC3034,3034,M 82,Galaxy,UMa,8.4,Cigar Galaxy
-NGC3115,3115,MCG 1-26-18,Galaxy,Sex,9.2,
-NGC3132,3132,PK 272+12.1,Planetary Nebula,Vel,8,
-NGC3201,3201,Dunlop 445,Globular Cluster,Vel,6.8,
-NGC3242,3242,PK 261+32.1,Planetary Nebula,Hya,9,
-NGC3351,3351,M 95,Galaxy,Leo,9.7,
-NGC3368,3368,M 96,Galaxy,Leo,9.2,
-NGC3372,3372,ESO 128-13,Nebula,Car,1,Carina Nebula
-NGC3379,3379,M 105,Galaxy,Leo,9.3,
-NGC3532,3532,OCL 839,Open Cluster,Car,3,Pincushion Cluster
-NGC3556,3556,M 108,Galaxy,UMa,10.1,
-NGC3587,3587,M 97,Planetary Nebula,UMa,11.2,Owl Nebula
-NGC3623,3623,M 65,Galaxy,Leo,9.3,Leo Triplet
-NGC3626,3626,NGC 3632,Galaxy,Leo,10.9,
-NGC3627,3627,M 66,Galaxy,Leo,9,Leo Triplet
-NGC3628,Sarah's Galaxy,UGC 6350,Galaxy,Leo,9.5,
-NGC3766,3766,OCL 860,Open Cluster,Cen,5.3,
-NGC3918,3918,PK 294+4.1,Planetary Nebula,Cen,8,
-NGC3992,3992,M 109,Galaxy,UMa,9.8,
-NGC4038,4038,ESO 572-47,Galaxy,Crv,10.7,
-NGC4039,4039,ESO 572-48,Galaxy,Crv,13,
-NGC4192,4192,M 98,Galaxy,Com,10.1,
-NGC4236,4236,UGC 7306,Galaxy,Dra,9.7,
-NGC4244,4244,UGC 7322,Galaxy,CVn,10.2,
-NGC4254,4254,M 99,Galaxy,Com,9.8,
-NGC4258,4258,M 106,Galaxy,CVn,8.3,
-NGC4303,4303,M 61,Galaxy,Vir,9.7,
-NGC4321,4321,M 100,Galaxy,Com,9.4,
-NGC4372,4372,GCL 19,Globular Cluster,Mus,7.8,
-NGC4374,4374,M 84,Galaxy,Vir,9.3,
-NGC4382,4382,M 85,Galaxy,Com,9.2,
-NGC4406,4406,M 86,Galaxy,Vir,9.2,
-NGC4449,4449,UGC 7592,Galaxy,CVn,9.4,
-NGC4472,4472,M 49,Galaxy,Vir,8.4,
-NGC4486,4486,M 87,Galaxy,Vir,8.6,Virgo A
-NGC4501,4501,M 88,Galaxy,Com,9.5,
-NGC4548,4548,M 91,Galaxy,Com,10.2,
-NGC4552,4552,M 89,Galaxy,Vir,9.8,
-NGC4559,4559,UGC 7766,Galaxy,Com,9.9,
-NGC4565,4565,UGC 7772,Galaxy,Com,9.6,
-NGC4569,4569,M 90,Galaxy,Vir,9.5,
-NGC4579,4579,M 58,Galaxy,Vir,9.8,
-NGC4590,4590,M 68,Globular Cluster,Hya,8.2,
-NGC4594,4594,M 104,Galaxy,Vir,8.3,Sombrero Galaxy
-NGC4609,4609,OCL 890,Open Cluster,Cru,6.9,
-NGC4621,4621,M 59,Galaxy,Vir,9.8,
-NGC4631,4631,UGC 7865,Galaxy,CVn,9.3,
-NGC4649,4649,M 60,Galaxy,Vir,8.8,
-NGC4697,4697,MCG 1-33-10,Galaxy,Vir,9.3,
-NGC4736,4736,M 94,Galaxy,CVn,8.2,
-NGC4755,4755,OCL 892,Open Cluster,Cru,4.2,
-NGC4826,4826,M 64,Galaxy,Com,8.5,Black Eye Galaxy
-NGC4833,4833,Lac I-4,Globular Cluster,Mus,7.4,
-NGC4889,4889,NGC 4884,Galaxy,Com,11.4,
-NGC4945,4945,Dunlop 411,Galaxy,Cen,9,
-NGC5005,5005,UGC 8256,Galaxy,CVn,9.8,
-NGC5024,5024,M 53,Globular Cluster,Com,7.7,
-NGC5055,5055,M 63,Galaxy,CVn,8.6,Sunflower Galaxy
-NGC5128,5128,Dunlop 482,Galaxy,Cen,7,
-NGC5139,5139,Omega Centauri,Globular Cluster,Cen,3.7,
-NGC5194,5194,M 51,Galaxy,CVn,8.4,Whirlpool Galaxy
-NGC5236,5236,M 83,Galaxy,Hya,7.6,Southern Pinwheel Galaxy
-NGC5248,5248,UGC 8616,Galaxy,Boo,10.2,
-NGC5272,5272,M 3,Globular Cluster,CVn,6.4,
-NGC5286,5286,Dunlop 388,Globular Cluster,Cen,7.6,
-NGC5457,5457,M 101,Galaxy,UMa,7.7,Pinwheel Galaxy
-NGC5694,5694,GCL 29,Globular Cluster,Hya,10.2,
-NGC5823,5823,OCL 936,Open Cluster,Cir,7.9,
-NGC5866,5866,M 102,Galaxy,Dra,9.9,
-NGC5904,5904,M 5,Globular Cluster,Ser,5.8,
-NGC6025,6025,OCL 939,Open Cluster,TrA,5.1,
-NGC6067,6067,OCL 953,Open Cluster,Nor,5.6,
-NGC6093,6093,M 80,Globular Cluster,Sco,7.2,Cetus A
-NGC6101,6101,GCL 40,Globular Cluster,Aps,9.3,
-NGC6121,6121,M 4,Globular Cluster,Sco,5.9,
-NGC6124,6124,Dunlop 514,Open Cluster,Sco,5.8,
-NGC6169,6169,OCL 984,Open Cluster,Nor,7,
-NGC6171,6171,M 107,Globular Cluster,Oph,8.1,Butterfly Cluster
-NGC6193,6193,OCL 975,Open Cluster,Ara,5.2,
-NGC6205,6205,M 13,Globular Cluster,Her,5.9,Hercules Cluster
-NGC6218,6218,M 12,Globular Cluster,Oph,6.6,
-NGC6231,6231,Dunlop 520,Cluster Nebulosity,Sco,2.6,
-NGC6242,6242,OCL 1001,Open Cluster,Sco,6.4,
-NGC6250,6250,OCL 991,Open Cluster,Ara,5.9,
-NGC6253,6253,OCL 972,Open Cluster,Ara,10,
-NGC6254,6254,M 10,Globular Cluster,Oph,6.6,
-NGC6266,6266,M 62,Globular Cluster,Oph,6.6,
-NGC6273,6273,M 19,Globular Cluster,Oph,7.2,
-NGC6281,6281,OCL 1003,Cluster Nebulosity,Sco,5.4,
-NGC6302,6302,PK 349+1.1,Planetary Nebula,Sco,13,Bug Nebula
-NGC6322,6322,OCL 1000,Open Cluster,Sco,6,
-NGC6333,6333,M 9,Globular Cluster,Oph,7.9,
-NGC6334,6334,ESO 392-EN9,Nebula,Sco,,Cat's Paw Nebula
-NGC6341,6341,M 92,Globular Cluster,Her,6.5,
-NGC6352,6352,Dunlop 417,Globular Cluster,Ara,8.2,
-NGC6357,6357,RCW 131,Nebula,Sco,,
-NGC6383,6383,NGC 6374,Cluster Nebulosity,Sco,5.5,
-NGC6388,6388,GCL 70,Globular Cluster,Sco,6.9,
-NGC6397,6397,Lac III-11,Globular Cluster,Ara,5.7,
-NGC6402,6402,M 14,Globular Cluster,Oph,7.6,
-NGC6405,6405,M 6,Open Cluster,Sco,4.2,
-NGC6416,6416,OCL 1031,Open Cluster,Sco,5.7,
-NGC6475,6475,M 7,Open Cluster,Sco,3.3,Ptolemy's Cluster
-NGC6494,6494,M 23,Open Cluster,Sgr,5.5,
-NGC6514,6514,M 20,Cluster Nebulosity,Sgr,6.3,Trifid Nebula
-NGC6523,6523,M 8,Nebula,Sgr,5.8,Lagoon Nebula
-NGC6530,6530,OCL 19,Open Cluster,Sgr,4.6,
-NGC6531,6531,M 21,Open Cluster,Sgr,5.9,
-NGC6541,6541,Dunlop 473,Globular Cluster,CrA,6.6,
-NGC6543,6543,PK 96+29.1,Planetary Nebula,Dra,9,
-NGC6595,6595,IC 4700,Open Cluster,Sgr,7,
-NGC6604,6604,OCL 56,Cluster Nebulosity,Ser,6.5,
-NGC6605,6605,OCL 47,Open Cluster,Ser,6,
-NGC6611,6611,M 16,Cluster Nebulosity,Ser,6,Eagle Nebula
-NGC6613,6613,M 18,Open Cluster,Sgr,6.9,
-NGC6618,6618,M 17,Cluster Nebulosity,Sgr,6,Omega Nebula
-NGC6626,6626,M 28,Globular Cluster,Sgr,6.9,
-NGC6633,6633,OCL 90,Open Cluster,Oph,4.6,
-NGC6637,6637,M 69,Globular Cluster,Sgr,7.7,
-NGC6656,6656,M 22,Globular Cluster,Sgr,5.1,Great Saggitarius Cluster
-NGC6681,6681,M 70,Globular Cluster,Sgr,8.1,
-NGC6694,6694,M 26,Open Cluster,Sct,8,
-NGC6705,6705,M 11,Open Cluster,Sct,5.8,
-NGC6709,6709,OCL 100,Open Cluster,Aql,6.7,
-NGC6715,6715,M 54,Globular Cluster,Sgr,7.7,
-NGC6716,6716,OCL 46,Open Cluster,Sgr,6.9,
-NGC6720,6720,M 57,Planetary Nebula,Lyr,9,Ring Nebula
-NGC6744,6744,ESO 104-42,Galaxy,Pav,9,
-NGC6752,6752,Dunlop 295,Globular Cluster,Pav,5.4,
-NGC6779,6779,M 56,Globular Cluster,Lyr,8.3,
-NGC6809,6809,M 55,Globular Cluster,Sgr,7,
-NGC6811,6811,OCL 185,Open Cluster,Cyg,6.8,
-NGC6822,6822,IC 4895,Galaxy,Sgr,9,
-NGC6826,6826,PK 83+12.1,Planetary Nebula,Cyg,10,
-NGC6838,6838,M 71,Globular Cluster,Sge,8.3,
-NGC6853,6853,M 27,Planetary Nebula,Vul,8.1,Dumbbell Nebula
-NGC6864,6864,M 75,Globular Cluster,Sgr,8.6,
-NGC6871,6871,OCL 148,Open Cluster,Cyg,5.2,
-NGC6885,6885,OCL 152,Open Cluster,Vul,6,
-NGC6913,6913,M 29,Open Cluster,Cyg,6.6,
-NGC6922,6922,Caldwell 33,Nebula,Cyg,7.5,Eastern Veil
-NGC6934,6934,GCL 117,Globular Cluster,Del,8.9,
-NGC6940,6940,OCL 141,Open Cluster,Vul,6.3,
-NGC6946,6946,UGC 11597,Galaxy,Cep,8.9,
-NGC6960,6960,Caldwell 34,Nebula,Cyg,7.5,Western Veil
-NGC6981,6981,M 72,Globular Cluster,Aqr,9.4,
-NGC6994,6994,M 73,Open Cluster,Aqr,9,
-NGC7006,7006,GCL 119,Globular Cluster,Del,10.6,
-NGC7009,7009,PK 37-34.1,Planetary Nebula,Aqr,8,
-NGC7023,7023,OCL 235,Cluster Nebulosity,Cep,7,
-NGC7063,7063,OCL 192,Open Cluster,Cyg,7,
-NGC7078,7078,M 15,Globular Cluster,Peg,6.4,Pegasus Cluster
-NGC7089,7089,M 2,Globular Cluster,Aqr,6.5,
-NGC7092,7092,M 39,Open Cluster,Cyg,4.6,
-NGC7099,7099,M 30,Globular Cluster,Cap,7.5,Jellyfish Cluster
-NGC7160,7160,OCL 236,Open Cluster,Cep,6.1,
-NGC7209,7209,OCL 215,Open Cluster,Lac,6.7,
-NGC7243,7243,OCL 221,Open Cluster,Lac,6.4,
-NGC7331,7331,UGC 12113,Galaxy,Peg,9.5,
-NGC7479,7479,UGC 12343,Galaxy,Peg,11,
-NGC7654,7654,M 52,Open Cluster,Cas,6.9,Scorpion Cluster
-NGC7662,7662,PK 106-17.1,Planetary Nebula,And,9,
-NGC7686,7686,OCL 251,Open Cluster,And,5.6,
-NGC7789,7789,OCL 269,Open Cluster,Cas,6.7,
-XO-5,,_,Star,Lyn,12.13,Absolutno
-HR 897,,Theta 1,Star,Eri,2.88,Acamar
-HR 472,,A,Star,Eri,0.45,Achernar
-HR 219,,Eta,Star,Cas,3.46,Achird
-HR 5984,,B1,Star,Sco,2.56,Acrab
-HR 4730,,A,Star,Cru,1.33,Acrux
-HR 3572,,A,Star,Cnc,4.26,Acubens
-HR 4031,,z,Star,Leo,3.43,Adhafera
-HR 2618,,e,Star,CMa,1.5,Adhara
-HR 390,,X,Star,And,4.87,Adhil
-HR 1409,,e,Star,Tau,3.53,Ain
-HR 7116,,ν 1,Star,Sgr,4.86,Ainalrami
-HR 7298,,Eta,Star,Lyr,4.43,Aladfar
-HD 168746,,_,Star,Ser,7.95,Alasia
-HR 7264,,pi,Star,Sgr,2.88,Albaldah
-HR 7950,,e,Star,Aqr,3.78,Albali
-HR 7417,,B 1,Star,Cyg,3.05,Albireo
-HR 4623,,A,Star,Crv,4.02,Alchiba
-HR 5062,,80,Star,UMa,3.99,Alcor
-HR 1165,,Eta,Star,Tau,2.85,Alcyone
-HR 1457,,A,Star,Tau,0.87,Aldebaran
-HR 8162,,A,Star,Cep,2.45,Alderamin
-HR 8353,,Gamma,Star,Gru,3,Aldhanab
-HR 6396,,z,Star,Dra,3.17,Aldhibah
-HR 7852,,e,Star,Del,4.03,Aldulfin
-HR 8238,,B,Star,Cep,3.23,Alfirk
-HR 7754,,a2,Star,Cap,3.58,Algedi
-HR 39,,Gamma,Star,Peg,2.83,Algenib
-HR 4057,,Gamma 1,Star,Leo,2.61,Algieba
-HR 936,,B,Star,Per,2.09,Algol
-HR 4757,,d,Star,Crv,2.94,Algorab
-HR 2421,,Gamma,Star,Gem,1.93,Alhena
-HR 4905,,e,Star,UMa,1.76,Alioth
-HR 7949,,e,Star,Cyg,2.48,Aljanah
-HR 5191,,Eta,Star,UMa,1.85,Alkaid
-HR 5733,,m1,Star,Boo,4.31,Alkalurops
-HR 3594,,k,Star,UMa,4.16,Alkaphrah
-HR 8905,,u,Star,Peg,4.42,Alkarab
-HR 4287,,A,Star,Crt,4.08,Alkes
-HR 1605,,e,Star,Aur,3.03,Almaaz
-HR 603,,Gamma,Star,And,2.1,Almach
-HR 8425,,A,Star,Gru,1.73,Alnair
-HR 6746,,Gamma 2,Star,Sgr,2.98,Alnasl
-HR 1903,,e,Star,Ori,1.69,Alnilam
-HR 1948,,z,Star,Ori,1.74,Alnitak
-HR 6084,,s,Star,Sco,2.9,Alniyat
-HR 3748,,A,Star,Hya,1.99,Alphard
-HR 5793,,A,Star,CrB,2.22,Alphecca
-HR 15,,A,Star,And,2.07,Alpheratz
-HR 437,,Eta,Star,Psc,3.83,Alpherg
-HR 6370,,m,Star,Dra,5.55,Alrakis
-HR 596,,A,Star,Psc,3.82,Alrescha
-HR 6618,,-,Star,Dra,5.75,Alruba
-HR 7462,,s,Star,Dra,4.67,Alsafi
-HR 3275,,31,Star,Lyn,4.25,Alsciaukat
-HR 3485,,d,Star,Vel,1.99,Alsephina
-HR 7602,,B,Star,Aql,3.71,Alshain
-HR 7773,,v,Star,Cap,4.77,Alshat
-HR 7557,,A,Star,Aql,0.76,Altair
-HR 7310,,d,Star,Dra,3.07,Altais
-HR 3773,,L,Star,Leo,4.32,Alterf
-HR 2827,,Eta,Star,CMa,2.45,Aludra
-HR 4375,,X,Star,UMa,4.41,Alula Australis
-HR 4377,,v,Star,UMa,3.49,Alula Borealis
-HR 7141,,Theta 1,Star,Ser,4.62,Alya
-HR 2484,,X,Star,Gem,3.35,Alzirr
-HD 43197,,_,Star,CMa,8.98,Amadioha
-WASP-34,,_,Star,Crt,10.3,Amansinaya
-WASP-52,,_,Star,Peg,12.2,Anadolu
-HR 8499,,Theta,Star,Aqr,4.17,Ancha
-HR 850,,Tau 2,Star,Eri,4.76,Angetenar
-HD 102956,,_,Star,UMa,7.86,Aniara
-HR 99,,A,Star,Phe,2.4,Ankaa
-HR 7405,,A,Star,Vul,4.44,Anser
-HR 6134,,A,Star,Sco,1.06,Antares
-HD 131496,,_,Star,Boo,7.8,Arcalís
-HR 5340,,A,Star,Boo,-0.05,Arcturus
-HR 7343,,B 2,Star,Sgr,4.27,Arkab Posterior
-HR 7337,,B 1,Star,Sgr,3.96,Arkab Prior
-HR 1865,,A,Star,Lep,2.58,Arneb
-HR 7194,,z,Star,Sgr,2.6,Ascella
-HR 3461,,d,Star,Cnc,3.94,Asellus Australis
-HR 3449,,Gamma,Star,Cnc,4.66,Asellus Borealis
-HR 3482,,e,Star,Hya,3.49,Ashlesha
-HR 3699,,i,Star,Car,2.21,Aspidiske
-HR 1151,,21,Star,Tau,5.76,Asterope
-WASP-64,,_,Star,CMa,12.69,Atakoraka
-HR 6132,,Eta,Star,Dra,2.73,Athebyne
-HR 1131,,o,Star,Per,3.84,Atik
-HR 1178,,27,Star,Tau,3.62,Atlas
-HR 6217,,A,Star,TrA,1.91,Atria
-HR 3307,,e,Star,Car,1.86,Avior
-HD 224693,,_,Star,Cet,8.23,Axólotl
-HD 18742,,_,Star,Eri,7.81,Ayeyarwady
-HR 8301,,Pi 1,Star,Cyg,4.69,Azelfafage
-HR 874,,Eta,Star,Eri,3.89,Azha
-HR 3045,,X,Star,Pup,3.45,Azmidi
-HD 133086,,8,Star,UMi,6.83,Baekdu
-GJ 699,,V2500,Star,Oph,9.54,Barnard's Star
-HR 539,,z,Star,Cet,3.74,Baten Kaitos
-HR 1393,,u 3,Star,Eri,3.97,Beemim
-HR 1298,,ο 1,Star,Eri,4.04,Beid
-HD 181342,,_,Star,Sgr,7.55,Belel
-HR 1790,,Gamma,Star,Ori,1.64,Bellatrix
-HAT-P-15,,_,Star,Per,12.02,Berehynia
-HR 2061,,A,Star,Ori,0.45,Betelgeuse
-HR 838,,41,Star,Ari,3.61,Bharani
-HD 86081,,_,Star,Sex,8.73,Bibhā
-HR 8450,,Theta,Star,Peg,3.52,Biham
-HD 206610,,_,Star,Aqr,8.34,Bosona
-HR 951,,d,Star,Ari,4.35,Botein
-HR 5603,,s,Star,Lib,3.25,Brachium
-HD 38283,,_,Star,Men,6.69,Bubup
-HD 16175,,_,Star,And,7.28,Buna
-HR 8264,,X,Star,Aqr,4.8,Bunda
-HD 8574,,_,Star,Psc,7.12,Bélénos
-HR 2326,,A,Star,Car,-0.62,Canopus
-HR 1708,,A,Star,Aur,0.08,Capella
-HR 21,,B,Star,Cas,2.28,Caph
-HR 2891,,A,Star,Gem,1.98,Castor
-HR 265,,u 2,Star,Cas,4.62,Castula
-HR 6603,,B,Star,Oph,2.76,Cebalrai
-HD 63454,,_,Star,Cha,9.37,Ceibo
-HR 1140,,16,Star,Tau,5.45,Celaeno
-HR 6585,,m,Star,Ara,5.15,Cervantes
-HR 4277,,47,Star,UMa,5.03,Chalawan
-HR 1412,,Theta 2,Star,Tau,3.73,Chamukuy
-WASP-50,,_,Star,Eri,11.74,Chaophraya
-HR 4785,,B,Star,CVn,4.24,Chara
-HAT-P-5,,_,Star,Lyr,11.96,Chasoň
-HD 192699,,_,Star,Aql,6.44,Chechia
-HR 4359,,Theta,Star,Leo,3.33,Chertan
-HD 1502,,_,Star,Psc,8.36,Citadelle
-HD 52265,,_,Star,Mon,6.29,Citalá
-HD 4208,,_,Star,Scl,7.78,Cocibolca
-HR 3522,,55,Star,Cnc,5.95,Copernicus
-HR 4915,,a 2,Star,CVn,2.89,Cor Caroli
-HR 6117,,Omega,Star,Her,4.57,Cujam
-HR 1666,,B,Star,Eri,2.78,Cursa
-HR 7776,,B 1,Star,Cap,3.05,Dabih
-HR 963,,A,Star,For,3.86,Dalim
-HR 7924,,A,Star,Cyg,1.25,Deneb
-HR 8322,,d,Star,Cap,2.85,Deneb Algedi
-HR 4534,,B,Star,Leo,2.14,Denebola
-HR 4968,,A,Star,Com,4.85,Diadem
-HD 96063,,_,Star,Leo,8.21,Dingolay
-HR 188,,B,Star,Cet,2.04,Diphda
-WASP-72,,_,Star,For,10.97,Diya
-HD 117618,,_,Star,Cen,7.17,Dofida
-HAT-P-3,,_,Star,UMa,11.52,Dombay
-HR 5953,,d,Star,Sco,2.29,Dschubba
-HR 4301,,A,Star,UMa,1.81,Dubhe
-HR 6636,,t 1,Star,Dra,4.57,Dziban
-WASP-17,,_,Star,Sco,11.49,Dìwö
-HD 218566,,_,Star,Psc,8.59,Ebla
-HR 5744,,i,Star,Dra,3.29,Edasich
-HR 1142,,17,Star,Tau,3.72,Electra
-HR 5409,,phi,Star,Vir,4.84,Elgafar
-HR 2177,,Theta,Star,Col,5,Elkurud
-HR 1791,,B,Star,Tau,1.65,Elnath
-HR 6705,,Gamma,Star,Dra,2.24,Eltanin
-HD 7199,,_,Star,Tuc,8.06,Emiw
-HR 8308,,e,Star,Peg,2.38,Enif
-HR 8974,,Gamma,Star,Cep,3.21,Errai
-HR 6945,,42,Star,Dra,4.82,Fafnir
-HR 5944,,pi,Star,Sco,2.89,Fang
-HR 7528,,d,Star,Cyg,2.9,Fawaris
-HR 3923,,-,Star,Hya,4.94,Felis
-BD-17 63,,_,Star,Cet,9.62,Felixvarela
-HD 102195,,_,Star,Vir,8.07,Flegetonte
-HR 8728,,A,Star,PsA,1.17,Fomalhaut
-HD 100655,,_,Star,Leo,6.45,Formosa
-HAT-P-14,,_,Star,Her,9.86,Franz
-HR 153,,z,Star,Cas,3.69,Fulu
-HR 8773,,B,Star,Psc,4.48,Fumalsamakah
-HD 109246,,_,Star,Dra,8.75,Funi
-HR 2282,,z,Star,CMa,3.02,Furud
-HR 6630,,-,Star,Sco,3.19,Fuyue
-HR 4763,,Gamma,Star,Cru,1.59,Gacrux
-HD 73534,,_,Star,Cnc,8.23,Gakyid
-PSR B0633+17,,_,Star,Gem,-,Geminga
-HR 4434,,L,Star,Dra,3.82,Giausar
-HR 4662,,Gamma,Star,Crv,2.58,Gienah
-HR 4700,,e,Star,Cru,3.59,Ginan
-WASP-13,,_,Star,Lyn,10.51,Gloas
-HR 2845,,B,Star,CMi,2.89,Gomeisa
-HR 6688,,X,Star,Dra,3.73,Grumium
-HR 5879,,k,Star,Ser,4.09,Gudja
-HD 179949,,V5652,Star,Sgr,6.25,Gumala
-HR 6402,,36,Star,Oph,5.07,Guniibuu
-HR 5267,,B,Star,Cen,0.61,Hadar
-HR 1641,,Eta,Star,Aur,3.18,Haedus
-HR 617,,A,Star,Ari,2.01,Hamal
-HR 1577,,i,Star,Aur,2.69,Hassaleh
-HR 1899,,i,Star,Ori,2.8,Hatysa
-HR 8729,,51,Star,Peg,5.49,Helvetios
-HR 5107,,z,Star,Vir,3.38,Heze
-HD 28678,,_,Star,Tau,8.38,Hoggar
-HR 8634,,z,Star,Peg,3.41,Homam
-HAT-P-38,,_,Star,Tri,12.53,Horna
-HD 98219,,_,Star,Crt,8.05,Hunahpú
-HAT-P-2,,_,Star,Her,8.72,Hunor
-HR 5928,,p,Star,Sco,3.87,Iklil
-HD 82886,,_,Star,LMi,7.62,Illyrian
-HR 4656,,d,Star,Cru,2.75,Imai
-HD 156411,,_,Star,Ara,6.67,Inquill
-HD 20868,,_,Star,For,9.92,Intan
-HR 3743,,-,Star,UMa,5.41,Intercrus
-WASP-38,,_,Star,Her,9.41,Irena
-HD 208487,,_,Star,Gru,7.47,Itonda
-HR 5506,,e,Star,Boo,2.35,Izar
-HR 6027,,v,Star,Sco,4.5,Jabbah
-HR 2930,,o,Star,Gem,4.89,Jishui
-HR 804,,Gamma,Star,Cet,3.56,Kaffaljidhma
-HD 83443,,_,Star,Vel,8.23,Kalausi
-HD 145457,,_,Star,CrB,6.57,Kamuy
-HR 5315,,k,Star,Vir,4.18,Kang
-HD 137388,,_,Star,Aps,8.71,Karaka
-HR 6879,,e,Star,Sgr,1.79,Kaus Australis
-HR 6913,,L,Star,Sgr,2.82,Kaus Borealis
-HR 6859,,d,Star,Sgr,2.72,Kaus Media
-HD 175541,,_,Star,Ser,8.02,Kaveh
-HR 1325,,ο 2,Star,Eri,4.43,Keid
-HR 5359,,L,Star,Vir,4.52,Khambalia
-HR 8131,,A,Star,Equ,3.92,Kitalpha
-HR 5563,,B,Star,UMi,2.07,Kochab
-HIP 12961,,_,Star,Eri,10.25,Koeia
-XO-4,,_,Star,Lyn,10.62,Koit
-HR 6148,,B,Star,Her,2.78,Kornephoros
-HR 4786,,B,Star,Crv,2.65,Kraz
-HR 8417,,X,Star,Cep,4.26,Kurhah
-HR 4846,,Y,Star,CVn,5.42,La Superba
-HR 6241,,e,Star,Sco,2.29,Larawag
-HAT-P-42,,_,Star,Hya,12.15,Lerna
-HR 6508,,u,Star,Sco,2.7,Lesath
-HR 7595,,X,Star,Aql,4.71,Libertas
-PSR B1257+12,,-,Star,Vir,-,Lich
-HD 118203,,_,Star,UMa,8.05,Liesma
-HR 824,,39,Star,Ari,4.52,Lilii Borea
-HD 212771,,_,Star,Aqr,7.6,Lionrock
-HD 45350,,_,Star,Aur,7.89,Lucilinburhuc
-HD 45652,,_,Star,Mon,8.1,Lusitânia
-HR 6526,,L,Star,Her,4.41,Maasym
-HD 93083,,_,Star,Ant,8.3,Macondo
-HD 32518,,_,Star,Cam,6.43,Mago
-HR 2095,,Theta,Star,Aur,2.65,Mahasim
-HD 152581,,_,Star,Oph,8.38,Mahsati
-HR 1149,,20,Star,Tau,3.87,Maia
-WASP-39,,V732,Star,Vir,11.89,Malmok
-HR 6149,,L,Star,Oph,3.82,Marfik
-HR 8781,,A,Star,Peg,2.49,Markab
-HR 3734,,k,Star,Vel,2.47,Markeb
-HR 6008,,k,Star,Her,5,Marsic
-HR 8650,,Eta,Star,Peg,2.93,Matar
-HAT-P-21,,_,Star,UMa,11.72,Mazaalai
-HR 2473,,e,Star,Gem,3.06,Mebsuta
-HR 4660,,d,Star,UMa,3.32,Megrez
-HR 1879,,L,Star,Ori,3.39,Meissa
-HR 2650,,z,Star,Gem,4.01,Mekbuda
-HR 3429,,e,Star,Cnc,6.29,Meleph
-HR 2088,,B,Star,Aur,1.9,Menkalinan
-HR 911,,A,Star,Cet,2.54,Menkar
-HR 5288,,Theta,Star,Cen,2.06,Menkent
-HR 1228,,X,Star,Per,3.98,Menkib
-HR 4295,,B,Star,UMa,2.34,Merak
-HR 5533,,38,Star,Boo,5.76,Merga
-HR 7254,,A,Star,CrA,4.11,Meridiana
-HR 1156,,23,Star,Tau,4.14,Merope
-HR 546,,Gamma 1,Star,Ari,4.75,Mesarthim
-HR 3685,,B,Star,Car,1.67,Miaplacidus
-HR 4853,,B,Star,Cru,1.25,Mimosa
-HR 3418,,s,Star,Hya,4.45,Minchir
-HR 4910,,d,Star,Vir,3.39,Minelauva
-HR 1852,,d,Star,Ori,2.25,Mintaka
-HR 681,,o,Star,Cet,6.47,Mira
-HR 337,,B,Star,And,2.07,Mirach
-HR 834,,Eta,Star,Per,3.77,Miram
-HR 1017,,A,Star,Per,1.79,Mirfak
-HR 2294,,B,Star,CMa,1.98,Mirzam
-HR 941,,k,Star,Per,3.79,Misam
-HR 5054,,z,Star,UMa,2.23,Mizar
-XO-1,,_,Star,CrB,11.28,Moldoveanu
-WASP-79,,_,Star,Eri,10.06,Montuno
-WASP-60,,_,Star,Peg,12.18,Morava
-HAT-P-23,,_,Star,Del,12.32,Moriah
-HR 544,,A,Star,Tri,3.42,Mothallah
-HD 30856,,_,Star,Eri,7.91,Mouhoun
-WASP-71,,_,Star,Cet,10.7,Mpingo
-HR 2657,,Gamma,Star,CMa,4.11,Muliphein
-HR 5235,,Eta,Star,Boo,2.68,Muphrid
-HR 3323,,o,Star,UMa,3.35,Muscida
-HR 8030,,18,Star,Del,5.48,Musica
-HAT-P-29,,_,Star,Per,11.89,Muspelheim
-WASP-6,,_,Star,Aqr,12.16,Márohu
-HD 130322,,_,Star,Vir,8.04,Mönch
-HR 3627,,X,Star,Cnc,5.7,Nahn
-WASP-62,,_,Star,Dor,10.12,Naledi
-HR 3165,,z,Star,Pup,2.21,Naos
-HR 8278,,Gamma,Star,Cap,3.69,Nashira
-HD 85390,,_,Star,Vel,8.54,Natasha
-HR 5602,,B,Star,Boo,3.49,Nekkar
-HR 464,,51,Star,And,3.59,Nembus
-HD 6434,,_,Star,Phe,7.72,Nenque
-HD 49674,,_,Star,Aur,8.1,Nervia
-HR 1829,,B,Star,Lep,2.81,Nihal
-HD 136418,,_,Star,Boo,7.88,Nikawiy
-HD 48265,,_,Star,Pup,8.05,Nosaxa
-HR 7121,,s,Star,Sgr,2.05,Nunki
-HR 5747,,B,Star,CrB,3.66,Nusakan
-HD 17156,,_,Star,Cas,8.17,Nushagak
-WASP-15,,_,Star,Cen,10.91,Nyamien
-HD 68988,,_,Star,UMa,8.2,Násti
-HD 149026,,-,Star,Her,8.16,Ogma
-HR 7235,,z,Star,Aql,2.99,Okab
-HR 6165,,t,Star,Sco,2.82,Paikauhale
-WASP-32,,_,Star,Psc,11.54,Parumleo
-HR 7790,,A,Star,Pav,1.94,Peacock
-WASP-80,,_,Star,Aql,11.88,Petra
-HR 1956,,A,Star,Col,2.65,Phact
-HR 4554,,Gamma,Star,UMa,2.41,Phecda
-HR 5735,,Gamma,Star,UMi,3,Pherkad
-HD 192263,,V1703,Star,Aql,7.79,Phoenicia
-HR 3268,,L,Star,Cnc,5.92,Piautos
-HD 164604,,_,Star,Sgr,9.66,Pincoya
-HR 6252,,m 2,Star,Sco,3.56,Pipirima
-TrES-3,,V1434,Star,Her,12.37,Pipoltr
-HR 1180,,28,Star,Tau,5.05,Pleione
-HD 221287,,_,Star,Tuc,7.82,Poerava
-HR 424,,A,Star,UMi,1.97,Polaris
-HR 7228,,s,Star,Oct,5.45,Polaris Australis
-HR 6812,,m,Star,Sgr,3.84,Polis
-HR 2990,,B,Star,Gem,1.16,Pollux
-HR 4825,,Gamma,Star,Vir,2.74,Porrima
-HR 4247,,46,Star,LMi,3.79,Praecipua
-HR 1346,,Gamma,Star,Tau,3.65,Prima Hyadum
-HR 2943,,A,Star,CMi,0.4,Procyon
-HR 2216,,Eta,Star,Gem,3.31,Propus
-GJ 551,,A,Star,Cen,11.01,Proxima Centauri
-HR 1084,,e,Star,Eri,3.73,Ran
-HR 1136,,d,Star,Eri,3.53,Rana
-HD 153950,,_,Star,Sco,7.39,Rapeto
-HR 3905,,m,Star,Leo,3.88,Rasalas
-HR 6406,,α1,Star,Her,3.37,Rasalgethi
-HR 6556,,A,Star,Oph,2.08,Rasalhague
-HR 6536,,B,Star,Dra,2.79,Rastaban
-HR 3982,,A,Star,Leo,1.36,Regulus
-HR 361,,z,Star,Psc,5.21,Revati
-HR 1713,,B,Star,Ori,0.18,Rigel
-HR 5459,,A,Star,Cen,-0.01,Rigil Kentaurus
-HD 149143,,_,Star,Oph,7.89,Rosaliadecastro
-HR 7882,,B,Star,Del,3.64,Rotanev
-HR 403,,d,Star,Cas,2.66,Ruchbah
-HR 7348,,A,Star,Sgr,3.96,Rukbat
-HR 6378,,Eta,Star,Oph,2.43,Sabik
-HR 1612,,z,Star,Aur,3.69,Saclateni
-HR 8518,,Gamma,Star,Aqr,3.86,Sadachbia
-HR 8684,,m,Star,Peg,3.51,Sadalbari
-HR 8414,,A,Star,Aqr,2.95,Sadalmelik
-HR 8232,,B,Star,Aqr,2.9,Sadalsuud
-HR 7796,,Gamma,Star,Cyg,2.23,Sadr
-HD 100777,,_,Star,Leo,8.42,Sagarmatha
-HR 2004,,k,Star,Ori,2.07,Saiph
-HR 8880,,t,Star,Peg,4.58,Salm
-HAT-P-34,,_,Star,Sge,10.31,Sansuna
-HR 6553,,Theta,Star,Sco,1.86,Sargas
-HR 6410,,d,Star,Her,3.12,Sarin
-HR 1481,,53,Star,Eri,4.02,Sceptrum
-HR 8775,,B,Star,Peg,2.44,Scheat
-HR 168,,A,Star,Cas,2.24,Schedar
-HR 1373,,d,Star,Tau,3.78,Secunda Hyadum
-HR 0542,,e,Star,Cas,3.35,Segin
-HR 5435,,Gamma,Star,Boo,3.04,Seginus
-HR 7479,,A,Star,Sge,4.39,Sham
-HD 99109,,_,Star,Leo,9.1,Shama
-HIP 79431,,_,Star,Sco,11.34,Sharjah
-HR 6527,,L,Star,Sco,1.62,Shaula
-HR 7106,,B,Star,Lyr,3.52,Sheliak
-HR 553,,B,Star,Ari,2.64,Sheratan
-HD 181720,,_,Star,Sgr,7.84,Sika
-HR 2491,,A,Star,CMa,-1.44,Sirius
-HR 8610,,k,Star,Aqr,5.04,Situla
-HR 8709,,d,Star,Aqr,3.27,Skat
-BD+14-4559,,_,Star,Peg,9.78,Solaris
-HR 5056,,A,Star,Vir,0.98,Spica
-HAT-P-6,,_,Star,And,10.54,Sterrennacht
-HD 75898,,_,Star,Lyn,8.03,Stribor
-HR 7906,,A,Star,Del,3.77,Sualocin
-HR 3852,,o,Star,Leo,3.52,Subra
-HR 3634,,L,Star,Vel,2.23,Suhail
-HR 7178,,Gamma,Star,Lyr,3.25,Sulafat
-HR 5338,,i,Star,Vir,4.07,Syrma
-HD 205739,,_,Star,PsA,8.56,Sāmaya
-HR 1543,,Pi3,Star,Ori,3.19,Tabit
-HAT-P-40,,_,Star,Lac,11.35,Taika
-HR 4518,,x,Star,UMa,3.69,Taiyangshou
-HR 4916,,8,Star,Dra,5.23,Taiyi
-HR 3569,,i,Star,UMa,3.12,Talitha
-WASP-21,,_,Star,Peg,11.55,Tangra
-HR 4069,,m,Star,UMa,3.06,Tania Australis
-HR 4033,,L,Star,UMa,3.45,Tania Borealis
-HD 63765,,_,Star,Car,8.1,Tapecue
-HR 7525,,Gamma,Star,Aql,2.72,Tarazed
-HR 3249,,B,Star,Cnc,3.53,Tarf
-HR 1145,,19,Star,Tau,4.3,Taygeta
-HR 3208,,z 1,Star,Cnc,4.67,Tegmine
-HR 2286,,m,Star,Gem,2.87,Tejat
-HR 7597,,Omega,Star,Sgr,4.7,Terebellum
-HAT-P-9,,_,Star,Aur,12.26,Tevel
-HR 1464,,u 2,Star,Eri,3.81,Theemin
-HR 5291,,A,Star,Dra,3.67,Thuban
-HR 8636,,B,Star,Gru,2.12,Tiaki
-HR 1910,,z,Star,Tau,2.97,Tianguan
-HR 4863,,7,Star,Dra,5.43,Tianyi
-HD 148427,,_,Star,Oph,6.89,Timir
-WASP-161,,_,Star,Pup,10.77,Tislit
-HR 458,,u,Star,And,4.09,Titawin
-WASP-22,,_,Star,Eri,11.71,Tojil
-HR 5460,,A,Star,Cen,1.35,Toliman
-HR 4609,,-,Star,Cam,5.8,Tonatiuh
-HR 510,,o,Star,Psc,4.29,Torcular
-HAT-P-36,,_,Star,CVn,12.25,Tuiren
-HD 23079,,_,Star,Ret,7.12,Tupi
-HD 108147,,_,Star,Cru,6.99,Tupã
-HR 3185,,p,Star,Pup,2.83,Tureis
-HR 3845,,i,Star,Hya,3.9,Ukdah
-HD 102117,,_,Star,Cen,7.47,Uklun
-HR 5854,,A,Star,Ser,2.63,Unukalhai
-HR 2646,,s,Star,CMa,3.49,Unurgunite
-HD 231701,,_,Star,Sge,8.97,Uruk
-HR 7001,,A,Star,Lyr,0.03,Vega
-HR 8930,,14,Star,And,5.22,Veritate
-HR 4932,,e,Star,Vir,2.85,Vindemiatrix
-HR 2777,,d,Star,Gem,3.5,Wasat
-HR 2040,,B,Star,Col,3.12,Wazn
-HR 2693,,d,Star,CMa,1.83,Wezen
-HR 338,,z,Star,Phe,4.02,Wurren
-HR 6247,,m 1,Star,Sco,3,Xamidimura
-HD 173416,,_,Star,Lyr,6.04,Xihe
-HR 5351,,L,Star,Boo,4.18,Xuange
-HR 6075,,e,Star,Oph,3.23,Yed Posterior
-HR 6056,,d,Star,Oph,2.73,Yed Prior
-HR 6789,,d,Star,UMi,4.35,Yildun
-HR 4689,,Eta,Star,Vir,3.89,Zaniah
-HR 1231,,Gamma,Star,Eri,2.97,Zaurak
-HR 4540,,B,Star,Vir,3.59,Zavijava
-HR 3903,,u 1,Star,Hya,4.11,Zhang
-HR 984,,z,Star,Eri,4.8,Zibal
-HR 4357,,d,Star,Leo,2.56,Zosma
-HR 5531,,a 2,Star,Lib,2.75,Zubenelgenubi
-HR 5787,,Gamma,Star,Lib,3.91,Zubenelhakrabi
-HR 5685,,B,Star,Lib,2.61,Zubeneschamali
-M 24,,IC 4715,Cluster Nebulosity,Sag,2.50,
-M 42,,Cr 42,Asterism,Tau,1.60,
-M 40,,WNC 4,Asterism,UMa,10.11,
-IC 4628,,ESO 332-14,Nebula,Sco,7.30,
-PGC 17223,,,Galaxy,Dor,0.90,"Large Magellanic Cloud,LMC"
-IC 2944,,Caldwell 100,Nebula,Cen,4.50,"Lambda Centauri Nebula,Running Chicken Nebula"
-IC 2602,,Caldwell 102,Open Cluster,Car,1.90,Southern Pleiades
+NGC4559,UGC 7766,Galaxy,Coma Berenices,9.9,,Andromeda,And
+NGC5866,M 102,Galaxy,Draco,9.9,,Antlia,Ant
+NGC3992,M 109,Galaxy,Ursa Major,9.8,,Apus,Aps
+NGC4254,M 99,Galaxy,Coma Berenices,9.8,,Aquarius,Aqr
+NGC4552,M 89,Galaxy,Virgo,9.8,,Aquila,Aql
+NGC4579,M 58,Galaxy,Virgo,9.8,,Ara,Ara
+NGC4621,M 59,Galaxy,Virgo,9.8,,Aries,Ari
+NGC5005,UGC 8256,Galaxy,Canes Venatici,9.8,,Auriga,Aur
+NGC3351,M 95,Galaxy,Leo,9.7,,Boötes,Boo
+NGC4236,UGC 7306,Galaxy,Draco,9.7,,Caelum,Cae
+NGC4303,M 61,Galaxy,Virgo,9.7,,Camelopardalis,Cam
+NGC4565,UGC 7772,Galaxy,Coma Berenices,9.6,,Cancer,Cnc
+NGC559,OCL 322,Open Cluster,Cassiopeia,9.5,,Canes Venatici,CVn
+NGC3628,UGC 6350,Galaxy,Leo,9.5,Sarah's Galaxy,Canis Major,CMa
+NGC4501,M 88,Galaxy,Coma Berenices,9.5,,Canis Minor,CMi
+NGC4569,M 90,Galaxy,Virgo,9.5,,Capricornus,Cap
+NGC7331,UGC 12113,Galaxy,Pegasus,9.5,,Carina,Car
+NGC4321,M 100,Galaxy,Coma Berenices,9.4,,Cassiopeia,Cas
+NGC4449,UGC 7592,Galaxy,Canes Venatici,9.4,,Centaurus,Cen
+NGC6981,M 72,Globular Cluster,Aquarius,9.4,,Cepheus,Cep
+NGC147,UGC 326;D3,Galaxy,Cassiopeia,9.3,,Cetus,Cet
+NGC1097,ESO 416-20,Galaxy,Fornax,9.3,,Chamaeleon,Cha
+NGC3379,M 105,Galaxy,Leo,9.3,,Circinus,Cir
+NGC3623,M 65,Galaxy,Leo,9.3,Leo Triplet,Columba,Col
+NGC4374,M 84,Galaxy,Virgo,9.3,,Coma Berenices,Com
+NGC4631,UGC 7865,Galaxy,Canes Venatici,9.3,,Corona Australis,CrA
+NGC4697,MCG 1-33-10,Galaxy,Virgo,9.3,,Corona Borealis,CrB
+NGC6101,GCL 40,Globular Cluster,Apus,9.3,,Corvus,Crv
+NGC185,UGC 396,Galaxy,Cassiopeia,9.2,,Crater,Crt
+NGC628,M 74,Galaxy,Pisces,9.2,,Crux,Cru
+NGC3115,MCG 1-26-18,Galaxy,Sextans,9.2,,Cygnus,Cyg
+NGC3368,M 96,Galaxy,Leo,9.2,,Delphinus,Del
+NGC4382,M 85,Galaxy,Coma Berenices,9.2,,Dorado,Dor
+NGC4406,M 86,Galaxy,Virgo,9.2,,Draco,Dra
+NGC300,ESO 295-20,Galaxy,Sculptor,9,,Equuleus,Equ
+NGC1982,M 43,Nebula,Orion,9,De Mairan's Nebula,Eridanus,Eri
+NGC3242,PK 261+32.1,Planetary Nebula,Hydra,9,,Fornax,For
+NGC3627,M 66,Galaxy,Leo,9,Leo Triplet,Gemini,Gem
+NGC4945,Dunlop 411,Galaxy,Centaurus,9,,Grus,Gru
+NGC6543,PK 96+29.1,Planetary Nebula,Draco,9,,Hercules,Her
+NGC6720,M 57,Planetary Nebula,Lyra,9,Ring Nebula,Horologium,Hor
+NGC6744,ESO 104-42,Galaxy,Pavo,9,,Hydra,Hya
+NGC6822,IC 4895,Galaxy,Sagittarius,9,,Hydrus,Hyi
+NGC6994,M 73,Open Cluster,Aquarius,9,,Indus,Ind
+NGC7662,PK 106-17.1,Planetary Nebula,Andromeda,9,,Lacerta,Lac
+NGC247,ESO 540-22,Galaxy,Cetus,8.9,,Leo,Leo
+NGC6934,GCL 117,Globular Cluster,Delphinus,8.9,,Leo Minor,LMi
+NGC6946,UGC 11597,Galaxy,Cepheus,8.9,,Lepus,Lep
+NGC1068,M 77,Galaxy,Cetus,8.8,,Libra,Lib
+NGC4649,M 60,Galaxy,Virgo,8.8,,Lupus,Lup
+NGC4486,M 87,Galaxy,Virgo,8.6,Virgo A,Lynx,Lyn
+NGC5055,M 63,Galaxy,Canes Venatici,8.6,Sunflower Galaxy,Lyra,Lyr
+NGC6864,M 75,Globular Cluster,Sagittarius,8.6,,Mensa,Men
+NGC4826,M 64,Galaxy,Coma Berenices,8.5,Black Eye Galaxy,Microscopium,Mic
+NGC1261,GCL 5,Globular Cluster,Horologium,8.4,,Monoceros,Mon
+NGC1952,M 1,Nebula,Taurus,8.4,Crab Nebula,Musca,Mus
+NGC2403,UGC 3918,Galaxy,Camelopardalis,8.4,,Norma,Nor
+NGC3034,M 82,Galaxy,Ursa Major,8.4,Cigar Galaxy,Octans,Oct
+NGC4472,M 49,Galaxy,Virgo,8.4,,Ophiuchus,Oph
+NGC5194,M 51,Galaxy,Canes Venatici,8.4,Whirlpool Galaxy,Orion,Ori
+NGC4258,M 106,Galaxy,Canes Venatici,8.3,,Pavo,Pav
+NGC4594,M 104,Galaxy,Virgo,8.3,Sombrero Galaxy,Pegasus,Peg
+NGC6779,M 56,Globular Cluster,Lyra,8.3,,Perseus,Per
+NGC6838,M 71,Globular Cluster,Sagitta,8.3,,Phoenix,Phe
+NGC221,M 32,Galaxy,Andromeda,8.2,Le Gentil,Pictor,Pic
+NGC2070,ESO 57-EN6,Cluster Nebulosity,Dorado,8.2,,Pisces,Psc
+NGC4590,M 68,Globular Cluster,Hydra,8.2,,Piscis Austrinus,PsA
+NGC4736,M 94,Galaxy,Canes Venatici,8.2,,Puppis,Pup
+NGC6352,Dunlop 417,Globular Cluster,Ara,8.2,,Pyxis,Pyx
+NGC188,OCL 309,Open Cluster,Cepheus,8.1,,Reticulum,Ret
+NGC6171,M 107,Globular Cluster,Ophiuchus,8.1,Butterfly Cluster,Sagitta,Sge
+NGC6681,M 70,Globular Cluster,Sagittarius,8.1,,Sagittarius,Sgr
+NGC6853,M 27,Planetary Nebula,Vulpecula,8.1,Dumbbell Nebula,Scorpius,Sco
+NGC55,Dunlop 507,Galaxy,Sculptor,8,,Sculptor,Scl
+NGC205,M 110,Galaxy,Andromeda,8,,Scutum,Sct
+NGC246,PK 118-74.1,Planetary Nebula,Cetus,8,,Serpens,Ser
+NGC1904,M 79,Globular Cluster,Lepus,8,,Sextans,Sex
+NGC2068,M 78,Nebula,Orion,8,,Taurus,Tau
+NGC3132,PK 272+12.1,Planetary Nebula,Vela,8,,Telescopium,Tel
+NGC3918,PK 294+4.1,Planetary Nebula,Centaurus,8,,Triangulum,Tri
+NGC6694,M 26,Open Cluster,Scutum,8,,Triangulum Australe,TrA
+NGC7009,PK 37-34.1,Planetary Nebula,Aquarius,8,,Tucana,Tuc
+NGC5823,OCL 936,Open Cluster,Circinus,7.9,,Ursa Major,UMa
+NGC6333,M 9,Globular Cluster,Ophiuchus,7.9,,Ursa Minor,UMi
+NGC4372,GCL 19,Globular Cluster,Musca,7.8,,Vela,Vel
+NGC5024,M 53,Globular Cluster,Coma Berenices,7.7,,Virgo,Vir
+NGC5457,M 101,Galaxy,Ursa Major,7.7,Pinwheel Galaxy,Volans,Vol
+NGC6637,M 69,Globular Cluster,Sagittarius,7.7,,Vulpecula,Vul
+NGC6715,M 54,Globular Cluster,Sagittarius,7.7,,,
+NGC2506,OCL 593,Open Cluster,Monoceros,7.6,,,
+NGC5236,M 83,Galaxy,Hydra,7.6,Southern Pinwheel Galaxy,,
+NGC5286,Dunlop 388,Globular Cluster,Centaurus,7.6,,,
+NGC6402,M 14,Globular Cluster,Ophiuchus,7.6,,,
+NGC6922,Caldwell 33,Nebula,Cygnus,7.5,Eastern Veil,,
+NGC6960,Caldwell 34,Nebula,Cygnus,7.5,Western Veil,,
+NGC7099,M 30,Globular Cluster,Capricornus,7.5,Jellyfish Cluster,,
+NGC581,M 103,Open Cluster,Cassiopeia,7.4,,,
+NGC4833,Lac I-4,Globular Cluster,Musca,7.4,,,
+IC 4628,ESO 332-14,Nebula,Scorpius,7.30,,,
+NGC1851,Dunlop 508,Globular Cluster,Columba,7.3,,,
+NGC2360,OCL 589,Open Cluster,Canis Major,7.2,,,
+NGC6093,M 80,Globular Cluster,Scorpius,7.2,Cetus A,,
+NGC6273,M 19,Globular Cluster,Ophiuchus,7.2,,,
+NGC253,ESO 474-29,Galaxy,Sculptor,7.1,,,
+NGC663,OCL 333,Open Cluster,Cassiopeia,7.1,,,
+NGC225,OCL 305,Open Cluster,Cassiopeia,7,,,
+NGC281,IC 11,Cluster Nebulosity,Cassiopeia,7,,,
+NGC1582,OCL 407,Open Cluster,Perseus,7,,,
+NGC1807,OCL 462,Open Cluster,Taurus,7,,,
+NGC1857,OCL 428,Open Cluster,Auriga,7,,,
+NGC2396,OCL 579,Open Cluster,Puppis,7,,,
+NGC2467,OCL 668,Cluster Nebulosity,Puppis,7,,,
+NGC2571,OCL 701,Open Cluster,Puppis,7,,,
+NGC5128,Dunlop 482,Galaxy,Centaurus,7,,,
+NGC6169,OCL 984,Open Cluster,Norma,7,,,
+NGC6595,IC 4700,Open Cluster,Sagittarius,7,,,
+NGC6809,M 55,Globular Cluster,Sagittarius,7,,,
+NGC7023,OCL 235,Cluster Nebulosity,Cepheus,7,,,
+NGC7063,OCL 192,Open Cluster,Cygnus,7,,,
+NGC2439,OCL 688,Open Cluster,Puppis,6.9,,,
+NGC2682,M 67,Open Cluster,Cancer,6.9,Bode's Galaxy,,
+NGC3031,M 81,Galaxy,,6.9,Bode's Galaxy,,
+NGC4609,OCL 890,Open Cluster,Crux,6.9,,,
+NGC6388,GCL 70,Globular Cluster,Scorpius,6.9,,,
+NGC6613,M 18,Open Cluster,Sagittarius,6.9,,,
+NGC6626,M 28,Globular Cluster,Sagittarius,6.9,,,
+NGC6716,OCL 46,Open Cluster,Sagittarius,6.9,,,
+NGC7654,M 52,Open Cluster,Cassiopeia,6.9,Scorpion Cluster,,
+NGC2175,OCL 476,Open Cluster,Orion,6.8,,,
+NGC3201,Dunlop 445,Globular Cluster,Vela,6.8,,,
+NGC6811,OCL 185,Open Cluster,Cygnus,6.8,,,
+NGC1027,OCL 357,Open Cluster,Cassiopeia,6.7,,,
+NGC1342,OCL 401,Open Cluster,Perseus,6.7,,,
+NGC2129,OCL 467,Open Cluster,Gemini,6.7,,,
+NGC2343,OCL 565,Open Cluster,Monoceros,6.7,,,
+NGC2423,OCL 592,Open Cluster,Puppis,6.7,,,
+NGC6709,OCL 100,Open Cluster,Aquila,6.7,,,
+NGC7209,OCL 215,Open Cluster,Lacerta,6.7,,,
+NGC7789,OCL 269,Open Cluster,Cassiopeia,6.7,,,
+NGC362,Dunlop 62,Globular Cluster,Tucana,6.6,,,
+NGC1444,OCL 394,Open Cluster,Perseus,6.6,,,
+NGC6218,M 12,Globular Cluster,Ophiuchus,6.6,,,
+NGC6254,M 10,Globular Cluster,Ophiuchus,6.6,,,
+NGC6266,M 62,Globular Cluster,Ophiuchus,6.6,,,
+NGC6541,Dunlop 473,Globular Cluster,Corona Australis,6.6,,,
+NGC6913,M 29,Open Cluster,Cygnus,6.6,,,
+NGC129,OCL 294,Open Cluster,Cassiopeia,6.5,,,
+NGC654,OCL 330,Open Cluster,Cassiopeia,6.5,,,
+NGC2354,OCL 639,Open Cluster,Canis Major,6.5,,,
+NGC2527,NGC 2520,Open Cluster,Puppis,6.5,,,
+NGC2539,OCL 611,Open Cluster,Puppis,6.5,,,
+NGC6341,M 92,Globular Cluster,Hercules,6.5,,,
+NGC6604,OCL 56,Cluster Nebulosity,Serpens,6.5,,,
+NGC7089,M 2,Globular Cluster,Aquarius,6.5,,,
+NGC457,OCL 321,Open Cluster,Cassiopeia,6.4,,,
+NGC1528,OCL 397,Open Cluster,Perseus,6.4,,,
+NGC1647,OCL 457,Open Cluster,Taurus,6.4,,,
+NGC1662,OCL 470,Open Cluster,Orion,6.4,,,
+NGC1912,M 38,Open Cluster,Auriga,6.4,,,
+NGC5272,M 3,Globular Cluster,Canes Venatici,6.4,,,
+NGC6242,OCL 1001,Open Cluster,Scorpius,6.4,,,
+NGC7078,M 15,Globular Cluster,Pegasus,6.4,Pegasus Cluster,,
+NGC7243,OCL 221,Open Cluster,Lacerta,6.4,,,
+NGC2546,OCL 726,Open Cluster,Puppis,6.3,,,
+NGC6514,M 20,Cluster Nebulosity,Sagittarius,6.3,Trifid Nebula,,
+NGC6940,OCL 141,Open Cluster,Vulpecula,6.3,,,
+NGC1545,OCL 399,Open Cluster,Perseus,6.2,,,
+NGC2447,M 93,Open Cluster,Puppis,6.2,,,
+NGC2437,M 46,Open Cluster,Puppis,6.1,,,
+NGC7160,OCL 236,Open Cluster,Cepheus,6.1,,,
+NGC1746,OCL 452,Open Cluster,Taurus,6,,,
+NGC1960,M 36,Open Cluster,Auriga,6,Pinwheel Cluster,,
+NGC2301,OCL 540,Open Cluster,Monoceros,6,,,
+NGC6322,OCL 1000,Open Cluster,Scorpius,6,,,
+NGC6605,OCL 47,Open Cluster,Serpens,6,,,
+NGC6611,M 16,Cluster Nebulosity,Serpens,6,Eagle Nebula,,
+NGC6618,M 17,Cluster Nebulosity,Sagittarius,6,Omega Nebula,,
+NGC6885,OCL 152,Open Cluster,Vulpecula,6,,,
+NGC2169,OCL 481,Open Cluster,Orion,5.9,,,
+NGC2323,M 50,Open Cluster,Monoceros,5.9,,,
+NGC6121,M 4,Globular Cluster,Scorpius,5.9,,,
+NGC6205,M 13,Globular Cluster,Hercules,5.9,Hercules Cluster,,
+NGC6250,OCL 991,Open Cluster,Ara,5.9,,,
+NGC6531,M 21,Open Cluster,Sagittarius,5.9,,,
+NGC2477,OCL 720,Open Cluster,Puppis,5.8,,,
+NGC2548,M 48,Open Cluster,Hydra,5.8,,,
+NGC5904,M 5,Globular Cluster,Serpens,5.8,,,
+NGC6124,Dunlop 514,Open Cluster,Scorpius,5.8,,,
+NGC6523,M 8,Nebula,Sagittarius,5.8,Lagoon Nebula,,
+NGC6705,M 11,Open Cluster,Scutum,5.8,,,
+NGC598,M 33,Galaxy,Triangulum,5.7,Triangulum Galaxy,,
+NGC752,OCL 363,Open Cluster,Andromeda,5.7,,,
+NGC1502,OCL 383,Open Cluster,Camelopardalis,5.7,,,
+NGC6397,Lac III-11,Globular Cluster,Ara,5.7,,,
+NGC6416,OCL 1031,Open Cluster,Scorpius,5.7,,,
+NGC2099,M 37,Open Cluster,Auriga,5.6,,,
+NGC6067,OCL 953,Open Cluster,Norma,5.6,,,
+NGC7686,OCL 251,Open Cluster,Andromeda,5.6,,,
+NGC6383,NGC 6374,Cluster Nebulosity,Scorpius,5.5,,,
+NGC6494,M 23,Open Cluster,Sagittarius,5.5,,,
+NGC2281,OCL 446,Open Cluster,Auriga,5.4,,,
+NGC6281,OCL 1003,Cluster Nebulosity,Scorpius,5.4,,,
+NGC6752,Dunlop 295,Globular Cluster,Pavo,5.4,,,
+NGC3766,OCL 860,Open Cluster,Centaurus,5.3,,,
+NGC1039,M 34,Open Cluster,Perseus,5.2,,,
+NGC6193,OCL 975,Open Cluster,Ara,5.2,,,
+NGC6871,OCL 148,Open Cluster,Cygnus,5.2,,,
+NGC2168,M 35,Open Cluster,Gemini,5.1,,,
+NGC6025,OCL 939,Open Cluster,Triangulum Australe,5.1,,,
+NGC6656,M 22,Globular Cluster,Sagittarius,5.1,Great Saggitarius Cluster,,
+NGC2244,NGC 2239,Open Cluster,Monoceros,4.8,Rosetta Nebula,,
+NGC1981,OCL 525,Open Cluster,Orion,4.6,,,
+NGC6530,OCL 19,Open Cluster,Sagittarius,4.6,,,
+NGC6633,OCL 90,Open Cluster,Ophiuchus,4.6,,,
+NGC7092,M 39,Open Cluster,Cygnus,4.6,,,
+IC 2944,Caldwell 100,Nebula,Centaurus,4.50,"Lambda Centauri Nebula,Running Chicken Nebula",,
+NGC2287,M 41,Open Cluster,Canis Major,4.5,Little Beehive Cluster,,
+NGC2422,M 47,Open Cluster,Puppis,4.4,,,
+NGC4755,OCL 892,Open Cluster,Crux,4.2,,,
+NGC6405,M 6,Open Cluster,Scorpius,4.2,,,
+NGC2362,OCL 633,Cluster Nebulosity,Canis Major,4.1,,,
+NGC104,47 Tucanae,Globular Cluster,Tucana,4,,,
+NGC869,OCL 350,Open Cluster,Perseus,4,,,
+NGC884,OCL 353,Open Cluster,Perseus,4,,,
+NGC1976,M 42,Nebula,Orion,4,Orion Nebula,,
+NGC2232,OCL 545,Open Cluster,Monoceros,3.9,,,
+NGC2264,OCL 495,Cluster Nebulosity,Monoceros,3.9,,,
+NGC2516,OCL 776,Open Cluster,Carina,3.8,,,
+NGC5139,Omega Centauri,Globular Cluster,Centaurus,3.7,,,
+NGC224,M 31,Galaxy,Andromeda,3.5,Andromeda Galaxy,,
+NGC6475,M 7,Open Cluster,Scorpius,3.3,Ptolemy's Cluster,,
+NGC2632,M 44,Open Cluster,Cancer,3.1,Beehive Cluster,,
+NGC3532,OCL 839,Open Cluster,Carina,3,Pincushion Cluster,,
+NGC2451,OCL 716,Open Cluster,Puppis,2.8,,,
+NGC6231,Dunlop 520,Cluster Nebulosity,Scorpius,2.6,,,
+M 24,IC 4715,Cluster Nebulosity,,2.50,,,
+NGC292,ESO 29-21,Galaxy,,2.2,"Small Magellanic Cloud,SMC",,
+NGC4039,ESO 572-48,Galaxy,Corvus,13,,,
+NGC6302,PK 349+1.1,Planetary Nebula,Scorpius,13,Bug Nebula,,
+NGC650,M 76,Planetary Nebula,Perseus,12,Little Dumbbell Nebula,,
+NGC1275,3C84;UGC 2669,Galaxy,Perseus,11.6,,,
+NGC4889,NGC 4884,Galaxy,Coma Berenices,11.4,,,
+NGC3587,M 97,Planetary Nebula,Ursa Major,11.2,Owl Nebula,,
+NGC40,PK 120+9.1,Planetary Nebula,Cepheus,11,,,
+NGC7479,UGC 12343,Galaxy,Pegasus,11,,,
+NGC3626,NGC 3632,Galaxy,Leo,10.9,,,
+NGC4038,ESO 572-47,Galaxy,Corvus,10.7,,,
+NGC7006,GCL 119,Globular Cluster,Delphinus,10.6,,,
+NGC2419,GCL 12,Globular Cluster,Lynx,10.4,,,
+NGC2775,UGC 4820,Galaxy,Cancer,10.3,Cigar Galaxy,,
+NGC4244,UGC 7322,Galaxy,Canes Venatici,10.2,,,
+NGC4548,M 91,Galaxy,Coma Berenices,10.2,,,
+NGC5248,UGC 8616,Galaxy,Boötes,10.2,,,
+NGC5694,GCL 29,Globular Cluster,Hydra,10.2,,,
+M 40,WNC 4,Asterism,Ursa Major,10.11,,,
+NGC3556,M 108,Galaxy,Ursa Major,10.1,,,
+NGC4192,M 98,Galaxy,Coma Berenices,10.1,,,
+NGC891,UGC 1831,Galaxy,Andromeda,10,,,
+NGC2392,PK 197+17.1,Planetary Nebula,Gemini,10,,,
+NGC2867,PK 278-5.1,Planetary Nebula,Carina,10,,,
+NGC6253,OCL 972,Open Cluster,Ara,10,,,
+NGC6826,PK 83+12.1,Planetary Nebula,Cygnus,10,,,
+IC 2602,Caldwell 102,Open Cluster,Carina,1.90,Southern Pleiades,,
+M 42,Cr 42,Asterism,Taurus,1.60,,,
+NGC3372,ESO 128-13,Nebula,Carina,1,Carina Nebula,,
+PGC 17223,,Galaxy,Dorado,0.90,"Large Magellanic Cloud,LMC",,
+NGC6334,ESO 392-EN9,Nebula,Scorpius,,Cat's Paw Nebula,,
+NGC6357,RCW 131,Nebula,Scorpius,,,,
+HR 3572,A,Star,Cancer,4.26,Acubens,,
+HR 4031,z,Star,Leo,3.43,Adhafera,,
+HR 2618,e,Star,Canis Major,1.5,Adhara,,
+HR 390,X,Star,Andromeda,4.87,Adhil,,
+HR 1409,e,Star,Taurus,3.53,Ain,,
+HR 7116,ν 1,Star,Sagittarius,4.86,Ainalrami,,
+HR 7298,Eta,Star,Lyra,4.43,Aladfar,,
+HD 168746,_,Star,Serpens,7.95,Alasia,,
+HR 7264,pi,Star,Sagittarius,2.88,Albaldah,,
+HR 7950,e,Star,Aquarius,3.78,Albali,,
+HR 7417,B 1,Star,Cygnus,3.05,Albireo,,
+HR 4623,A,Star,Corvus,4.02,Alchiba,,
+HR 5062,80,Star,Ursa Major,3.99,Alcor,,
+HR 1165,Eta,Star,Taurus,2.85,Alcyone,,
+HR 1457,A,Star,Taurus,0.87,Aldebaran,,
+HR 8162,A,Star,Cepheus,2.45,Alderamin,,
+HR 8353,Gamma,Star,Grus,3,Aldhanab,,
+HR 6396,z,Star,Draco,3.17,Aldhibah,,
+HR 7852,e,Star,Delphinus,4.03,Aldulfin,,
+HR 8238,B,Star,Cepheus,3.23,Alfirk,,
+HR 7754,a2,Star,Capricornus,3.58,Algedi,,
+HR 39,Gamma,Star,Pegasus,2.83,Algenib,,
+HR 4057,Gamma 1,Star,Leo,2.61,Algieba,,
+HR 936,B,Star,Perseus,2.09,Algol,,
+HR 4757,d,Star,Corvus,2.94,Algorab,,
+HR 2421,Gamma,Star,Gemini,1.93,Alhena,,
+HR 4905,e,Star,Ursa Major,1.76,Alioth,,
+HR 7949,e,Star,Cygnus,2.48,Aljanah,,
+HR 5191,Eta,Star,Ursa Major,1.85,Alkaid,,
+HR 5733,m1,Star,Boötes,4.31,Alkalurops,,
+HR 3594,k,Star,Ursa Major,4.16,Alkaphrah,,
+HR 8905,u,Star,Pegasus,4.42,Alkarab,,
+HR 4287,A,Star,Crater,4.08,Alkes,,
+HR 1605,e,Star,Auriga,3.03,Almaaz,,
+HR 603,Gamma,Star,Andromeda,2.1,Almach,,
+HR 8425,A,Star,Grus,1.73,Alnair,,
+HR 6746,Gamma 2,Star,Sagittarius,2.98,Alnasl,,
+HR 1903,e,Star,Orion,1.69,Alnilam,,
+HR 1948,z,Star,Orion,1.74,Alnitak,,
+HR 6084,s,Star,Scorpius,2.9,Alniyat,,
+HR 3748,A,Star,Hydra,1.99,Alphard,,
+HR 5793,A,Star,Corona Borealis,2.22,Alphecca,,
+HR 15,A,Star,Andromeda,2.07,Alpheratz,,
+HR 437,Eta,Star,Pisces,3.83,Alpherg,,
+HR 6370,m,Star,Draco,5.55,Alrakis,,
+HR 596,A,Star,Pisces,3.82,Alrescha,,
+HR 6618,-,Star,Draco,5.75,Alruba,,
+HR 7462,s,Star,Draco,4.67,Alsafi,,
+HR 3275,31,Star,Lynx,4.25,Alsciaukat,,
+HR 3485,d,Star,Vela,1.99,Alsephina,,
+HR 7602,B,Star,Aquila,3.71,Alshain,,
+HR 7773,v,Star,Capricornus,4.77,Alshat,,
+HR 7557,A,Star,Aquila,0.76,Altair,,
+HR 7310,d,Star,Draco,3.07,Altais,,
+HR 3773,L,Star,Leo,4.32,Alterf,,
+HR 2827,Eta,Star,Canis Major,2.45,Aludra,,
+HR 4375,X,Star,Ursa Major,4.41,Alula Australis,,
+HR 4377,v,Star,Ursa Major,3.49,Alula Borealis,,
+HR 7141,Theta 1,Star,Serpens,4.62,Alya,,
+HR 2484,X,Star,Gemini,3.35,Alzirr,,
+HD 43197,_,Star,Canis Major,8.98,Amadioha,,
+WASP-34,_,Star,Crater,10.3,Amansinaya,,
+WASP-52,_,Star,Pegasus,12.2,Anadolu,,
+HR 8499,Theta,Star,Aquarius,4.17,Ancha,,
+HR 850,Tau 2,Star,Eridanus,4.76,Angetenar,,
+HD 102956,_,Star,Ursa Major,7.86,Aniara,,
+HR 99,A,Star,Phoenix,2.4,Ankaa,,
+HR 7405,A,Star,Vulpecula,4.44,Anser,,
+HR 6134,A,Star,Scorpius,1.06,Antares,,
+HD 131496,_,Star,Boötes,7.8,Arcalís,,
+HR 5340,A,Star,Boötes,-0.05,Arcturus,,
+HR 7343,B 2,Star,Sagittarius,4.27,Arkab Posterior,,
+HR 7337,B 1,Star,Sagittarius,3.96,Arkab Prior,,
+HR 1865,A,Star,Lepus,2.58,Arneb,,
+HR 7194,z,Star,Sagittarius,2.6,Ascella,,
+HR 3461,d,Star,Cancer,3.94,Asellus Australis,,
+HR 3449,Gamma,Star,Cancer,4.66,Asellus Borealis,,
+HR 3482,e,Star,Hydra,3.49,Ashlesha,,
+HR 3699,i,Star,Carina,2.21,Aspidiske,,
+HR 1151,21,Star,Taurus,5.76,Asterope,,
+WASP-64,_,Star,Canis Major,12.69,Atakoraka,,
+HR 6132,Eta,Star,Draco,2.73,Athebyne,,
+HR 1131,o,Star,Perseus,3.84,Atik,,
+HR 1178,27,Star,Taurus,3.62,Atlas,,
+HR 6217,A,Star,Triangulum Australe,1.91,Atria,,
+HR 3307,e,Star,Carina,1.86,Avior,,
+HD 224693,_,Star,Cetus,8.23,Axólotl,,
+HD 18742,_,Star,Eridanus,7.81,Ayeyarwady,,
+HR 8301,Pi 1,Star,Cygnus,4.69,Azelfafage,,
+HR 874,Eta,Star,Eridanus,3.89,Azha,,
+HR 3045,X,Star,Puppis,3.45,Azmidi,,
+HD 133086,8,Star,Ursa Minor,6.83,Baekdu,,
+GJ 699,V2500,Star,Ophiuchus,9.54,Barnard's Star,,
+HR 539,z,Star,Cetus,3.74,Baten Kaitos,,
+HR 1393,u 3,Star,Eridanus,3.97,Beemim,,
+HR 1298,ο 1,Star,Eridanus,4.04,Beid,,
+HD 181342,_,Star,Sagittarius,7.55,Belel,,
+HR 1790,Gamma,Star,Orion,1.64,Bellatrix,,
+HAT-P-15,_,Star,Perseus,12.02,Berehynia,,
+HR 2061,A,Star,Orion,0.45,Betelgeuse,,
+HR 838,41,Star,Aries,3.61,Bharani,,
+HD 86081,_,Star,Sextans,8.73,Bibhā,,
+HR 8450,Theta,Star,Pegasus,3.52,Biham,,
+HD 206610,_,Star,Aquarius,8.34,Bosona,,
+HR 951,d,Star,Aries,4.35,Botein,,
+HR 5603,s,Star,Libra,3.25,Brachium,,
+HD 38283,_,Star,Mensa,6.69,Bubup,,
+HD 16175,_,Star,Andromeda,7.28,Buna,,
+HR 8264,X,Star,Aquarius,4.8,Bunda,,
+HD 8574,_,Star,Pisces,7.12,Bélénos,,
+HR 2326,A,Star,Carina,-0.62,Canopus,,
+HR 1708,A,Star,Auriga,0.08,Capella,,
+HR 21,B,Star,Cassiopeia,2.28,Caph,,
+HR 2891,A,Star,Gemini,1.98,Castor,,
+HR 265,u 2,Star,Cassiopeia,4.62,Castula,,
+HR 6603,B,Star,Ophiuchus,2.76,Cebalrai,,
+HD 63454,_,Star,Chamaeleon,9.37,Ceibo,,
+HR 1140,16,Star,Taurus,5.45,Celaeno,,
+HR 6585,m,Star,Ara,5.15,Cervantes,,
+HR 4277,47,Star,Ursa Major,5.03,Chalawan,,
+HR 1412,Theta 2,Star,Taurus,3.73,Chamukuy,,
+WASP-50,_,Star,Eridanus,11.74,Chaophraya,,
+HR 4785,B,Star,Canes Venatici,4.24,Chara,,
+HAT-P-5,_,Star,Lyra,11.96,Chasoň,,
+HD 192699,_,Star,Aquila,6.44,Chechia,,
+HR 4359,Theta,Star,Leo,3.33,Chertan,,
+HD 1502,_,Star,Pisces,8.36,Citadelle,,
+HD 52265,_,Star,Monoceros,6.29,Citalá,,
+HD 4208,_,Star,Sculptor,7.78,Cocibolca,,
+HR 3522,55,Star,Cancer,5.95,Copernicus,,
+HR 4915,a 2,Star,Canes Venatici,2.89,Cor Caroli,,
+HR 6117,Omega,Star,Hercules,4.57,Cujam,,
+HR 1666,B,Star,Eridanus,2.78,Cursa,,
+HR 7776,B 1,Star,Capricornus,3.05,Dabih,,
+HR 963,A,Star,Fornax,3.86,Dalim,,
+HR 7924,A,Star,Cygnus,1.25,Deneb,,
+HR 8322,d,Star,Capricornus,2.85,Deneb Algedi,,
+HR 4534,B,Star,Leo,2.14,Denebola,,
+HR 4968,A,Star,Coma Berenices,4.85,Diadem,,
+HD 96063,_,Star,Leo,8.21,Dingolay,,
+HR 188,B,Star,Cetus,2.04,Diphda,,
+WASP-72,_,Star,Fornax,10.97,Diya,,
+HD 117618,_,Star,Centaurus,7.17,Dofida,,
+HAT-P-3,_,Star,Ursa Major,11.52,Dombay,,
+HR 5953,d,Star,Scorpius,2.29,Dschubba,,
+HR 4301,A,Star,Ursa Major,1.81,Dubhe,,
+HR 6636,t 1,Star,Draco,4.57,Dziban,,
+WASP-17,_,Star,Scorpius,11.49,Dìwö,,
+HD 218566,_,Star,Pisces,8.59,Ebla,,
+HR 5744,i,Star,Draco,3.29,Edasich,,
+HR 1142,17,Star,Taurus,3.72,Electra,,
+HR 5409,phi,Star,Virgo,4.84,Elgafar,,
+HR 2177,Theta,Star,Columba,5,Elkurud,,
+HR 1791,B,Star,Taurus,1.65,Elnath,,
+HR 6705,Gamma,Star,Draco,2.24,Eltanin,,
+HD 7199,_,Star,Tucana,8.06,Emiw,,
+HR 8308,e,Star,Pegasus,2.38,Enif,,
+HR 8974,Gamma,Star,Cepheus,3.21,Errai,,
+HR 6945,42,Star,Draco,4.82,Fafnir,,
+HR 5944,pi,Star,Scorpius,2.89,Fang,,
+HR 7528,d,Star,Cygnus,2.9,Fawaris,,
+HR 3923,-,Star,Hydra,4.94,Felis,,
+BD-17 63,_,Star,Cetus,9.62,Felixvarela,,
+HD 102195,_,Star,Virgo,8.07,Flegetonte,,
+HR 8728,A,Star,Piscis Austrinus,1.17,Fomalhaut,,
+HD 100655,_,Star,Leo,6.45,Formosa,,
+HAT-P-14,_,Star,Hercules,9.86,Franz,,
+HR 153,z,Star,Cassiopeia,3.69,Fulu,,
+HR 8773,B,Star,Pisces,4.48,Fumalsamakah,,
+HD 109246,_,Star,Draco,8.75,Funi,,
+HR 2282,z,Star,Canis Major,3.02,Furud,,
+HR 6630,-,Star,Scorpius,3.19,Fuyue,,
+HR 4763,Gamma,Star,Crux,1.59,Gacrux,,
+HD 73534,_,Star,Cancer,8.23,Gakyid,,
+PSR B0633+17,_,Star,Gemini,-,Geminga,,
+HR 4434,L,Star,Draco,3.82,Giausar,,
+HR 4662,Gamma,Star,Corvus,2.58,Gienah,,
+HR 4700,e,Star,Crux,3.59,Ginan,,
+WASP-13,_,Star,Lynx,10.51,Gloas,,
+HR 2845,B,Star,Canis Minor,2.89,Gomeisa,,
+HR 6688,X,Star,Draco,3.73,Grumium,,
+HR 5879,k,Star,Serpens,4.09,Gudja,,
+HD 179949,V5652,Star,Sagittarius,6.25,Gumala,,
+HR 6402,36,Star,Ophiuchus,5.07,Guniibuu,,
+HR 5267,B,Star,Centaurus,0.61,Hadar,,
+HR 1641,Eta,Star,Auriga,3.18,Haedus,,
+HR 617,A,Star,Aries,2.01,Hamal,,
+HR 1577,i,Star,Auriga,2.69,Hassaleh,,
+HR 1899,i,Star,Orion,2.8,Hatysa,,
+HR 8729,51,Star,Pegasus,5.49,Helvetios,,
+HR 5107,z,Star,Virgo,3.38,Heze,,
+HD 28678,_,Star,Taurus,8.38,Hoggar,,
+HR 8634,z,Star,Pegasus,3.41,Homam,,
+HAT-P-38,_,Star,Triangulum,12.53,Horna,,
+HD 98219,_,Star,Crater,8.05,Hunahpú,,
+HAT-P-2,_,Star,Hercules,8.72,Hunor,,
+HR 5928,p,Star,Scorpius,3.87,Iklil,,
+HD 82886,_,Star,Leo Minor,7.62,Illyrian,,
+HR 4656,d,Star,Crux,2.75,Imai,,
+HD 156411,_,Star,Ara,6.67,Inquill,,
+HD 20868,_,Star,Fornax,9.92,Intan,,
+HR 3743,-,Star,Ursa Major,5.41,Intercrus,,
+WASP-38,_,Star,Hercules,9.41,Irena,,
+HD 208487,_,Star,Grus,7.47,Itonda,,
+HR 5506,e,Star,Boötes,2.35,Izar,,
+HR 6027,v,Star,Scorpius,4.5,Jabbah,,
+HR 2930,o,Star,Gemini,4.89,Jishui,,
+HR 804,Gamma,Star,Cetus,3.56,Kaffaljidhma,,
+HD 83443,_,Star,Vela,8.23,Kalausi,,
+HD 145457,_,Star,Corona Borealis,6.57,Kamuy,,
+HR 5315,k,Star,Virgo,4.18,Kang,,
+HD 137388,_,Star,Apus,8.71,Karaka,,
+HR 6879,e,Star,Sagittarius,1.79,Kaus Australis,,
+HR 6913,L,Star,Sagittarius,2.82,Kaus Borealis,,
+HR 6859,d,Star,Sagittarius,2.72,Kaus Media,,
+HD 175541,_,Star,Serpens,8.02,Kaveh,,
+HR 1325,ο 2,Star,Eridanus,4.43,Keid,,
+HR 5359,L,Star,Virgo,4.52,Khambalia,,
+HR 8131,A,Star,Equuleus,3.92,Kitalpha,,
+HR 5563,B,Star,Ursa Minor,2.07,Kochab,,
+HIP 12961,_,Star,Eridanus,10.25,Koeia,,
+XO-4,_,Star,Lynx,10.62,Koit,,
+HR 6148,B,Star,Hercules,2.78,Kornephoros,,
+HR 4786,B,Star,Corvus,2.65,Kraz,,
+HR 8417,X,Star,Cepheus,4.26,Kurhah,,
+HR 4846,Y,Star,Canes Venatici,5.42,La Superba,,
+HR 6241,e,Star,Scorpius,2.29,Larawag,,
+HAT-P-42,_,Star,Hydra,12.15,Lerna,,
+HR 6508,u,Star,Scorpius,2.7,Lesath,,
+HR 7595,X,Star,Aquila,4.71,Libertas,,
+PSR B1257+12,-,Star,Virgo,-,Lich,,
+HD 118203,_,Star,Ursa Major,8.05,Liesma,,
+HR 824,39,Star,Aries,4.52,Lilii Borea,,
+HD 212771,_,Star,Aquarius,7.6,Lionrock,,
+HD 45350,_,Star,Auriga,7.89,Lucilinburhuc,,
+HD 45652,_,Star,Monoceros,8.1,Lusitânia,,
+HR 6526,L,Star,Hercules,4.41,Maasym,,
+HD 93083,_,Star,Antlia,8.3,Macondo,,
+HD 32518,_,Star,Camelopardalis,6.43,Mago,,
+HR 2095,Theta,Star,Auriga,2.65,Mahasim,,
+HD 152581,_,Star,Ophiuchus,8.38,Mahsati,,
+HR 1149,20,Star,Taurus,3.87,Maia,,
+WASP-39,V732,Star,Virgo,11.89,Malmok,,
+HR 6149,L,Star,Ophiuchus,3.82,Marfik,,
+HR 8781,A,Star,Pegasus,2.49,Markab,,
+HR 3734,k,Star,Vela,2.47,Markeb,,
+HR 6008,k,Star,Hercules,5,Marsic,,
+HR 8650,Eta,Star,Pegasus,2.93,Matar,,
+HAT-P-21,_,Star,Ursa Major,11.72,Mazaalai,,
+HR 2473,e,Star,Gemini,3.06,Mebsuta,,
+HR 4660,d,Star,Ursa Major,3.32,Megrez,,
+HR 1879,L,Star,Orion,3.39,Meissa,,
+HR 2650,z,Star,Gemini,4.01,Mekbuda,,
+HR 3429,e,Star,Cancer,6.29,Meleph,,
+HR 2088,B,Star,Auriga,1.9,Menkalinan,,
+HR 911,A,Star,Cetus,2.54,Menkar,,
+HR 5288,Theta,Star,Centaurus,2.06,Menkent,,
+HR 1228,X,Star,Perseus,3.98,Menkib,,
+HR 4295,B,Star,Ursa Major,2.34,Merak,,
+HR 5533,38,Star,Boötes,5.76,Merga,,
+HR 7254,A,Star,Corona Australis,4.11,Meridiana,,
+HR 1156,23,Star,Taurus,4.14,Merope,,
+HR 546,Gamma 1,Star,Aries,4.75,Mesarthim,,
+HR 3685,B,Star,Carina,1.67,Miaplacidus,,
+HR 4853,B,Star,Crux,1.25,Mimosa,,
+HR 3418,s,Star,Hydra,4.45,Minchir,,
+HR 4910,d,Star,Virgo,3.39,Minelauva,,
+HR 1852,d,Star,Orion,2.25,Mintaka,,
+HR 681,o,Star,Cetus,6.47,Mira,,
+HR 337,B,Star,Andromeda,2.07,Mirach,,
+HR 834,Eta,Star,Perseus,3.77,Miram,,
+HR 1017,A,Star,Perseus,1.79,Mirfak,,
+HR 2294,B,Star,Canis Major,1.98,Mirzam,,
+HR 941,k,Star,Perseus,3.79,Misam,,
+HR 5054,z,Star,Ursa Major,2.23,Mizar,,
+XO-1,_,Star,Corona Borealis,11.28,Moldoveanu,,
+WASP-79,_,Star,Eridanus,10.06,Montuno,,
+WASP-60,_,Star,Pegasus,12.18,Morava,,
+HAT-P-23,_,Star,Delphinus,12.32,Moriah,,
+HR 544,A,Star,Triangulum,3.42,Mothallah,,
+HD 30856,_,Star,Eridanus,7.91,Mouhoun,,
+WASP-71,_,Star,Cetus,10.7,Mpingo,,
+HR 2657,Gamma,Star,Canis Major,4.11,Muliphein,,
+HR 5235,Eta,Star,Boötes,2.68,Muphrid,,
+HR 3323,o,Star,Ursa Major,3.35,Muscida,,
+HR 8030,18,Star,Delphinus,5.48,Musica,,
+HAT-P-29,_,Star,Perseus,11.89,Muspelheim,,
+WASP-6,_,Star,Aquarius,12.16,Márohu,,
+HD 130322,_,Star,Virgo,8.04,Mönch,,
+HR 3627,X,Star,Cancer,5.7,Nahn,,
+WASP-62,_,Star,Dorado,10.12,Naledi,,
+HR 3165,z,Star,Puppis,2.21,Naos,,
+HR 8278,Gamma,Star,Capricornus,3.69,Nashira,,
+HD 85390,_,Star,Vela,8.54,Natasha,,
+HR 5602,B,Star,Boötes,3.49,Nekkar,,
+HR 464,51,Star,Andromeda,3.59,Nembus,,
+HD 6434,_,Star,Phoenix,7.72,Nenque,,
+HD 49674,_,Star,Auriga,8.1,Nervia,,
+HR 1829,B,Star,Lepus,2.81,Nihal,,
+HD 136418,_,Star,Boötes,7.88,Nikawiy,,
+HD 48265,_,Star,Puppis,8.05,Nosaxa,,
+HR 7121,s,Star,Sagittarius,2.05,Nunki,,
+HR 5747,B,Star,Corona Borealis,3.66,Nusakan,,
+HD 17156,_,Star,Cassiopeia,8.17,Nushagak,,
+WASP-15,_,Star,Centaurus,10.91,Nyamien,,
+HD 68988,_,Star,Ursa Major,8.2,Násti,,
+HD 149026,-,Star,Hercules,8.16,Ogma,,
+HR 7235,z,Star,Aquila,2.99,Okab,,
+HR 6165,t,Star,Scorpius,2.82,Paikauhale,,
+WASP-32,_,Star,Pisces,11.54,Parumleo,,
+HR 7790,A,Star,Pavo,1.94,Peacock,,
+WASP-80,_,Star,Aquila,11.88,Petra,,
+HR 1956,A,Star,Columba,2.65,Phact,,
+HR 4554,Gamma,Star,Ursa Major,2.41,Phecda,,
+HR 5735,Gamma,Star,Ursa Minor,3,Pherkad,,
+HD 192263,V1703,Star,Aquila,7.79,Phoenicia,,
+HR 3268,L,Star,Cancer,5.92,Piautos,,
+HD 164604,_,Star,Sagittarius,9.66,Pincoya,,
+HR 6252,m 2,Star,Scorpius,3.56,Pipirima,,
+TrES-3,V1434,Star,Hercules,12.37,Pipoltr,,
+HR 1180,28,Star,Taurus,5.05,Pleione,,
+HD 221287,_,Star,Tucana,7.82,Poerava,,
+HR 424,A,Star,Ursa Minor,1.97,Polaris,,
+HR 7228,s,Star,Octans,5.45,Polaris Australis,,
+HR 6812,m,Star,Sagittarius,3.84,Polis,,
+HR 2990,B,Star,Gemini,1.16,Pollux,,
+HR 4825,Gamma,Star,Virgo,2.74,Porrima,,
+HR 4247,46,Star,Leo Minor,3.79,Praecipua,,
+HR 1346,Gamma,Star,Taurus,3.65,Prima Hyadum,,
+HR 2943,A,Star,Canis Minor,0.4,Procyon,,
+HR 2216,Eta,Star,Gemini,3.31,Propus,,
+GJ 551,A,Star,Centaurus,11.01,Proxima Centauri,,
+HR 1084,e,Star,Eridanus,3.73,Ran,,
+HR 1136,d,Star,Eridanus,3.53,Rana,,
+HD 153950,_,Star,Scorpius,7.39,Rapeto,,
+HR 3905,m,Star,Leo,3.88,Rasalas,,
+HR 6406,α1,Star,Hercules,3.37,Rasalgethi,,
+HR 6556,A,Star,Ophiuchus,2.08,Rasalhague,,
+HR 6536,B,Star,Draco,2.79,Rastaban,,
+HR 3982,A,Star,Leo,1.36,Regulus,,
+HR 361,z,Star,Pisces,5.21,Revati,,
+HR 1713,B,Star,Orion,0.18,Rigel,,
+HR 5459,A,Star,Centaurus,-0.01,Rigil Kentaurus,,
+HD 149143,_,Star,Ophiuchus,7.89,Rosaliadecastro,,
+HR 7882,B,Star,Delphinus,3.64,Rotanev,,
+HR 403,d,Star,Cassiopeia,2.66,Ruchbah,,
+HR 7348,A,Star,Sagittarius,3.96,Rukbat,,
+HR 6378,Eta,Star,Ophiuchus,2.43,Sabik,,
+HR 1612,z,Star,Auriga,3.69,Saclateni,,
+HR 8518,Gamma,Star,Aquarius,3.86,Sadachbia,,
+HR 8684,m,Star,Pegasus,3.51,Sadalbari,,
+HR 8414,A,Star,Aquarius,2.95,Sadalmelik,,
+HR 8232,B,Star,Aquarius,2.9,Sadalsuud,,
+HR 7796,Gamma,Star,Cygnus,2.23,Sadr,,
+HD 100777,_,Star,Leo,8.42,Sagarmatha,,
+HR 2004,k,Star,Orion,2.07,Saiph,,
+HR 8880,t,Star,Pegasus,4.58,Salm,,
+HAT-P-34,_,Star,Sagitta,10.31,Sansuna,,
+HR 6553,Theta,Star,Scorpius,1.86,Sargas,,
+HR 6410,d,Star,Hercules,3.12,Sarin,,
+HR 1481,53,Star,Eridanus,4.02,Sceptrum,,
+HR 8775,B,Star,Pegasus,2.44,Scheat,,
+HR 168,A,Star,Cassiopeia,2.24,Schedar,,
+HR 1373,d,Star,Taurus,3.78,Secunda Hyadum,,
+HR 0542,e,Star,Cassiopeia,3.35,Segin,,
+HR 5435,Gamma,Star,Boötes,3.04,Seginus,,
+HR 7479,A,Star,Sagitta,4.39,Sham,,
+HD 99109,_,Star,Leo,9.1,Shama,,
+HIP 79431,_,Star,Scorpius,11.34,Sharjah,,
+HR 6527,L,Star,Scorpius,1.62,Shaula,,
+HR 7106,B,Star,Lyra,3.52,Sheliak,,
+HR 553,B,Star,Aries,2.64,Sheratan,,
+HD 181720,_,Star,Sagittarius,7.84,Sika,,
+HR 2491,A,Star,Canis Major,-1.44,Sirius,,
+HR 8610,k,Star,Aquarius,5.04,Situla,,
+HR 8709,d,Star,Aquarius,3.27,Skat,,
+BD+14-4559,_,Star,Pegasus,9.78,Solaris,,
+HR 5056,A,Star,Virgo,0.98,Spica,,
+HAT-P-6,_,Star,Andromeda,10.54,Sterrennacht,,
+HD 75898,_,Star,Lynx,8.03,Stribor,,
+HR 7906,A,Star,Delphinus,3.77,Sualocin,,
+HR 3852,o,Star,Leo,3.52,Subra,,
+HR 3634,L,Star,Vela,2.23,Suhail,,
+HR 7178,Gamma,Star,Lyra,3.25,Sulafat,,
+HR 5338,i,Star,Virgo,4.07,Syrma,,
+HD 205739,_,Star,Piscis Austrinus,8.56,Sāmaya,,
+HR 1543,Pi3,Star,Orion,3.19,Tabit,,
+HAT-P-40,_,Star,Lacerta,11.35,Taika,,
+HR 4518,x,Star,Ursa Major,3.69,Taiyangshou,,
+HR 4916,8,Star,Draco,5.23,Taiyi,,
+HR 3569,i,Star,Ursa Major,3.12,Talitha,,
+WASP-21,_,Star,Pegasus,11.55,Tangra,,
+HR 4069,m,Star,Ursa Major,3.06,Tania Australis,,
+HR 4033,L,Star,Ursa Major,3.45,Tania Borealis,,
+HD 63765,_,Star,Carina,8.1,Tapecue,,
+HR 7525,Gamma,Star,Aquila,2.72,Tarazed,,
+HR 3249,B,Star,Cancer,3.53,Tarf,,
+HR 1145,19,Star,Taurus,4.3,Taygeta,,
+HR 3208,z 1,Star,Cancer,4.67,Tegmine,,
+HR 2286,m,Star,Gemini,2.87,Tejat,,
+HR 7597,Omega,Star,Sagittarius,4.7,Terebellum,,
+HAT-P-9,_,Star,Auriga,12.26,Tevel,,
+HR 1464,u 2,Star,Eridanus,3.81,Theemin,,
+HR 5291,A,Star,Draco,3.67,Thuban,,
+HR 8636,B,Star,Grus,2.12,Tiaki,,
+HR 1910,z,Star,Taurus,2.97,Tianguan,,
+HR 4863,7,Star,Draco,5.43,Tianyi,,
+HD 148427,_,Star,Ophiuchus,6.89,Timir,,
+WASP-161,_,Star,Puppis,10.77,Tislit,,
+HR 458,u,Star,Andromeda,4.09,Titawin,,
+WASP-22,_,Star,Eridanus,11.71,Tojil,,
+HR 5460,A,Star,Centaurus,1.35,Toliman,,
+HR 4609,-,Star,Camelopardalis,5.8,Tonatiuh,,
+HR 510,o,Star,Pisces,4.29,Torcular,,
+HAT-P-36,_,Star,Canes Venatici,12.25,Tuiren,,
+HD 23079,_,Star,Reticulum,7.12,Tupi,,
+HD 108147,_,Star,Crux,6.99,Tupã,,
+HR 3185,p,Star,Puppis,2.83,Tureis,,
+HR 3845,i,Star,Hydra,3.9,Ukdah,,
+HD 102117,_,Star,Centaurus,7.47,Uklun,,
+HR 5854,A,Star,Serpens,2.63,Unukalhai,,
+HR 2646,s,Star,Canis Major,3.49,Unurgunite,,
+HD 231701,_,Star,Sagitta,8.97,Uruk,,
+HR 7001,A,Star,Lyra,0.03,Vega,,
+HR 8930,14,Star,Andromeda,5.22,Veritate,,
+HR 4932,e,Star,Virgo,2.85,Vindemiatrix,,
+HR 2777,d,Star,Gemini,3.5,Wasat,,
+HR 2040,B,Star,Columba,3.12,Wazn,,
+HR 2693,d,Star,Canis Major,1.83,Wezen,,
+HR 338,z,Star,Phoenix,4.02,Wurren,,
+HR 6247,m 1,Star,Scorpius,3,Xamidimura,,
+HD 173416,_,Star,Lyra,6.04,Xihe,,
+HR 5351,L,Star,Boötes,4.18,Xuange,,
+HR 6075,e,Star,Ophiuchus,3.23,Yed Posterior,,
+HR 6056,d,Star,Ophiuchus,2.73,Yed Prior,,
+HR 6789,d,Star,Ursa Minor,4.35,Yildun,,
+HR 4689,Eta,Star,Virgo,3.89,Zaniah,,
+HR 1231,Gamma,Star,Eridanus,2.97,Zaurak,,
+HR 4540,B,Star,Virgo,3.59,Zavijava,,
+HR 3903,u 1,Star,Hydra,4.11,Zhang,,
+HR 984,z,Star,Eridanus,4.8,Zibal,,
+HR 4357,d,Star,Leo,2.56,Zosma,,
+HR 5531,a 2,Star,Libra,2.75,Zubenelgenubi,,
+HR 5787,Gamma,Star,Libra,3.91,Zubenelhakrabi,,
+HR 5685,B,Star,Libra,2.61,Zubeneschamali,,
+M 24,IC 4715,Cluster Nebulosity,,2.50,,,
+M 42,Cr 42,Asterism,Taurus,1.60,,,
+M 40,WNC 4,Asterism,Ursa Major,10.11,,,
+IC 4628,ESO 332-14,Nebula,Scorpius,7.30,,,
+PGC 17223,,Galaxy,Dorado,0.90,"Large Magellanic Cloud,LMC",,
+IC 2944,Caldwell 100,Nebula,Centaurus,4.50,"Lambda Centauri Nebula,Running Chicken Nebula",,
+IC 2602,Caldwell 102,Open Cluster,Car,1.90,Southern Pleiades,,

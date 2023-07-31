@@ -1,14 +1,14 @@
 class CsvRow{
 
-  late String catalogName;
-  late String catalogAlias;
+  String catalogName = '';
+  String catalogAlias = '';
 
-  late String objType;
-  late String constellation;
+  String objType = '';
+  String constellation = '';
 
-  late num magnitude;
+  num magnitude = 0.0;
 
-  late String properName;
+  String properName = '';
 
   CsvRow({required this.catalogName, required this.catalogAlias, required this.objType, required this.constellation,
       required this.magnitude, required this.properName});

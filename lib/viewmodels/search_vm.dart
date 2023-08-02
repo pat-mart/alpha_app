@@ -71,7 +71,6 @@ class SearchViewModel extends ChangeNotifier {
 
   void loadSearchResults(String query) {
     resultsList = _filteredResults(query).values.toList();
-    print(resultsList);
     notifyListeners();
   }
 

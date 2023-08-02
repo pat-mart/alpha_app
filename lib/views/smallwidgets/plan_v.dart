@@ -29,15 +29,15 @@ class _PlanCardState extends State<PlanCard> {
 
   @override
   Widget build(BuildContext context) {
-    Plan plan = widget.plan;
     final planVm = Provider.of<PlanViewModel>(context);
+    Plan plan = planVm.getPlan(widget.index);
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text( //Date in E, MM, d
+          Text( //Date in EE, MM, d
             plan.timespan.formattedRange,
             style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)
           ),

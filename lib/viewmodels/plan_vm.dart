@@ -46,4 +46,8 @@ class PlanViewModel extends ChangeNotifier implements ListViewModel<Plan> {
     _planList[index] = newPlan;
     notifyListeners();
   }
+
+  Plan getPlan(int index){
+    return _planList.elementAt(index);
+  }
 }

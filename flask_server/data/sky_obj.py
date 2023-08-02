@@ -31,8 +31,9 @@ class SkyObject:
         self.target = FixedTarget.from_name(obj_name)
         self.observer_loc = Observer(latitude=coords[0], longitude=coords[1])
         self.threshold = threshold
+        self.utc_td = timedelta(hours=self.utc_offset(self.coords))
 
-        self.needs_mer_flip = False
+        self.needs_mer_flip = self.peak_alt_az['alt'] >= 87.0 * u.deg
 
         self.target_always_up = False
         self.target_always_down = False
@@ -72,32 +73,24 @@ class SkyObject:
             __sunrise_t = self.observer_loc.sun_rise_time(start_time, which='nearest').to_datetime()
             __sunset_t = self.observer_loc.sun_set_time(start_time, which='nearest').to_datetime()
 
-            self.sunrise_t = (__sunrise_t + timedelta(hours=self.utc_offset)).time()
-            self.sunset_t = (__sunset_t + timedelta(hours=self.utc_offset)).time()
+            self.sunrise_t = (__sunrise_t + self.utc_td).time()
+            self.sunset_t = (__sunset_t + self.utc_td).time()
 
         if not (self.target_always_down or self.target_always_up):
-            self.rise_iso = self.observer_loc.target_rise_time(start_time, self.target) + timedelta(
-                hours=self.utc_offset)
-            self.set_iso = self.observer_loc.target_set_time(start_time, self.target) + timedelta(hours=self.utc_offset)
+            self.rise_iso = self.observer_loc.target_rise_time(start_time, self.target) + self.utc_td
+            self.set_iso = self.observer_loc.target_set_time(start_time, self.target) + self.utc_td
 
             self.obj_rise_time = datetime.fromisoformat(self.rise_iso.iso).time()
             self.obj_set_time = datetime.fromisoformat(self.set_iso.iso).time()
 
-
-
-    @property
-    def loc_utc_str(self):
-        tz_str = TimezoneFinder().timezone_at(lat=self.coords[0], lng=self.coords[1])
-
+    @staticmethod
+    def loc_utc_str(coords):
+        tz_str = TimezoneFinder().timezone_at(lat=coords[0], lng=coords[1])
         return pytz.timezone(tz_str)
 
-    """
-    :returns The UTC offset in hours. Automatically accounts for daylight savings.
-    """
-
-    @property
-    def utc_offset(self) -> float:
-        timezone = self.loc_utc_str
+    @staticmethod
+    def utc_offset(coords) -> float:
+        timezone = SkyObject.loc_utc_str((coords[0], coords[1]))
         return timezone.utcoffset(datetime.now()).total_seconds() // 3600
 
     @property
@@ -135,7 +128,7 @@ class SkyObject:
     def alt_az_pos(self) -> SkyCoord:
         obj_coords = SkyCoord.from_name(self.obj_name)
 
-        return obj_coords.transform_to(AltAz(obstime=self.start_time - self.utc_offset, location=self.geo_loc))
+        return obj_coords.transform_to(AltAz(obstime=self.start_time - self.utc_offset(self.coords), location=self.geo_loc))
 
     @property
     def peak_alt_az(self) -> [float]:
@@ -146,12 +139,13 @@ class SkyObject:
         alt = obj_coords.transform_to(AltAz(obstime=peak_iso, location=self.geo_loc)).alt
         az = obj_coords.transform_to(AltAz(obstime=peak_iso, location=self.geo_loc)).az
 
-        return [str(alt), str(az)]
+        return {'alt': alt, 'az': az}
 
     @property
     def peak_time(self) -> str:
         loc = self.observer_loc
-        time = loc.target_meridian_transit_time(self.start_time, self.target) + timedelta(hours=self.utc_offset)
+        offset = self.utc_td
+        time = loc.target_meridian_transit_time(self.start_time, self.target) - offset
 
         return time.iso
 
@@ -181,7 +175,7 @@ class SkyObject:
 
             t = Time(t_point).to_datetime()
 
-            altitude = self.observer_loc.altaz(time=t-timedelta(hours=self.utc_offset), target=self.target).alt
+            altitude = self.observer_loc.altaz(time=t - self.utc_td, target=self.target).alt
 
             if altitude > alt_threshold:
                 if len(times) >= 2 and times[times_i] - t_interval == times[times_i - 1]:  # Ensures no gaps

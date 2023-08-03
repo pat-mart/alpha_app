@@ -10,9 +10,19 @@ app = Flask(__name__)
 
 @app.route('/api/search/helio', methods=['GET'])
 def get_heliocentric_pos():
-    pass
+    args = request.args
 
+    lat = args.get('lat')
+    lon = args.get('lon')
 
+    obj = HelioObj(
+        start_time=Time('2023-8-1T03:15:31.0'),
+        end_time=Time('2023-8-1T03:15:31.0'),
+        obj_name='sun',
+        coords=(78, -70)
+    )
+
+    return "<h1>Mone</h1>"
 @app.route('/api/search', methods=['GET'])
 # example search endpoint:
 # /api/search?objname=M31&starttime=2023-7-15T21:15:31.0&endtime=2023-7-16T01:12:00.0&lat=10.10&lon=10.10&thresh=20.0
@@ -67,7 +77,6 @@ def hello_world():
         end_time=Time('2023-8-1T03:15:31.0'),
         obj_name='jupiter',
         coords=(-85.01, -70.0),
-
     ))
 
     return "<h1>Pat</h1>"

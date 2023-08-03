@@ -26,6 +26,7 @@ class SkyObject:
         self.end_time = end_time
         self.obj_name = obj_name
         self.coords = coords
+
         self.geo_loc = EarthLocation.from_geodetic(lat=coords[0], lon=coords[1])
 
         self.target = FixedTarget.from_name(obj_name)

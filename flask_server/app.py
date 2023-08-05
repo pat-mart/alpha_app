@@ -16,10 +16,10 @@ def get_heliocentric_pos():
     lon = args.get('lon')
 
     obj = HelioObj(
-        start_time=Time('2023-8-1T03:15:31.0'),
-        end_time=Time('2023-8-1T03:15:31.0'),
-        obj_name='sun',
-        coords=(78, -70)
+        start_time=Time('2023-8-3T18:15:31.0'),
+        end_time=Time('2023-8-4T03:15:31.0'),
+        obj_name='Mars',
+        coords=(40.8, -70)
     )
 
     return "<h1>Mone</h1>"
@@ -72,12 +72,12 @@ def get_obj_pos():
 
 @app.route('/')
 def hello_world():
-    print(HelioObj(
-        start_time=Time('2023-8-1T03:15:31.0'),
+    HelioObj(
+        start_time=Time('2023-8-3T18:30:31.0'),
         end_time=Time('2023-8-1T03:15:31.0'),
-        obj_name='jupiter',
-        coords=(-85.01, -70.0),
-    ))
+        obj_name='mars',
+        coords=(-80.8, -73.6),
+    )
 
     return "<h1>Pat</h1>"
 

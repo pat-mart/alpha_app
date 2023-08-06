@@ -62,9 +62,8 @@ def get_obj_pos():
         'coords': obj.coords,
         'utc_offset': obj.utc_offset(obj.coords),
         'viewing_hours': {'h_visible': str_hrs, 'h_suggested': obj.suggested_hours},
-        'suggest_hours': obj.suggested_hours,
-        'peak': {'alt': str(peak_alt_az['alt']), 'az': str(peak_alt_az['az']), 'time': str(obj.peak_time)},
-        'mer_flip': str(obj.needs_mer_flip)
+        'peak': {'alt': peak_alt_az['alt'].value, 'az': peak_alt_az['az'].value, 'time': str(obj.peak_time)},
+        'mer_flip': int(obj.needs_mer_flip)
     }
 
     return jsonify(obj_data)

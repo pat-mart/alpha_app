@@ -16,7 +16,7 @@ class HelioObj:
     def __init__(self, start_time: Time, end_time: Time, obj_name: str, coords: (float, float)):
 
         self.target = ephem.Jupiter()  # Placeholder
-        self.utc_offset_td = timedelta(hours=SkyObject.utc_offset(coords))
+        self.utc_offset_td = timedelta(hours=ObjUtil.utc_offset(coords))
         self.obj_name = obj_name.lower()
 
         self.start_astropy_time = start_time
@@ -34,10 +34,8 @@ class HelioObj:
         self.start_time = start_time.to_datetime()
         self.end_time = end_time.to_datetime()
 
-        self.start_dt = datetime.combine(start_time.to_datetime().date(),
-                                         (start_time - self.utc_offset_td).to_datetime().time())
-        self.end_dt = datetime.combine(end_time.to_datetime().date(),
-                                       (end_time - self.utc_offset_td).to_datetime().time())
+        self.start_dt = datetime.combine(self.start_time.date(),(self.start_time - self.utc_offset_td).time())
+        self.end_dt = datetime.combine(self.end_time.date(), (self.end_time - self.utc_offset_td).time())
 
         self.start_dt = self.start_dt.strftime('%Y/%m/%d %H:%M')
         self.end_dt = self.end_dt.strftime('%Y/%m/%d %H:%M')
@@ -50,11 +48,7 @@ class HelioObj:
 
         self.obj_name = obj_name
 
-        self.sun_always_up = False
-        self.sun_always_down = False
-
-        self.target_always_up = False
-        self.target_always_down = False
+        self.sun_always_up = self.sun_always_down = self.target_always_up = self.target_always_down = False
 
         self.sun = ephem.Sun()
 
@@ -81,6 +75,7 @@ class HelioObj:
             self.obj_rise_t = self.observer.next_rising(self.target).datetime().time()
             self.obj_set_t = self.observer.next_setting(self.target).datetime().time()
 
+    @property
     def hours_visible(self) -> [datetime]:
         return ObjUtil.hours_visible(
             target_always_up=self.target_always_up,
@@ -95,5 +90,27 @@ class HelioObj:
             sunset_t=self.sunset_t
         )
 
+    @property
+    def peak_time(self):
+        gmt_time = self.observer.next_transit(self.target, start=self.start_time.date().strftime('%Y/%m/%d')).datetime()
+
+        local_time = gmt_time.strftime('%Y/%m/%d %H:%M')
+
+        return local_time
+
+    @property
     def peak_alt_az(self):
+        obs_copy = self.observer.copy()
+        obs_copy.date = self.peak_time
+
+        target_copy = self.target
+
+        target_copy.compute(obs_copy)
+
+        print('%s %s' % (target_copy.alt, target_copy.az))
+
+        return {"alt": target_copy.alt, "az": target_copy.az}
+
+    @property
+    def suggested_hours(self):
         pass

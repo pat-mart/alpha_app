@@ -13,7 +13,7 @@ I suppose I could have had them both extend a more generic class, but I thought 
 
 
 class HelioObj:
-    def __init__(self, start_time: Time, end_time: Time, obj_name: str, coords: (float, float)):
+    def __init__(self, start_time: Time, end_time: Time, obj_name: str, coords: (float, float), threshold: float):
 
         self.target = ephem.Jupiter()  # Placeholder
         self.utc_offset_td = timedelta(hours=ObjUtil.utc_offset(coords))
@@ -22,14 +22,14 @@ class HelioObj:
         self.start_astropy_time = start_time
         self.end_astropy_time = end_time
 
-        self.day_vis = obj_name in ['moon', 'sun']
+        self.threshold = threshold
 
-        constructor = getattr(ephem, obj_name.title(), AttributeError)
+        constructor = getattr(ephem, obj_name.title(), ephem.Body)
 
         if constructor is not AttributeError:
             self.target = constructor()
         else:
-            constructor('Planet not found')
+            AttributeError('Planet not found')
 
         self.start_time = start_time.to_datetime()
         self.end_time = end_time.to_datetime()
@@ -77,6 +77,21 @@ class HelioObj:
 
     @property
     def hours_visible(self) -> [datetime]:
+
+        if self.target_always_down:
+            return [-1, -1]
+
+        elif self.sun_always_up:
+            if self.obj_name == 'sun':
+                return [self.start_dt, self.end_dt]
+            elif self.obj_name == 'moon':
+                return [self.obj_rise_t, self.obj_set_t]
+            else:
+                return [-1, -1]
+
+        elif self.obj_name in ['sun', 'moon']:
+            return [self.obj_rise_t, self.obj_set_t]
+
         return ObjUtil.hours_visible(
             target_always_up=self.target_always_up,
             target_always_down=self.target_always_down,
@@ -86,8 +101,8 @@ class HelioObj:
             end_time=self.end_astropy_time,
             obj_rise_time=self.obj_rise_t,
             obj_set_time=self.obj_set_t,
-            sunrise_t=self.sunrise_t,
-            sunset_t=self.sunset_t
+            obs_start=self.sunrise_t,
+            obs_end=self.sunset_t
         )
 
     @property
@@ -113,4 +128,43 @@ class HelioObj:
 
     @property
     def suggested_hours(self):
-        pass
+
+        if self.threshold <= -1:
+            return [-1]
+
+        start = datetime.combine(self.start_astropy_time.to_datetime().date(), self.hours_visible[0])
+        end = datetime.combine(self.end_astropy_time.to_datetime().date(), self.hours_visible[1])
+
+        t_interval = (end - start) / 12
+
+        points = [start + (i * t_interval) for i in range(1, 12)]
+
+        points[-1] = end
+
+        times = []
+
+        times_i = -1
+
+        obs_copy = self.observer.copy()
+
+        for t_point in points:  # Filters times, opted to not use enumerate because times_i = -1
+
+            t = Time(t_point).to_datetime()
+
+            obs_copy.date = t.strftime('%Y/%m/%d %H:%M')
+
+            self.target.compute(obs_copy)
+            altitude = obs_copy.alt
+
+            if altitude >= self.threshold:
+                if len(times) >= 2 and times[times_i] - t_interval == times[times_i - 1]:  # Ensures no gaps
+                    times.append(t_point)
+                    times_i += 1
+                elif len(times) < 2:
+                    times.append(t_point)
+                    times_i += 1
+
+        if len(times) < 2:
+            return [-1]
+
+        return [times[0].isoformat(), times[-1].isoformat()]

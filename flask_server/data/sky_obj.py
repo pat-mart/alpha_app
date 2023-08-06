@@ -128,10 +128,7 @@ class SkyObject:
     @property
     def suggested_hours(self) -> [datetime] or str:
 
-        if self.threshold <= -1:
-            return [-1]
-
-        elif self.hours_visible[0] == -1:
+        if self.threshold <= -1 or self.hours_visible[0] == -1:
             return [-1]
 
         elif self.sun_always_down:
@@ -142,7 +139,7 @@ class SkyObject:
         start_dt = datetime.combine(self.start_time.to_datetime().date(), self.hours_visible[0])
         end_dt = datetime.combine(self.end_time.to_datetime().date(), self.hours_visible[1])
 
-        t_interval = ((end_dt - start_dt) / 12)  # 12 to hold balance between precision and speed
+        t_interval = (end_dt - start_dt) / 12  # 12 to hold balance between precision and speed
 
         points = [start_dt + (i * t_interval) for i in range(1, 12)]
 

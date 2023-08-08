@@ -39,7 +39,7 @@ class SkyObject:
 
         try:
             self.observer_loc.target_rise_time(start_time, self.target)
-            self.observer_loc.target_set_time(start_time, self.target)
+            self.observer_loc.target_set_time(end_time, self.target)
 
         except TargetAlwaysUpWarning:
             self.obj_rise_time = None
@@ -54,7 +54,7 @@ class SkyObject:
         # Initializes sunset and sunrise, if applicable
         try:
             self.observer_loc.sun_rise_time(start_time, which='nearest')
-            self.observer_loc.sun_set_time(start_time, which='nearest')
+            self.observer_loc.sun_set_time(end_time, which='nearest')
 
         except TargetAlwaysUpWarning:
             self.sunrise_t = None
@@ -69,14 +69,14 @@ class SkyObject:
         if not (self.sun_always_down or self.sun_always_up):  # DeMorgan \Ö/
 
             __sunrise_t = self.observer_loc.sun_rise_time(start_time, which='nearest').to_datetime()
-            __sunset_t = self.observer_loc.sun_set_time(start_time, which='nearest').to_datetime()
+            __sunset_t = self.observer_loc.sun_set_time(end_time, which='nearest').to_datetime()
 
             self.sunrise_t = (__sunrise_t + self.utc_td).time()
             self.sunset_t = (__sunset_t + self.utc_td).time()
 
         if not (self.target_always_down or self.target_always_up):
             self.rise_iso = self.observer_loc.target_rise_time(start_time, self.target) + self.utc_td
-            self.set_iso = self.observer_loc.target_set_time(start_time, self.target) + self.utc_td
+            self.set_iso = self.observer_loc.target_set_time(end_time, self.target) + self.utc_td
 
             self.obj_rise_time = datetime.fromisoformat(self.rise_iso.iso).time()
             self.obj_set_time = datetime.fromisoformat(self.set_iso.iso).time()
@@ -84,8 +84,8 @@ class SkyObject:
     @property
     def hours_visible(self) -> [datetime]:
 
-        morning_twilight = self.observer_loc.twilight_morning_astronomical(self.start_time).to_datetime() + self.utc_td
-        evening_twilight = self.observer_loc.twilight_evening_astronomical(self.end_time).to_datetime() + self.utc_td
+        _morning_twilight = self.observer_loc.twilight_morning_astronomical(self.start_time).to_datetime() + self.utc_td
+        _evening_twilight = self.observer_loc.twilight_evening_astronomical(self.end_time).to_datetime() + self.utc_td
 
         return ObjUtil.hours_visible(
             target_always_up=self.target_always_up,
@@ -96,8 +96,8 @@ class SkyObject:
             end_time=self.end_time,
             obj_rise_time=self.obj_rise_time,
             obj_set_time=self.obj_set_time,
-            obs_start=morning_twilight,
-            obs_end=evening_twilight
+            obs_start=_morning_twilight,
+            obs_end=_evening_twilight
         )
 
     @property
@@ -127,7 +127,6 @@ class SkyObject:
 
     @property
     def suggested_hours(self) -> [datetime] or str:
-
         if self.threshold <= -1 or self.hours_visible[0] == -1:
             return [-1]
 
@@ -170,11 +169,8 @@ class SkyObject:
 
     @property
     def needs_mer_flip(self) -> bool:
-        dt = datetime.fromisoformat(self.peak_time)
-
-        if self.hours_visible[0] == -1 or self.peak_alt_az['alt'].value >= 87.0:
-            return False
-
-        peaks_during_observation = self.hours_visible[0] <= dt.time() <= self.hours_visible[1]
-
-        return peaks_during_observation
+        return ObjUtil.needs_mer_flip(
+            hours_visible=self.hours_visible,
+            peak_time=self.peak_time,
+            peak_alt=self.peak_alt_az['alt']
+        )

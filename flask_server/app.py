@@ -40,29 +40,48 @@ def get_obj_pos():
 
     threshold = float(args.get('thresh'))
 
-    obj = SkyObject(
-        start_time=start,
-        end_time=end,
-        obj_name=obj_name,
-        coords=(float(lat), float(lon)),
-        threshold=threshold
-    )
+    if obj_name in ['mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune']:
+        obj = HelioObj(
+            start_time=start,
+            end_time=end,
+            obj_name=obj_name,
+            coords=(float(lat), float(lat)),
+            threshold=threshold
+        )
+
+        start_time = obj.start_time
+        end_time = obj.end_time
+
+        peak_alt = obj.peak_alt_az['alt']
+        peak_az = obj.peak_alt_az['az']
+
+    else:
+        obj = SkyObject(
+            start_time=start,
+            end_time=end,
+            obj_name=obj_name,
+            coords=(float(lat), float(lon)),
+            threshold=threshold
+        )
+
+        start_time = obj.start_time.iso
+        end_time = obj.end_time.iso
+
+    peak = obj.peak_alt_az
 
     if obj.hours_visible[0] != -1:
         str_hrs = [x.isoformat() for x in obj.hours_visible]
     else:
         str_hrs = ['Target is never observable']
 
-    peak_alt_az = obj.peak_alt_az
-
     obj_data = {
         'obj_name': obj.obj_name,
-        'time_start': obj.start_time.iso,
-        'time_end': obj.end_time.iso,
+        'time_start': start_time,
+        'time_end': end_time,
         'coords': obj.coords,
         'utc_offset': ObjUtil.utc_offset(obj.coords),
         'viewing_hours': {'h_visible': str_hrs, 'h_suggested': obj.suggested_hours},
-        'peak': {'alt': peak_alt_az['alt'].value, 'az': peak_alt_az['az'].value, 'time': str(obj.peak_time)},
+        'peak': {'alt': peak['alt'].value, 'az': peak['az'].value, 'time': str(obj.peak_time)},
         'mer_flip': int(obj.needs_mer_flip)
     }
 
@@ -71,14 +90,6 @@ def get_obj_pos():
 
 @app.route('/')
 def hello_world():
-    x = HelioObj(
-        start_time=Time('2023-8-3T18:30:31.0'),
-        end_time=Time('2023-8-1T03:15:31.0'),
-        obj_name='mars',
-        coords=(40.8, -73.6),
-    )
-
-    print(x.peak_alt_az)
 
     return "<h1>Pat</h1>"
 

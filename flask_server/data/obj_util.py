@@ -2,6 +2,7 @@ from datetime import datetime
 
 import ephem
 import pytz
+import astropy.units as u
 from astropy.time import Time
 from timezonefinder import TimezoneFinder
 
@@ -58,3 +59,16 @@ class ObjUtil:
         degrees = hours + minutes / 60.0 + seconds / 3600.0
 
         return degrees
+
+    @staticmethod
+    def needs_mer_flip(hours_visible: [datetime], peak_time: str, peak_alt: u.deg):
+        if hours_visible[0] == -1 or peak_alt.value <= 87.0:
+            return False
+
+        dt = datetime.fromisoformat(peak_time)
+
+        peaks_during_observation = hours_visible[0] <= dt.time() <= hours_visible[1]
+
+        return peaks_during_observation
+
+

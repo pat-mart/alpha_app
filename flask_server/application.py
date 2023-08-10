@@ -5,24 +5,8 @@ from data.helio_obj import HelioObj
 from data.obj_util import ObjUtil
 from data.sky_obj import SkyObject
 
-app = Flask(__name__)
+application = app = Flask(__name__)
 
-
-@app.route('/api/search/helio', methods=['GET'])
-def get_heliocentric_pos():
-    args = request.args
-
-    lat = args.get('lat')
-    lon = args.get('lon')
-
-    obj = HelioObj(
-        start_time=Time('2023-8-3T18:15:31.0'),
-        end_time=Time('2023-8-4T03:15:31.0'),
-        obj_name='Mars',
-        coords=(40.8, -73)
-    )
-
-    return "<h1>Mone</h1>"
 @app.route('/api/search', methods=['GET'])
 # example search endpoint:
 # /api/search?objname=M31&starttime=2023-8-2T21:15:31.0&endtime=2023-8-3T01:12:00.0&lat=10.10&lon=10.10&thresh=20.0
@@ -81,7 +65,7 @@ def get_obj_pos():
         'coords': obj.coords,
         'utc_offset': ObjUtil.utc_offset(obj.coords),
         'viewing_hours': {'h_visible': str_hrs, 'h_suggested': obj.suggested_hours},
-        'peak': {'alt': peak['alt'].value, 'az': peak['az'].value, 'time': str(obj.peak_time)},
+        'peak': {'alt': peak['alt'].value, 'az': peak['az'].value, 'time': str(obj.peak_time.iso)},
         'mer_flip': int(obj.needs_mer_flip)
     }
 
@@ -95,4 +79,5 @@ def hello_world():
 
 
 if __name__ == '__main__':
-    app.run()
+    application.debug = True
+    application.run()

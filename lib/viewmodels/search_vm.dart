@@ -1,4 +1,4 @@
-import 'package:astro_planner/models/csv_row.dart';
+import 'package:astro_planner/util/plan/csv_row.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -57,12 +57,13 @@ class SearchViewModel extends ChangeNotifier {
       return {};
     }
 
-    _results.clear();
-
     _searchMap.forEach((key, value) {
       if(key.contains(',${query.toUpperCase()}') && count < 15){
         _results[key] = value;
         count++;
+      }
+      else {
+        _results.clear();
       }
     });
 

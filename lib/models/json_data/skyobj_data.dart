@@ -1,6 +1,6 @@
 import '../plan_m.dart';
 
-class DeepskyData {
+class SkyObjectData {
 
   final List<dynamic> hoursVis;
   final List<dynamic> hoursSuggested;
@@ -11,14 +11,14 @@ class DeepskyData {
   final double peakBearing;
   final double peakAlt;
 
-  DeepskyData({
+  SkyObjectData({
     required this.hoursVis, required this.hoursSuggested,
     required this.peakTime, required this.name,
     required this.peakBearing, required this.peakAlt
   });
 
-  factory DeepskyData.fromJson(Map<String, dynamic> json, Plan plan){
-    return DeepskyData(
+  factory SkyObjectData.fromJson(Map<String, dynamic> json){
+    return SkyObjectData(
         hoursVis: json['viewing_hours']['h_visible'],
         hoursSuggested: json['viewing_hours']['h_suggested'],
         peakTime: json['peak']['time'], name: json['obj_name'],

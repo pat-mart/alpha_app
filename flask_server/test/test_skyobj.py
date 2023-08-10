@@ -37,8 +37,6 @@ class TestSkyObj(unittest.TestCase):
             threshold=20
         )
 
-
-
     def test_typical_obj(self):
         self.assertIsNotNone(
             SkyObject(

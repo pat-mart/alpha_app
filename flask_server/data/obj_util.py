@@ -21,9 +21,9 @@ class ObjUtil:
     @staticmethod
     def hours_visible(target_always_down: bool, target_always_up: bool, sun_always_down: bool,
                       sun_always_up: bool, start_time: Time, end_time: Time, obj_rise_time: datetime.time,
-                      obj_set_time: datetime.time, obs_start: datetime.time, obs_end: datetime.time) -> [datetime]:
+                      obj_set_time: datetime.time, morn_twi: datetime.time, even_twi: datetime.time) -> [datetime]:
 
-        if target_always_down or sun_always_up or obs_start is None or obs_end is None:
+        if target_always_down or sun_always_up or even_twi is None or morn_twi is None:
             return [-1, -1]
 
         elif target_always_up and sun_always_down:
@@ -32,22 +32,26 @@ class ObjUtil:
         rise_time = obj_rise_time
         set_time = obj_set_time
 
-        obs_start = obs_start.time()
-        obs_end = obs_end.time()
+        morn_twi = morn_twi.time()  # Can be interpreted as evening twilight
+        even_twi = even_twi.time()  # Can be interpreted as morning
 
-        rises_after_sunset = rise_time > obs_end
+        print(rise_time > even_twi, set_time > morn_twi)
 
-        if rise_time > obs_end and set_time <= obs_start:  # Object rises and sets between sunset and sunrise
+        if morn_twi <= rise_time <= set_time <= even_twi:
+            return [-1, -1]
+
+        elif set_time <= rise_time <= morn_twi:  # Target rises before "sunrise", after "sunset"
+            return [[rise_time, morn_twi], [even_twi, set_time]]
+
+        elif rise_time <= morn_twi and set_time <= even_twi:
+            return [rise_time, morn_twi]
+
+        elif even_twi >= rise_time >= morn_twi >= set_time:
+            return [even_twi, set_time]
+
+        elif rise_time >= even_twi and set_time <= morn_twi:
             return [rise_time, set_time]
 
-        elif rise_time > obs_start and set_time >= obs_end:  # Object rises during day, sets at night
-            return [obs_end, set_time]
-
-        elif rise_time < obs_start and set_time <= obs_end:  # Object rises at night (early morning), sets during day
-            return [rise_time, obs_start]
-
-        elif rises_after_sunset and set_time >= obs_start:  # Object rises at night (after sunset), sets during day
-            return [rise_time, obs_start]
 
         return [-1, -1]
 
@@ -70,5 +74,3 @@ class ObjUtil:
         peaks_during_observation = hours_visible[0] <= dt.time() <= hours_visible[1]
 
         return peaks_during_observation
-
-

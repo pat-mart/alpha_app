@@ -96,34 +96,34 @@ class SkyObject:
             end_time=self.end_time,
             obj_rise_time=self.obj_rise_time,
             obj_set_time=self.obj_set_time,
-            obs_start=_morning_twilight,
-            obs_end=_evening_twilight
+            even_twi=_evening_twilight,
+            morn_twi=_morning_twilight
         )
 
     @property
     def alt_az_pos(self) -> SkyCoord:
         obj_coords = SkyCoord.from_name(self.obj_name)
 
-        return obj_coords.transform_to(AltAz(obstime=self.start_time - self.utc_td, location=self.geo_loc))
+        return obj_coords.transform_to(AltAz(obstime=self.start_time + self.utc_td, location=self.geo_loc))
 
     @property
     def peak_alt_az(self) -> [float]:
-        peak_iso = self.peak_time
+        peak_t = Time(self.peak_time)
 
         obj_coords = SkyCoord.from_name(self.obj_name)
 
-        alt = obj_coords.transform_to(AltAz(obstime=peak_iso, location=self.geo_loc)).alt
-        az = obj_coords.transform_to(AltAz(obstime=peak_iso, location=self.geo_loc)).az
+        alt = obj_coords.transform_to(AltAz(obstime=peak_t-self.utc_td, location=self.geo_loc)).alt
+        az = obj_coords.transform_to(AltAz(obstime=peak_t-self.utc_td, location=self.geo_loc)).az
 
         return {'alt': alt, 'az': az}
 
     @property
-    def peak_time(self) -> str:
+    def peak_time(self) -> Time:
         loc = self.observer_loc
 
         time = loc.target_meridian_transit_time(self.start_time, self.target) + self.utc_td
 
-        return time.iso
+        return time
 
     @property
     def suggested_hours(self) -> [datetime] or str:
@@ -171,6 +171,6 @@ class SkyObject:
     def needs_mer_flip(self) -> bool:
         return ObjUtil.needs_mer_flip(
             hours_visible=self.hours_visible,
-            peak_time=self.peak_time,
+            peak_time=self.peak_time.iso,
             peak_alt=self.peak_alt_az['alt']
         )

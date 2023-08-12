@@ -9,5 +9,4 @@ abstract class ListViewModel<Model> {
   void removeModelAt(int index);
 
   void debugClearList();
-
 }

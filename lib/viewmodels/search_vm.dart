@@ -49,7 +49,7 @@ class SearchViewModel extends ChangeNotifier {
   }
 
   Map<String, CsvRow> _filteredResults (String query) {
-    int count = 0;
+    int count = _results.length;
 
     query = _removeCommas(query);
 
@@ -58,12 +58,14 @@ class SearchViewModel extends ChangeNotifier {
     }
 
     _searchMap.forEach((key, value) {
-      if(key.contains(',${query.toUpperCase()}') && count < 15){
+      if(key.contains(',${query.toUpperCase()}') && count < 15) {
         _results[key] = value;
         count++;
       }
       else {
-        _results.clear();
+        if(_results.containsKey(key)){
+          _results.remove(key);
+        }
       }
     });
 
@@ -81,6 +83,8 @@ class SearchViewModel extends ChangeNotifier {
   }
 
   TextEditingController get controller => _searchController;
+
+  String get currentQuery => controller.text;
 
   List<CsvRow> get csvData => _csvData;
 }

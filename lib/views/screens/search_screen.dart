@@ -1,4 +1,5 @@
 import 'package:astro_planner/viewmodels/search_vm.dart';
+import 'package:astro_planner/views/smalls/search_result.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
@@ -33,6 +34,15 @@ class _SearchScreenState extends State<SearchScreen> {
                 placeholder: 'Search for a target',
                 autofocus: true,
               ),
+              Consumer<SearchViewModel>(
+                builder: (context, searchVm, _) => ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: searchVm.resultsList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return SearchResult(index: index);
+                  },
+                )
+              )
             ],
           ),
         ),

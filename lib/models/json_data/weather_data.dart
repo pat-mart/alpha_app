@@ -11,8 +11,8 @@ class WeatherData {
 
   factory WeatherData.fromJson(Map<String, dynamic> json, Plan plan) {
 
-    int startHour = plan.timespan.dateRange.start.hour;
-    int endHour = plan.timespan.dateRange.end.hour;
+    int startHour = plan.timespan.dateTimeRange.start.hour;
+    int endHour = plan.timespan.dateTimeRange.end.hour;
 
     List<dynamic> allConditionsJoined = (json['forecast']['forecastday'] as List).expand((day) => day['hour'])
       .toList()

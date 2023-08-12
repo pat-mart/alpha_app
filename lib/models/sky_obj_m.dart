@@ -1,9 +1,12 @@
 import 'dart:convert';
 import 'dart:core';
 
+import 'package:astro_planner/models/plan_m.dart';
 import 'package:astro_planner/util/enums/catalog_types.dart';
+import 'package:intl/intl.dart';
 
 import '../util/plan/catalog_name.dart';
+import '../util/plan/csv_row.dart';
 import 'json_data/skyobj_data.dart';
 import 'package:http/http.dart' as http;
 
@@ -11,13 +14,11 @@ class SkyObject {
 
   String _customCatName = '';
 
-  late String _name;
+  String _name = '';
 
-  late CatalogName _catName;
+  CatalogName _catName = CatalogName.none();
 
-  double _magnitude = 0;
-
-  String _ipAddress = '';
+  num _magnitude = 0;
 
   SkyObject(this._name, this._catName, [this._magnitude=0]);
 
@@ -27,9 +28,15 @@ class SkyObject {
     _name = _catName.toString();
   }
 
+  SkyObject.fromCsvRow(CsvRow row){
+    _name = row.properName;
+    _customCatName = row.catalogName;
+    _magnitude = row.magnitude;
+  }
+
   String get name => _name;
 
-  double get magnitude => _magnitude;
+  num get magnitude => _magnitude;
 
   String getFormattedCatalogName() {
     if(_customCatName != ''){
@@ -39,16 +46,5 @@ class SkyObject {
       return '${_catName.type.asTitleized()} ${_catName.num}';
     }
     return '${_catName.type.asUppercase()} ${_catName.num}';
-  }
-
-  Future<SkyObjectData> getObjData() async{
-    var url = Uri.parse('');
-
-    final response = await http.get(url);
-
-    if(response.statusCode == 200){
-      return SkyObjectData.fromJson(jsonDecode(response.body));
-    }
-    throw Exception('Failed to load sky object data');
   }
 }

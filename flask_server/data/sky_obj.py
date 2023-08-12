@@ -112,8 +112,10 @@ class SkyObject:
 
         obj_coords = SkyCoord.from_name(self.obj_name)
 
-        alt = obj_coords.transform_to(AltAz(obstime=peak_t-self.utc_td, location=self.geo_loc)).alt
-        az = obj_coords.transform_to(AltAz(obstime=peak_t-self.utc_td, location=self.geo_loc)).az
+        alt = obj_coords.transform_to(AltAz(obstime=peak_t - self.utc_td, location=self.geo_loc)).alt
+        az = obj_coords.transform_to(AltAz(obstime=peak_t - self.utc_td, location=self.geo_loc)).az
+
+        print(az)
 
         return {'alt': alt, 'az': az}
 
@@ -152,7 +154,7 @@ class SkyObject:
 
             t = Time(t_point).to_datetime()
 
-            altitude = self.observer_loc.altaz(time=t-self.utc_td, target=self.target).alt
+            altitude = self.observer_loc.altaz(time=t - self.utc_td, target=self.target).alt
 
             if altitude >= alt_threshold:
                 if len(times) >= 2 and times[times_i] - t_interval == times[times_i - 1]:  # Ensures no gaps

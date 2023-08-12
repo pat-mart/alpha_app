@@ -1,5 +1,3 @@
-import '../plan_m.dart';
-
 class SkyObjectData {
 
   final List<dynamic> hoursVis;

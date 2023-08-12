@@ -52,6 +52,9 @@ class ObjUtil:
         elif rise_time >= even_twi and set_time <= morn_twi:
             return [rise_time, set_time]
 
+        elif rise_time >= even_twi and set_time >= morn_twi:
+            return [rise_time, morn_twi]
+
         elif rise_time <= even_twi and set_time >= morn_twi:
             return [even_twi, morn_twi]
 

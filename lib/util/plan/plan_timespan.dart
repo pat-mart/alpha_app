@@ -22,22 +22,22 @@ class PlanTimespan {
     _daysOfWeek.add(DateFormat('EEEE').format(_dateRange.end));
   }
 
-  //Working as of 7/4/23
+  // Working as of 7/4/23
   int get numDays {
-    if(dateRange.end.day == _startDateTime.day){
+    if(dateTimeRange.end.day == _startDateTime.day){
       return 1;
     }
-    else if(dateRange.end.difference(_startDateTime).inDays == 0){
+    else if(dateTimeRange.end.difference(_startDateTime).inDays == 0){
       return 2;
     }
     else {
-      return dateRange.end.difference(_startDateTime).inDays + 2;
+      return dateTimeRange.end.difference(_startDateTime).inDays + 2;
     }
-  }//Finds days between start & end
+  } //Finds days between start & end
 
-  DateTime get startDate => _startDateTime;
+  DateTime get startDateTime => _startDateTime;
 
-  DateTimeRange get dateRange => _dateRange;
+  DateTimeRange get dateTimeRange => _dateRange;
 
   String get formattedRange {
     DateFormat format = DateFormat('EEEE, MMMM d');

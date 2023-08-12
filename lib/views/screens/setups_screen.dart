@@ -1,5 +1,4 @@
 import 'package:astro_planner/util/enums/camera_types.dart';
-import 'package:astro_planner/views/smallwidgets/setup_v.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +6,7 @@ import '../../models/setup_m.dart';
 import '../../util/setup/camera.dart';
 import '../../util/setup/telescope.dart';
 import '../../viewmodels/setup_vm.dart';
+import '../smalls/setup_v.dart';
 
 class SetupsScreen extends StatefulWidget {
   const SetupsScreen({super.key});

@@ -1,11 +1,11 @@
 import 'package:astro_planner/views/screens/empty_modal_sheet.dart';
-import 'package:astro_planner/views/smallwidgets/plan_sheet_body.dart';
-import 'package:astro_planner/views/smallwidgets/plan_v.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../viewmodels/plan_vm.dart';
+import '../smalls/plan_sheet_body.dart';
+import '../smalls/plan_v.dart';
 
 class PlansScreen extends StatefulWidget {
   const PlansScreen({super.key});
@@ -58,7 +58,7 @@ class _PlansScreenState extends State<PlansScreen>{
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: planVm.modelList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return PlanCard(plan: planVm.modelList.elementAt(index), index: index);
+                    return PlanCard(index: index);
                   }
                 ),
               ),

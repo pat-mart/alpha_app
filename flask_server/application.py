@@ -36,9 +36,6 @@ def get_obj_pos():
         start_time = obj.start_time
         end_time = obj.end_time
 
-        peak_alt = obj.peak_alt_az['alt']
-        peak_az = obj.peak_alt_az['az']
-
     else:
         obj = SkyObject(
             start_time=start,
@@ -64,8 +61,15 @@ def get_obj_pos():
         'time_end': end_time,
         'coords': obj.coords,
         'utc_offset': ObjUtil.utc_offset(obj.coords),
-        'viewing_hours': {'h_visible': str_hrs, 'h_suggested': obj.suggested_hours},
-        'peak': {'alt': peak['alt'].value, 'az': peak['az'].value, 'time': str(obj.peak_time.iso)},
+        'viewing_hours': {
+            'h_visible': str_hrs,
+            'h_suggested': obj.suggested_hours,
+            'obj_rise': obj.rise_iso.iso,
+            'obj_set': obj.set_iso.iso,
+            'sunrise': obj.sunrise_t.isoformat(),
+            'sunset': obj.sunset_t.isoformat()
+        },
+        'peak': {'alt': round(peak['alt'].value, 2), 'az': peak['az'].value, 'time': str(obj.peak_time.iso)},
         'mer_flip': int(obj.needs_mer_flip)
     }
 

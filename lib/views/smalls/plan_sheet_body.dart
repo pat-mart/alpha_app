@@ -7,7 +7,7 @@ import 'package:astro_planner/viewmodels/search_vm.dart';
 import 'package:astro_planner/views/screens/search_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:location/location.dart';
 
 import '../../models/plan_m.dart';
 import '../../models/sky_obj_m.dart';
@@ -26,7 +26,38 @@ class PlanSheet extends StatefulWidget {
 class _PlanSheetState extends State<PlanSheet> {
 
   final SearchViewModel _searchVm = SearchViewModel();
+
   late TextEditingController _searchController;
+
+  bool _serviceEnabled = false;
+  bool _usingService = true;
+
+  late PermissionStatus _permissionStatus;
+
+  double _lat = 0;
+  double _lon = 0;
+
+  final Location _location = Location();
+
+  Future<void> getLocation() async {
+    _serviceEnabled = await _location.serviceEnabled();
+    if(_serviceEnabled) {
+      _serviceEnabled = await _location.requestService();
+      if(!_serviceEnabled) {
+        _usingService = false;
+        return;
+      }
+    }
+
+    _permissionStatus = await _location.hasPermission();
+    if(_permissionStatus == PermissionStatus.denied) {
+      _permissionStatus = await _location.requestPermission();
+      if (_permissionStatus != PermissionStatus.granted) {
+        _usingService = false;
+        return;
+      }
+    }
+  }
 
   @override
   void initState(){
@@ -36,8 +67,6 @@ class _PlanSheetState extends State<PlanSheet> {
 
   @override
   Widget build(BuildContext context) {
-
-    final SearchViewModel searchVm = Provider.of<SearchViewModel>(context);
 
     return Column (
       children: <Widget> [
@@ -63,6 +92,34 @@ class _PlanSheetState extends State<PlanSheet> {
             )
           ],
         ),
+
+        const Padding(
+          padding: EdgeInsets.only(top: 24, bottom: 8),
+          child: Text('Location', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.white))
+        ),
+
+        Row(
+          children: [
+            const Text('Use current location'),
+            FutureBuilder<void>(
+              future: getLocation(),
+              builder: (context, permission) => CupertinoSwitch(
+                value: _usingService,
+                onChanged: (newVal) => setState(() {
+                  _usingService = newVal;
+                  print(newVal);
+                })
+              ),
+            )
+          ],
+        ),
+
+        Row(
+          children: [
+
+          ],
+        ),
+
         Padding(
           padding: const EdgeInsets.only(top: 24, bottom: 12),
           child: Row(
@@ -80,8 +137,6 @@ class _PlanSheetState extends State<PlanSheet> {
                       context,
                       CupertinoPageRoute(builder: (context) => const SearchScreen())
                     );
-                    Image.asset('../assets/M31.jpg');
-
                     if(_searchVm.csvData.isEmpty){
                       await _searchVm.loadCsvData();
                     }

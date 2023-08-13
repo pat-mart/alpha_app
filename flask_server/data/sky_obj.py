@@ -37,6 +37,8 @@ class SkyObject:
 
         self.target_always_up = self.target_always_down = self.sun_always_up = self.sun_always_down = False
 
+        day_diff = end_time.to_datetime().date() - start_time.to_datetime().date()
+
         try:
             self.observer_loc.target_rise_time(start_time, self.target)
             self.observer_loc.target_set_time(end_time, self.target)
@@ -54,7 +56,7 @@ class SkyObject:
         # Initializes sunset and sunrise, if applicable
         try:
             self.observer_loc.sun_rise_time(start_time, which='nearest')
-            self.observer_loc.sun_set_time(end_time, which='nearest')
+            self.observer_loc.sun_set_time(start_time, which='nearest')
 
         except TargetAlwaysUpWarning:
             self.sunrise_t = None
@@ -69,14 +71,14 @@ class SkyObject:
         if not (self.sun_always_down or self.sun_always_up):  # DeMorgan \Ö/
 
             __sunrise_t = self.observer_loc.sun_rise_time(start_time, which='nearest').to_datetime()
-            __sunset_t = self.observer_loc.sun_set_time(end_time, which='nearest').to_datetime()
+            __sunset_t = self.observer_loc.sun_set_time(start_time, which='nearest').to_datetime()
 
             self.sunrise_t = (__sunrise_t + self.utc_td).time()
             self.sunset_t = (__sunset_t + self.utc_td).time()
 
         if not (self.target_always_down or self.target_always_up):
             self.rise_iso = self.observer_loc.target_rise_time(start_time, self.target) + self.utc_td
-            self.set_iso = self.observer_loc.target_set_time(end_time, self.target) + self.utc_td
+            self.set_iso = self.observer_loc.target_set_time(start_time, self.target) + self.utc_td
 
             self.obj_rise_time = datetime.fromisoformat(self.rise_iso.iso).time()
             self.obj_set_time = datetime.fromisoformat(self.set_iso.iso).time()

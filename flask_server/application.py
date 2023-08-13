@@ -79,7 +79,7 @@ def get_obj_pos():
 @app.route('/')
 def hello_world():
 
-    return "<h1>Pat</h1>"
+    return "<h1></h1>"
 
 
 if __name__ == '__main__':

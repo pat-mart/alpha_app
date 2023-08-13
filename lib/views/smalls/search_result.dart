@@ -21,8 +21,15 @@ class _SearchResultState extends State<SearchResult> {
     SearchViewModel vm = SearchViewModel();
     var instance = vm.resultsList.elementAt(widget.index);
 
-    return CupertinoListTile(
-      title: Text(instance.catalogName),
+    bool hasProperName = instance.properName.isNotEmpty;
+    bool hasCatalogAlias = instance.catalogAlias.isNotEmpty;
+
+    return CupertinoListTile.notched(
+      title: Text(hasProperName ? instance.properName : instance.catalogName),
+      subtitle: Text(hasCatalogAlias
+          ? "${instance.catalogName}, ${instance.catalogAlias}"
+          : instance.catalogName
+      )
       // subtitle: FutureBuilder(
       //   future: objDataFuture,
       //   builder: (BuildContext context, objData) {

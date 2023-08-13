@@ -49,18 +49,22 @@ class SearchViewModel extends ChangeNotifier {
   }
 
   Map<String, CsvRow> _filteredResults (String query) {
+
     int count = _results.length;
 
-    query = _removeCommas(query);
+    query = _removeCommas(query).trim();
+
 
     if(query.isEmpty){
       return {};
     }
 
     _searchMap.forEach((key, value) {
-      if(key.contains(',${query.toUpperCase()}') && count < 15) {
-        _results[key] = value;
-        count++;
+      if(key.contains(',${query.toUpperCase()}') || key.contains(' ${query.toUpperCase()}')) {
+        if(count < 15){
+          _results[key] = value;
+          count++;
+        }
       }
       else {
         if(_results.containsKey(key)){
@@ -79,6 +83,8 @@ class SearchViewModel extends ChangeNotifier {
 
   void clearInput () {
     controller.clear();
+    resultsList.clear();
+
     notifyListeners();
   }
 

@@ -37,7 +37,7 @@ class _SearchScreenState extends State<SearchScreen> {
               Container (
                 margin: const EdgeInsets.only(left: 14, right: 14),
                 child: SizedBox(
-                  height: MediaQuery.of(context).size.height - 200,
+                  height: MediaQuery.of(context).size.height - (200 + MediaQuery.of(context).viewInsets.bottom),
                   child: Consumer<SearchViewModel>(
                     builder: (context, searchVm, _) => ListView.builder(
                       itemCount: searchVm.resultsList.length,

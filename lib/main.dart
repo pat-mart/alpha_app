@@ -1,3 +1,4 @@
+import 'package:astro_planner/viewmodels/create_plan_vm.dart';
 import 'package:astro_planner/viewmodels/plan_vm.dart';
 import 'package:astro_planner/viewmodels/search_vm.dart';
 import 'package:astro_planner/views/parent_screen.dart';
@@ -23,7 +24,8 @@ class Main extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => SearchViewModel()),
-        ChangeNotifierProvider(create: (_) => PlanViewModel())
+        ChangeNotifierProvider(create: (_) => PlanViewModel()),
+        ChangeNotifierProvider(create: (_) => CreatePlanViewModel())
       ],
       child: const CupertinoApp (
         theme: CupertinoThemeData(brightness: Brightness.dark),

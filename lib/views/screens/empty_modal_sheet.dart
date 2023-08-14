@@ -15,8 +15,7 @@ class _EmptyModalSheetState extends State<EmptyModalSheet> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPopupSurface(
-      child: Container(
-        color: const Color(0xFF2C2C2C),
+      child: SizedBox(
         height: MediaQuery.of(context).size.height - 100,
         width: MediaQuery.of(context).size.width,
         child: Container(

@@ -44,16 +44,17 @@ class SearchViewModel extends ChangeNotifier {
     }
   }
 
-  String _removeCommas(String query){
+  String _cleanQuery(String query){
     return query.replaceAll(',', '');
   }
 
   Map<String, CsvRow> _filteredResults (String query) {
 
+    List<String> keysToRemove = [];
+
     int count = _results.length;
 
-    query = _removeCommas(query).trim();
-
+    query = _cleanQuery(query).trim();
 
     if(query.isEmpty){
       return {};
@@ -68,10 +69,14 @@ class SearchViewModel extends ChangeNotifier {
       }
       else {
         if(_results.containsKey(key)){
-          _results.remove(key);
+          keysToRemove.add(key);
         }
       }
     });
+
+    for(String key in keysToRemove){
+      _results.remove(key);
+    }
 
     return _results;
   }

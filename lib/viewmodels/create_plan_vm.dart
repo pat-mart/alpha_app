@@ -5,7 +5,7 @@ class CreatePlanViewModel extends ChangeNotifier {
 
   static final CreatePlanViewModel _instance = CreatePlanViewModel._();
 
-  final TextEditingController _latController = TextEditingController();
+  final TextEditingController _latController = TextEditingController(); // Mainly to clear both simultaneously
   final TextEditingController _lonController = TextEditingController();
 
   CreatePlanViewModel._();
@@ -15,14 +15,19 @@ class CreatePlanViewModel extends ChangeNotifier {
   }
 
   bool _serviceEnabled = false;
-  bool _usingService = true;
+  bool _usingService = false;
   bool _isValidNum = true;
 
+  bool _usingFilter = false;
+
   late PermissionStatus _permissionStatus;
-  late LocationData? _locData;
+  LocationData? _locData;
 
   num _lat = 0;
   num _lon = 0;
+
+  double _latThreshold = -1;
+  double _lonThreshold = -1;
 
   final Location _location = Location();
 
@@ -56,7 +61,7 @@ class CreatePlanViewModel extends ChangeNotifier {
     _lon = _locData!.longitude ?? double.nan;
   }
 
-  bool isValidNumber(String query){
+  bool isNumeric(String query){
     if(query.isEmpty) {
       return false;
     }
@@ -65,49 +70,41 @@ class CreatePlanViewModel extends ChangeNotifier {
   }
 
   String? validator(String? query){
-    if(!isValidNumber(query!) && !isUsingService){
-      return "Please enter a number.";
+    if(!isNumeric(query!) && !isUsingService){
+      return "Please enter a degree number.";
     }
     return null;
   }
 
-  String? _onChange(String newValue, TextEditingController controller) {
-    if(isValidNumber(newValue)) {
-      return controller.text;
+  num _onChangeDegree(String newValue, num numericValue, TextEditingController controller){
+    if(isNumeric(newValue)){
+      numericValue = num.parse(num.parse(controller.text).toStringAsFixed(3));
     }
-    return null;
+    return numericValue;
   }
 
   void onChangeLat(String newValue){
-    if(isValidNumber(newValue)) {
-      _lat = num.parse(_onChange(newValue, _latController)!);
-    }
+    _lat = _onChangeDegree(newValue, _lat, _latController);
   }
 
   void onChangeLon(String newValue){
-    if(isValidNumber(newValue)) {
-      _lon = num.parse(num.parse(_lonController.text).toStringAsFixed(3));
-    }
+    _lon = _onChangeDegree(newValue, _lon, _lonController);
   }
 
-  void clearFields() {
+  void onChangeLatThreshold(String newValue){
+
+  }
+
+  void clearCoordFields() {
     _lonController.clear();
     _latController.clear();
 
     notifyListeners();
   }
 
-  void onChanged(String newValue) {
-    _isValidNum = isValidNumber(newValue);
-
-    if(_isValidNum){
-      _lat = num.parse(num.parse(_latController.text).toStringAsFixed(3));
-    }
-  }
-
   bool get isUsingService => _usingService;
 
-  bool get serviceEnabled => _serviceEnabled;
+  bool get isUsingFilter => _usingFilter;
 
   LocationData? get locationData => _locData;
 
@@ -125,6 +122,10 @@ class CreatePlanViewModel extends ChangeNotifier {
   }
   set serviceEnabled (newVal) {
     _serviceEnabled = newVal;
+    notifyListeners();
+  }
+  set usingFilter (newVal){
+    _usingFilter = newVal;
     notifyListeners();
   }
 }

@@ -9,7 +9,7 @@ application = app = Flask(__name__)
 
 @app.route('/api/search', methods=['GET'])
 # example search endpoint:
-# /api/search?objname=M31&starttime=2023-8-2T21:15:31.0&endtime=2023-8-3T01:12:00.0&lat=10.10&lon=10.10&thresh=20.0
+# /api/search?objname=M31&starttime=2023-8-2T21:15:31.0&endtime=2023-8-3T01:12:00.0&lat=10.10&lon=10.10&altthresh=20.0&azthresh=0.0
 def get_obj_pos():
     args = request.args
 
@@ -22,7 +22,8 @@ def get_obj_pos():
     start = Time(start_time)
     end = Time(end_time)
 
-    threshold = float(args.get('thresh'))
+    alt_threshold = float(args.get('altthresh'))
+    az_threshold = float(args.get('azthresh'))
 
     if obj_name in ['mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune']:
         obj = HelioObj(
@@ -30,7 +31,8 @@ def get_obj_pos():
             end_time=end,
             obj_name=obj_name,
             coords=(float(lat), float(lat)),
-            threshold=threshold
+            alt_threshold=alt_threshold,
+            az_threshold=az_threshold
         )
 
         start_time = obj.start_time
@@ -42,7 +44,8 @@ def get_obj_pos():
             end_time=end,
             obj_name=obj_name,
             coords=(float(lat), float(lon)),
-            threshold=threshold
+            alt_threshold=alt_threshold,
+            az_threshold=az_threshold
         )
 
         start_time = obj.start_time.iso

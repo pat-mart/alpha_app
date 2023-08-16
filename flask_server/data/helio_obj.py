@@ -14,7 +14,7 @@ I suppose I could have had them both extend a more generic class, but I thought 
 
 
 class HelioObj:
-    def __init__(self, start_time: Time, end_time: Time, obj_name: str, coords: (float, float), threshold: float):
+    def __init__(self, start_time: Time, end_time: Time, obj_name: str, coords: (float, float), alt_threshold: float, az_threshold: float):
 
         self.target = ephem.Jupiter()  # Placeholder
         self.utc_offset_td = timedelta(hours=ObjUtil.utc_offset(coords))
@@ -23,7 +23,8 @@ class HelioObj:
         self.start_astropy_time = start_time
         self.end_astropy_time = end_time
 
-        self.threshold = threshold
+        self.alt_threshold = alt_threshold
+        self.az_threshold = az_threshold
 
         self.coords = coords
 
@@ -112,8 +113,8 @@ class HelioObj:
             end_time=self.end_astropy_time,
             obj_rise_time=self.obj_rise_t,
             obj_set_time=self.obj_set_t,
-            obs_start=datetime.combine(self.start_time.date(), self.sunrise_t),
-            obs_end=datetime.combine(self.end_time.date(), self.sunset_t)
+            morn_twi=datetime.combine(self.start_time.date(), self.sunrise_t),
+            even_twi=datetime.combine(self.end_time.date(), self.sunset_t)
         )
 
     @property
@@ -143,7 +144,7 @@ class HelioObj:
         :return: The suggested hours as defined by the degree threshold
         """
 
-        if self.threshold <= -1 or self.hours_visible[0] == -1:
+        if self.alt_threshold <= 0 or self.az_threshold <= 0 or self.hours_visible[0] == -1:
             return [-1]
 
         if self.hours_visible[1] >= self.hours_visible[0] and not self.target_always_up:
@@ -174,9 +175,10 @@ class HelioObj:
 
             self.target.compute(obs_copy)
             altitude = self.target.alt
+            az = self.target.az
 
-            if ObjUtil.to_float(altitude) >= self.threshold:
-                if len(times) >= 2 and times[times_i - 1] + t_interval == times[times_i]: # Ensures no gaps
+            if ObjUtil.to_float(altitude) >= self.alt_threshold and ObjUtil.to_float(az) >= self.az_threshold:
+                if len(times) >= 2 and times[times_i - 1] + t_interval == times[times_i]:  # Ensures no gaps
                     times.append(t_point)
                     times_i += 1
                 elif len(times) < 2:

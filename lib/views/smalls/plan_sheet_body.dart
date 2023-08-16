@@ -16,6 +16,8 @@ import '../../util/plan/catalog_name.dart';
 import '../../util/setup/telescope.dart';
 import '../../viewmodels/plan_vm.dart';
 
+// TODO consider breaking this up into more manageable pieces
+
 class PlanSheet extends StatefulWidget {
 
   const PlanSheet({super.key});
@@ -31,7 +33,7 @@ class _PlanSheetState extends State<PlanSheet> {
   late TextEditingController _searchController;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _searchController = _searchVm.controller;
   }
@@ -74,30 +76,27 @@ class _PlanSheetState extends State<PlanSheet> {
                 child: FutureBuilder<void>(
                   future: createPlanVm.getLocation(),
                   builder: (context, permission) => CupertinoSwitch(
-                    onChanged: (newVal) {
+                    onChanged: (newVal) async {
                       createPlanVm.usingService = newVal;
-                      createPlanVm.clearFields();
+                      await createPlanVm.getLocation();
                     },
                     value: createPlanVm.isUsingService,
                   )
                 ),
               ),
-              CupertinoTextFormFieldRow(  // Latitude field (keyboardType does nothing)
+              CupertinoTextFormFieldRow(   // Latitude field (keyboardType does nothing)
                 controller: createPlanVm.latController,
                 onChanged: createPlanVm.onChangeLat,
                 validator: createPlanVm.validator,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 prefix: Padding(
-                  padding: EdgeInsets.only(right: MediaQuery.of(context).size.width/2),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width/5,
-                    child: const Text('Latitude')
-                  ),
+                  padding: EdgeInsets.only(right: MediaQuery.of(context).size.width/2.5),
+                  child: const Text('Latitude   ')
                 ),
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(6))
                 ),
-                placeholder: (createPlanVm.isUsingService) ? '${createPlanVm.locationData!.latitude ?? 0.0000}' : '0.000...',
+                placeholder: (createPlanVm.isUsingService && createPlanVm.locationData != null) ? '${createPlanVm.locationData?.latitude?.toStringAsFixed(3) ?? 0.000}' : '0.00°...',
                 enabled: !createPlanVm.isUsingService,
               ),
               CupertinoTextFormFieldRow(
@@ -106,70 +105,100 @@ class _PlanSheetState extends State<PlanSheet> {
                 validator: createPlanVm.validator,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 prefix: Padding(
-                  padding: EdgeInsets.only(right: MediaQuery.of(context).size.width/2),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width/5,
-                    child: Text('Longitude')
-                  ),
+                  padding: EdgeInsets.only(right: MediaQuery.of(context).size.width/2.5),
+                  child: const Text('Longitude'),
                 ),
                 decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(6))
                 ),
-                placeholder: (createPlanVm.isUsingService) ? '${createPlanVm.locationData!.longitude ?? 0.0000}'  : '0.000...',
+                placeholder: (createPlanVm.isUsingService) ? '${createPlanVm.locationData?.longitude?.toStringAsFixed(3) ?? 0.000}'  : '0.00°...',
                 enabled: !createPlanVm.isUsingService
               )
             ]
           ),
 
-          Row(
+          CupertinoFormSection.insetGrouped(
+            margin: EdgeInsets.zero,
+            header: const Text('TARGET'),
             children: [
-
-            ],
-          ),
-
-          Padding(
-            padding: const EdgeInsets.only(top: 24, bottom: 12),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(right: 12.0),
-                  child: Text('Target', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: CupertinoColors.white)),
+              CupertinoFormRow(
+                prefix: Row(
+                  children: [
+                    const Text('Use coordinate filtering'),
+                    CupertinoButton(
+                      onPressed: () {
+                        showCupertinoDialog(
+                          context: context,
+                          builder: (buildContext) =>
+                             CupertinoAlertDialog(
+                              title: const Padding(
+                                padding: EdgeInsets.only(bottom: 8.0),
+                                child: Text('About coordinate filtering'),
+                              ),
+                              content: const Text('Alpha can indicate what times a target is above a minimum altitude or azimuth'),
+                              actions: [
+                                CupertinoDialogAction(
+                                  isDefaultAction: true,
+                                  onPressed: () => Navigator.pop(buildContext),
+                                  child: const Text('OK')
+                                )
+                              ],
+                            )
+                        );
+                      },
+                      padding: EdgeInsets.zero,
+                      child: const Icon(CupertinoIcons.info_circle),
+                    )
+                  ],
                 ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () async {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute(builder: (context) => const SearchScreen())
-                      );
-                      if(_searchVm.csvData.isEmpty){
-                        await _searchVm.loadCsvData();
-                      }
-                    },
-                    behavior: HitTestBehavior.opaque,
-                    child: const CupertinoSearchTextField(
-                      enabled: false,
-                      padding: EdgeInsetsDirectional.fromSTEB(5.5, 10, 5.5, 10),
-                      placeholder: 'Search for a target',
-                    ),
+                child: CupertinoSwitch(
+                  value: createPlanVm.isUsingFilter,
+                  onChanged: (newVal) => createPlanVm.usingFilter = newVal
+                )
+              ),
+              if(createPlanVm.isUsingFilter) ... [
+                CupertinoTextFormFieldRow(
+                  validator: createPlanVm.validator,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  prefix: Padding(
+                    padding: EdgeInsets.only(right: MediaQuery.of(context).size.width/3),
+                    child: const Text('Minimum longitude'),
                   ),
+                  decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(6))
+                  ),
+                  placeholder: '0.00°'
+                ),
+                CupertinoTextFormFieldRow(
+                  validator: createPlanVm.validator,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  prefix: Padding(
+                    padding: EdgeInsets.only(right: MediaQuery.of(context).size.width/3),
+                    child: const Text('Minimum latitude   '),
+                  ),
+                  decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(6))
+                  ),
+                  placeholder: '0.00°',
                 )
               ],
-            ),
+              CupertinoFormRow(
+                prefix: const Text('Target      '),
+                child: CupertinoSearchTextField(
+                  onTap: () async {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(builder: (context) => const SearchScreen())
+                    );
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  },
+                  placeholder: 'Search for a target',
+                ),
+              ),
+            ]
           ),
           CupertinoButton.filled(
               onPressed: () {
-                PlanViewModel().addToList(
-                  Plan(
-                    SkyObject('Orion nebula', CatalogName(CatalogTypes.messier, 41)),
-                    Setup('Setup 2', Telescope('Celestron', 61, 360), Camera('Canon EOS 7D', 1.6, CameraTypes.dslr), true, true),
-                    PlanTimespan(DateTime(2023, 7, 28, 21, 30), const Duration(minutes: 30)),
-                    40.844,
-                    -73.65
-                  )
-                );
                 Navigator.pop(context);
               },
               child: const Text('Add to plans', style: TextStyle(color: CupertinoColors.white))

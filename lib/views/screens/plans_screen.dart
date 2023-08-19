@@ -16,55 +16,48 @@ class PlansScreen extends StatefulWidget {
 
 class _PlansScreenState extends State<PlansScreen>{
 
-  void refresh() => setState(() {});
-
   @override
   Widget build(BuildContext context) {
 
-    return CupertinoPageScaffold(
-      child: CustomScrollView(
-        scrollBehavior: const CupertinoScrollBehavior(),
-        slivers: <Widget>[
-          CupertinoSliverNavigationBar(
-            backgroundColor: CupertinoColors.black,
-            padding: EdgeInsetsDirectional.zero,
-            largeTitle: const Text('My plans'),
-            trailing: Padding(
-              padding: const EdgeInsets.only(right: 12),
-              child: IconButton(
-                icon: const Icon(CupertinoIcons.add_circled, size: 32),
-                onPressed: () {
-                  setState(() {
-                    showCupertinoModalPopup(
-                      context: context,
-                      barrierDismissible: false,
-                      barrierColor: const Color(0xBB000000),
-                      builder: (BuildContext context) {
-                        return const EmptyModalSheet(child: PlanSheet());
-                      }
-                    );
-                  });
-                },
+    return CustomScrollView(
+      scrollBehavior: const CupertinoScrollBehavior(),
+      slivers: <Widget>[
+        CupertinoSliverNavigationBar(
+          backgroundColor: CupertinoColors.black,
+          largeTitle: const Text('My plans'),
+          trailing:
+          IconButton(
+            icon: const Icon(CupertinoIcons.add_circled, size: 32),
+            onPressed: () {
+              setState(() {
+                showCupertinoModalPopup(
+                  context: context,
+                  barrierDismissible: false,
+                  barrierColor: const Color(0xBB000000),
+                  builder: (BuildContext context) {
+                    return const EmptyModalSheet(child: PlanSheet());
+                  },
+                );
+              });
+            },
+          ),
+        ),
+
+        SliverToBoxAdapter(
+          child: Container(
+            margin: const EdgeInsets.only(left: 14, right: 14),
+            child: Consumer<PlanViewModel>(
+              builder: (context, planVm, _) => ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: planVm.modelList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return PlanCard(index: index);
+                }
               ),
             ),
           ),
-
-          SliverToBoxAdapter(
-            child: Container(
-              margin: const EdgeInsets.only(left: 14, right: 14),
-              child: Consumer<PlanViewModel>(
-                builder: (context, planVm, _) => ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: planVm.modelList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return PlanCard(index: index);
-                  }
-                ),
-              ),
-            ),
-          )]
-      ),
+        )]
     );
   }
 }

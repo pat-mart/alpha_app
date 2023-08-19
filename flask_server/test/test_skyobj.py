@@ -20,7 +20,8 @@ class TestSkyObj(unittest.TestCase):
             end_time=Time('2023-7-16T01:12:00.0'),
             obj_name="Polaris",
             coords=(ran_lat, ran_lon),
-            threshold=15
+            alt_threshold= -1,
+            az_threshold= -1
         )
 
     def test_obj_never_sets(self):

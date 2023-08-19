@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Alpha can use your current location when you create a plan.</string>
+	<string>Alpha can use your current location when you create a plan. If this setting is disabled, you will need to enter coordinates when creating a plan</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>

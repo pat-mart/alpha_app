@@ -28,7 +28,7 @@ class Main extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => CreatePlanViewModel())
       ],
       child: const CupertinoApp (
-        theme: CupertinoThemeData(brightness: Brightness.dark),
+        theme: CupertinoThemeData(brightness: Brightness.dark, applyThemeToAll: true),
         home: Scaffold (
           body: ParentScreen()
         )

@@ -5,24 +5,25 @@ import 'package:intl/intl.dart';
 
 class PlanTimespan {
 
-  late final DateTime _startDateTime;
+  late DateTime _startDateTime;
 
-  late final Duration _imagingDuration;
+  Duration? _imagingDuration;
 
-  late DateTimeRange _dateRange;
+  DateTimeRange? _dateRange;
 
   final List<String> _daysOfWeek = [];
 
   PlanTimespan(this._startDateTime, this._imagingDuration){
     _dateRange = DateTimeRange(
         start: _startDateTime,
-        end: _startDateTime.add(_imagingDuration)
+        end: _startDateTime.add(_imagingDuration!)
     );
     _daysOfWeek.add(DateFormat('EEEE').format(_startDateTime));
-    _daysOfWeek.add(DateFormat('EEEE').format(_dateRange.end));
+    _daysOfWeek.add(DateFormat('EEEE').format(_dateRange!.end));
   }
 
-  // Working as of 7/4/23
+  PlanTimespan.incomplete(this._startDateTime);
+
   int get numDays {
     if(dateTimeRange.end.day == _startDateTime.day){
       return 1;
@@ -37,11 +38,11 @@ class PlanTimespan {
 
   DateTime get startDateTime => _startDateTime;
 
-  DateTimeRange get dateTimeRange => _dateRange;
+  DateTimeRange get dateTimeRange => _dateRange!;
 
   String get formattedRange {
     DateFormat format = DateFormat('EEEE, MMMM d');
 
-    return '${format.format(_startDateTime)} to ${format.format(_dateRange.end)}';
+    return '${format.format(_startDateTime)} to ${format.format(_dateRange!.end)}';
   }
 }

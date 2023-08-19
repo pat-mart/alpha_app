@@ -1,13 +1,15 @@
 
-import 'package:flutter/cupertino.dart';
 
 import '../plan_m.dart';
 
 class WeatherData {
   // A more organized way of pulling API data that is part of the Plan model
   final WeatherTypes weatherType;
+  Map<int, dynamic>? hourData;
 
   WeatherData({required this.weatherType});
+
+  WeatherData.clearHours({required this.weatherType, required this.hourData});
 
   factory WeatherData.fromJson(Map<String, dynamic> json, Plan plan) {
 

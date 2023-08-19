@@ -12,10 +12,19 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
 
+  TextEditingController controller = TextEditingController();
+  SearchViewModel searchVm = SearchViewModel();
+
+  @override
+  void dispose(){
+    controller.dispose();
+    searchVm.clearResults(doNotifyListeners: false);
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-
-    final searchVm = Provider.of<SearchViewModel>(context);
 
     return CupertinoPageScaffold(
       navigationBar: const CupertinoNavigationBar(
@@ -28,29 +37,29 @@ class _SearchScreenState extends State<SearchScreen> {
           child: Column(
             children: [
               CupertinoSearchTextField(
-                controller: searchVm.controller,
-                onSuffixTap: searchVm.clearInput,
+                controller: controller,
+                onSuffixTap: () {
+                  controller.clear();
+                  searchVm.clearResults(doNotifyListeners: true);
+                },
                 onChanged: searchVm.loadSearchResults,
                 placeholder: 'Search for a target',
                 autofocus: true,
               ),
-              Container (
-                margin: const EdgeInsets.only(left: 14, right: 14),
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height - (200 + MediaQuery.of(context).viewInsets.bottom),
-                  child: Consumer<SearchViewModel>(
-                    builder: (context, searchVm, _) => ListView.builder(
-                      itemCount: searchVm.resultsList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        if(searchVm.resultsList.isNotEmpty){
-                          return SearchResult(index: index);
-                        }
-                        return const Text('Object not available');
-                      },
-                    )
-                  ),
-                )
-              ),
+              Expanded(
+                child: Consumer<SearchViewModel>(
+                  builder: (context, searchVm, _) => ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: searchVm.resultsList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      if(searchVm.resultsList.isNotEmpty){
+                        return SearchResult(index: index);
+                      }
+                      return const Text('Object not available');
+                    },
+                  )
+                ),
+              )
             ],
           ),
         ),

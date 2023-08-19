@@ -9,7 +9,7 @@ void main () {
 
     PlanViewModel().debugClearList();
 
-    await tester.tap(find.byIcon(CupertinoIcons.add_circled));
+    await tester.tap(find.byIcon(CupertinoIcons.info_circle));
 
     await tester.pump();
 

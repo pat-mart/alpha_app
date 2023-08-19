@@ -1,14 +1,9 @@
-import 'dart:convert';
 import 'dart:core';
 
-import 'package:astro_planner/models/plan_m.dart';
 import 'package:astro_planner/util/enums/catalog_types.dart';
-import 'package:intl/intl.dart';
 
 import '../util/plan/catalog_name.dart';
 import '../util/plan/csv_row.dart';
-import 'json_data/skyobj_data.dart';
-import 'package:http/http.dart' as http;
 
 class SkyObject {
 
@@ -16,13 +11,15 @@ class SkyObject {
 
   String _name = '';
 
+  String _constellation = '';
+
   CatalogName _catName = CatalogName.none();
 
   num _magnitude = 0;
 
-  SkyObject(this._name, this._catName, [this._magnitude=0]);
+  SkyObject(this._name, this._catName, this._constellation, [this._magnitude=double.nan]);
 
-  SkyObject.customCatalogName(this._name, this._customCatName, [this._magnitude=0]);
+  SkyObject.customCatalogName(this._name, this._customCatName, [this._magnitude=double.nan]);
 
   SkyObject.fromCatalogName(this._catName){
     _name = _catName.toString();
@@ -32,6 +29,7 @@ class SkyObject {
     _name = row.properName;
     _customCatName = row.catalogName;
     _magnitude = row.magnitude;
+    _constellation = row.constellation;
   }
 
   String get name => _name;

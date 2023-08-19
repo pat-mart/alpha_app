@@ -15,15 +15,13 @@ class _EmptyModalSheetState extends State<EmptyModalSheet> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPopupSurface(
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height - 100,
+      child: Container(
+        height: MediaQuery.of(context).size.height - 50,
         width: MediaQuery.of(context).size.width,
+        color: CupertinoColors.systemGroupedBackground.darkElevatedColor,
         child: Container(
           margin: const EdgeInsets.only(left: 14, right: 14),
-          child: Padding(
-            padding: MediaQuery.of(context).viewInsets,
-            child: widget.child
-          ),
+          child: widget.child
         )
       ),
     );

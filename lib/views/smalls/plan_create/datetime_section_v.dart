@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:astro_planner/viewmodels/create_plan_vm.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -28,7 +29,7 @@ class _DatetimeSectionState extends State<DatetimeSection> {
             borderRadius: BorderRadius.zero,
             padding: EdgeInsets.zero,
             alignment: Alignment.centerLeft,
-            child: const Text('View 3-day weather data'),
+            child: const Text('View 10-day weather data'),
             onPressed: () {
 
             },
@@ -74,14 +75,14 @@ class _DatetimeSectionState extends State<DatetimeSection> {
                         use24hFormat: true,
                         mode: CupertinoDatePickerMode.time,
                         onDateTimeChanged: (DateTime value) {
-                          createPlanVm.startDate = value;
+                          createPlanVm.startTime = value;
                         },
                       ),
                     )
                 )
               );
             },
-            child: Text('')
+            child: Text(DateFormat.Hm().format(createPlanVm.getStartTime ?? DateTime.now()))
           )
         )
       ]

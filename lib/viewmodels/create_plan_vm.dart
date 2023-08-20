@@ -16,14 +16,14 @@ class CreatePlanViewModel extends ChangeNotifier {
   PermissionStatus? _permissionStatus;
   LocationData? _locData;
 
-  double? _lat = 0;
-  double? _lon = 0;
+  double? _lat = double.nan;
+  double? _lon = double.nan;
 
   double? _altFilter = -1;
   double? _azFilter = -1;
 
-  List<bool> validCoord = [false, false]; //Lat, lon
-  List<bool> validFilter = [false, false];
+  Map<String, bool> validCoord = {'lat': false, 'lon': false}; //Lat, lon
+  Map<String, bool> validFilter = {'alt': false, 'az': false};
 
   final Location _location = Location();
 
@@ -32,10 +32,6 @@ class CreatePlanViewModel extends ChangeNotifier {
   DateTime? _startTime;
 
   Duration? _duration;
-
-  bool? _startDateWithinRange;
-
-  List<Plan>? _dataList = [];
 
   CreatePlanViewModel._();
 
@@ -75,6 +71,9 @@ class CreatePlanViewModel extends ChangeNotifier {
     }
   }
 
+
+  // Field validation and presentation logic
+
   bool isNumeric(String query){
     if(query.isEmpty) {
       return false;
@@ -101,22 +100,34 @@ class CreatePlanViewModel extends ChangeNotifier {
 
   String? latValidator(String? query){
     if(_isInRange(query, -90, 90)){
-      validCoord[0] = true;
+      validCoord['lat'] = true;
       return null;
     }
     return "Enter a valid latitude";
   }
 
   String? lonValidator(String? query) {
-    return (_isInRange(query, -180, 180)) ? null : "Enter a valid longitude";
+    if (_isInRange(query, -180, 180)) {
+      validCoord['lon'] = true;
+      return null;
+    }
+    return "Enter a valid longitude";
   }
 
   String? altValidator(String? query){
-    return (_isInRange(query, 0, 90)) ? null : "Enter a valid altitude";
+    if(_isInRange(query, 0, 90)){
+      validFilter['alt'] = true;
+      return null;
+    }
+    return "Enter a valid altitude";
   }
 
   String? azValidator(String? query){
-    return (_isInRange(query, 0, 360)) ? null : "Enter a valid azimuth";
+    if(_isInRange(query, 0, 360)){
+      validFilter['az'] = true;
+      return null;
+    }
+    return "Enter a valid azimuth";
   }
 
   double? _onChangeDegree(String newValue){
@@ -143,6 +154,8 @@ class CreatePlanViewModel extends ChangeNotifier {
     _azFilter = _onChangeDegree(newValue);
   }
 
+  //State management
+
   void clearFilters(){
     _lat = -1;
     _lon = -1;
@@ -158,6 +171,8 @@ class CreatePlanViewModel extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  // Getters
 
   bool get isUsingService => _usingService;
 
@@ -181,26 +196,24 @@ class CreatePlanViewModel extends ChangeNotifier {
     _usingFilter = newVal;
     notifyListeners();
   }
+
   //DateTime stuff starts here
 
   DateTime? get getStartDate => _startDate;
 
+  DateTime? get getStartTime => _startTime;
+
   Duration? get duration => _duration;
-
-  List<WeatherData>? get iterableDays {
-    if(_startDate == null){
-      return null;
-    }
-    for(int i = 0; i < 3; i++){
-      DateTime dateTime = _startDate!.add(Duration(days: i));
-    }
-
-  }
 
   set startDate(DateTime date){
     _startDate = date;
+
     notifyListeners();
   }
 
+  set startTime(DateTime time) {
+    _startTime = time;
+    notifyListeners();
+  }
 }
 

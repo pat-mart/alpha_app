@@ -12,7 +12,7 @@ class SkyObjectData {
   SkyObjectData({
     required this.hoursVis, required this.hoursSuggested,
     required this.peakTime, required this.name,
-    required this.peakBearing, required this.peakAlt
+    required this.peakBearing, required this.peakAlt,
   });
 
   factory SkyObjectData.fromJson(Map<String, dynamic> json){

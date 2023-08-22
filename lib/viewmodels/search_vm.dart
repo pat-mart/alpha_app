@@ -1,9 +1,11 @@
+import 'dart:core';
+
 import 'package:astro_planner/util/plan/csv_row.dart';
 import 'package:astro_planner/viewmodels/create_plan_vm.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
 import '../models/json_data/skyobj_data.dart';
 import '../models/plan_m.dart';
@@ -12,14 +14,16 @@ class SearchViewModel extends ChangeNotifier {
 
   static final SearchViewModel _instance = SearchViewModel._();
 
-
   List<CsvRow> resultsList = [];
+
+  List<SkyObjectData?> dataList = [];
+
   final List<CsvRow> _csvData = [];
-  final List<SkyObjectData> _dataList = [];
 
   final Map<String, Plan?> _infoMap = {};
-
   final Map<String, CsvRow> _searchMap = {};
+
+  final Map<String, SkyObjectData> _cache = {};
   final Map<String, CsvRow> _results = {};
 
   String _currentQuery = '';
@@ -37,21 +41,28 @@ class SearchViewModel extends ChangeNotifier {
   Future<void> loadCsvData() async {
     if (_searchMap.isEmpty) {
 
-      final astroData = await rootBundle.loadString('lib/assets/a_p_data.csv');
+      final astroData = await rootBundle.loadString('lib/assets/alpha_astro_data.csv');
 
       List<List<dynamic>> data = const CsvToListConverter().convert(astroData);
 
       for (List<dynamic> row in data) {
-        String key = (row[2] != 'Star')
-            ? ',${row[0]},${row[1]},${row[5].toString().toUpperCase()}'
-            : ',${row[1].toString().toUpperCase()} ${row[3].toUpperCase()},${row[0]},${row[5]}';
+        String key;
+        if(row[2] == 'Planet'){
+          key = ',${row[0].toString().toUpperCase()}';
+        }
+        else {
+          key = (row[2] != 'Star')
+              ? ',${row[0]},${row[1]},${row[5].toString().toUpperCase()}'
+              : ',${row[1].toString().toUpperCase()} ${row[3]
+              .toUpperCase()},${row[0]},${row[5]}';
+        }
         CsvRow value = CsvRow(
             catalogName: row[0],
-            catalogAlias: (row[1] is String) ? row[1] : '',
+            catalogAlias: (row[1] is String || row[2] == 'Planet') ? row[1] : '',
             objType: row[2],
             constellation: row[3],
             magnitude: (row[4] is num) ? row[4] : double.nan,
-            properName: row[5]
+            properName: (row[2] == 'Planet') ? row[0] : row[5]
         );
         _searchMap[key] = value;
       }
@@ -67,29 +78,29 @@ class SearchViewModel extends ChangeNotifier {
     final List<String> keysToRemove = [];
     final List<String> dataKeysToRemove = [];
 
-    int count = _results.length;
-
     query = _cleanQuery(query).trim();
 
     if(query.isEmpty){
       return {};
     }
 
+    var startDt = createPlanVm.getStartDateTime ?? DateTime.now();
+    var endDt = createPlanVm.getEndDateTime ?? DateTime.now().add(const Duration(minutes: 1));
+
     _searchMap.forEach((key, value) {
       if(key.contains(',${query.toUpperCase()}') || key.contains(' ${query.toUpperCase()}')) {
-        if(count <= 10){
+        if(_results.length < 10){
           _results[key] = value;
-          if(createPlanVm.lon != null && createPlanVm.lat != null && createPlanVm.getStartDate != null){
+          if(createPlanVm.lon != null && createPlanVm.lat != null) {
             _infoMap[key] =
               Plan.fromCsvRow(
                   value,
-                  createPlanVm.getStartDate,
-                  createPlanVm.duration,
+                  startDt,
+                  endDt,
                   createPlanVm.lat!,
                   createPlanVm.lon!
               );
           }
-          count++;
         }
       }
       else {
@@ -112,14 +123,35 @@ class SearchViewModel extends ChangeNotifier {
     _currentQuery = query;
     resultsList = _filteredResults(_currentQuery).values.toList();
 
+  }
+
+  Future<void> loadPlanData() async {
+    bool hasInternet = await CreatePlanViewModel().hasInternetConnection();
+
+    if(hasInternet){
+      for(var plan in _infoMap.values){
+        if(plan != null && _infoMap.values.isNotEmpty){
+          if(_cache.containsKey(plan.uuid)){
+            dataList.add(_cache[plan.uuid]);
+          }
+          else {
+            var data = await plan.getObjInfo();
+            dataList.add(data);
+            _cache[plan.uuid] = data;
+          }
+        }
+        else {
+          dataList.add(null);
+        }
+      }
+    }
+    else {
+      throw Exception('No internet');
+    }
     notifyListeners();
   }
 
-  void loadTimeData() {
-
-  }
-
-  /// doNotifyListeners is used to prevent reloading of widgets not yet in context, even after Navigator.pop(context) is called.
+  /// doNotifyListeners is used to prevent reloading of widgets not yet in context
   void clearResults({required bool doNotifyListeners}){
     _currentQuery = '';
     resultsList.clear();

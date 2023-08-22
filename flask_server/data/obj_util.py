@@ -35,8 +35,6 @@ class ObjUtil:
         morn_twi = morn_twi.time()  # Can be interpreted as evening twilight
         even_twi = even_twi.time()  # Can be interpreted as morning
 
-        print(rise_time > even_twi, set_time > morn_twi)
-
         if morn_twi <= rise_time <= set_time <= even_twi:
             return [-1, -1]
 

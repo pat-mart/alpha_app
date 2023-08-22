@@ -49,43 +49,43 @@ NGC6946,UGC 11597,Galaxy,Cepheus,8.9,,Lepus,Lep
 NGC1068,M 77,Galaxy,Cetus,8.8,,Libra,Lib
 NGC4649,M 60,Galaxy,Virgo,8.8,,Lupus,Lup
 NGC4486,M 87,Galaxy,Virgo,8.6,Virgo A,Lynx,Lyn
-NGC5055,M 63,Galaxy,Canes Venatici,8.6,Sunflower Galaxy,Lyra,Lyr
-NGC6864,M 75,Globular Cluster,Sagittarius,8.6,,Mensa,Men
-NGC4826,M 64,Galaxy,Coma Berenices,8.5,Black Eye Galaxy,Microscopium,Mic
-NGC1261,GCL 5,Globular Cluster,Horologium,8.4,,Monoceros,Mon
-NGC1952,M 1,Nebula,Taurus,8.4,Crab Nebula,Musca,Mus
-NGC2403,UGC 3918,Galaxy,Camelopardalis,8.4,,Norma,Nor
-NGC3034,M 82,Galaxy,Ursa Major,8.4,Cigar Galaxy,Octans,Oct
-NGC4472,M 49,Galaxy,Virgo,8.4,,Ophiuchus,Oph
-NGC5194,M 51,Galaxy,Canes Venatici,8.4,Whirlpool Galaxy,Orion,Ori
-NGC4258,M 106,Galaxy,Canes Venatici,8.3,,Pavo,Pav
-NGC4594,M 104,Galaxy,Virgo,8.3,Sombrero Galaxy,Pegasus,Peg
-NGC6779,M 56,Globular Cluster,Lyra,8.3,,Perseus,Per
-NGC6838,M 71,Globular Cluster,Sagitta,8.3,,Phoenix,Phe
-NGC221,M 32,Galaxy,Andromeda,8.2,Le Gentil,Pictor,Pic
-NGC2070,ESO 57-EN6,Cluster Nebulosity,Dorado,8.2,,Pisces,Psc
-NGC4590,M 68,Globular Cluster,Hydra,8.2,,Piscis Austrinus,PsA
-NGC4736,M 94,Galaxy,Canes Venatici,8.2,,Puppis,Pup
-NGC6352,Dunlop 417,Globular Cluster,Ara,8.2,,Pyxis,Pyx
-NGC188,OCL 309,Open Cluster,Cepheus,8.1,,Reticulum,Ret
-NGC6171,M 107,Globular Cluster,Ophiuchus,8.1,Butterfly Cluster,Sagitta,Sge
-NGC6681,M 70,Globular Cluster,Sagittarius,8.1,,Sagittarius,Sgr
-NGC6853,M 27,Planetary Nebula,Vulpecula,8.1,Dumbbell Nebula,Scorpius,Sco
-NGC55,Dunlop 507,Galaxy,Sculptor,8,,Sculptor,Scl
-NGC205,M 110,Galaxy,Andromeda,8,,Scutum,Sct
-NGC246,PK 118-74.1,Planetary Nebula,Cetus,8,,Serpens,Ser
-NGC1904,M 79,Globular Cluster,Lepus,8,,Sextans,Sex
-NGC2068,M 78,Nebula,Orion,8,,Taurus,Tau
-NGC3132,PK 272+12.1,Planetary Nebula,Vela,8,,Telescopium,Tel
-NGC3918,PK 294+4.1,Planetary Nebula,Centaurus,8,,Triangulum,Tri
-NGC6694,M 26,Open Cluster,Scutum,8,,Triangulum Australe,TrA
-NGC7009,PK 37-34.1,Planetary Nebula,Aquarius,8,,Tucana,Tuc
-NGC5823,OCL 936,Open Cluster,Circinus,7.9,,Ursa Major,UMa
-NGC6333,M 9,Globular Cluster,Ophiuchus,7.9,,Ursa Minor,UMi
-NGC4372,GCL 19,Globular Cluster,Musca,7.8,,Vela,Vel
-NGC5024,M 53,Globular Cluster,Coma Berenices,7.7,,Virgo,Vir
-NGC5457,M 101,Galaxy,Ursa Major,7.7,Pinwheel Galaxy,Volans,Vol
-NGC6637,M 69,Globular Cluster,Sagittarius,7.7,,Vulpecula,Vul
+NGC5055,M 63,Galaxy,Canes Venatici,8.6,Sunflower Galaxy,,
+NGC6864,M 75,Globular Cluster,Sagittarius,8.6,,,
+NGC4826,M 64,Galaxy,Coma Berenices,8.5,Black Eye Galaxy,,
+NGC1261,GCL 5,Globular Cluster,Horologium,8.4,,,
+NGC1952,M 1,Nebula,Taurus,8.4,Crab Nebula,,
+NGC2403,UGC 3918,Galaxy,Camelopardalis,8.4,,,
+NGC3034,M 82,Galaxy,Ursa Major,8.4,Cigar Galaxy,,
+NGC4472,M 49,Galaxy,Virgo,8.4,,,
+NGC5194,M 51,Galaxy,Canes Venatici,8.4,Whirlpool Galaxy,,
+NGC4258,M 106,Galaxy,Canes Venatici,8.3,,,
+NGC4594,M 104,Galaxy,Virgo,8.3,Sombrero Galaxy,,
+NGC6779,M 56,Globular Cluster,Lyra,8.3,,,
+NGC6838,M 71,Globular Cluster,Sagitta,8.3,,,
+NGC221,M 32,Galaxy,Andromeda,8.2,Le Gentil,,
+NGC2070,ESO 57-EN6,Cluster Nebulosity,Dorado,8.2,,,
+NGC4590,M 68,Globular Cluster,Hydra,8.2,,,
+NGC4736,M 94,Galaxy,Canes Venatici,8.2,,,
+NGC6352,Dunlop 417,Globular Cluster,Ara,8.2,,,
+NGC188,OCL 309,Open Cluster,Cepheus,8.1,,,
+NGC6171,M 107,Globular Cluster,Ophiuchus,8.1,Butterfly Cluster,,
+NGC6681,M 70,Globular Cluster,Sagittarius,8.1,,,
+NGC6853,M 27,Planetary Nebula,Vulpecula,8.1,Dumbbell Nebula,,
+NGC55,Dunlop 507,Galaxy,Sculptor,8,,,
+NGC205,M 110,Galaxy,Andromeda,8,,,
+NGC246,PK 118-74.1,Planetary Nebula,Cetus,8,,,
+NGC1904,M 79,Globular Cluster,Lepus,8,,,
+NGC2068,M 78,Nebula,Orion,8,,,
+NGC3132,PK 272+12.1,Planetary Nebula,Vela,8,,,
+NGC3918,PK 294+4.1,Planetary Nebula,Centaurus,8,,,
+NGC6694,M 26,Open Cluster,Scutum,8,,,
+NGC7009,PK 37-34.1,Planetary Nebula,Aquarius,8,,,
+NGC5823,OCL 936,Open Cluster,Circinus,7.9,,,
+NGC6333,M 9,Globular Cluster,Ophiuchus,7.9,,,
+NGC4372,GCL 19,Globular Cluster,Musca,7.8,,,
+NGC5024,M 53,Globular Cluster,Coma Berenices,7.7,,,
+NGC5457,M 101,Galaxy,Ursa Major,7.7,Pinwheel Galaxy,,
+NGC6637,M 69,Globular Cluster,Sagittarius,7.7,,,
 NGC6715,M 54,Globular Cluster,Sagittarius,7.7,,,
 NGC2506,OCL 593,Open Cluster,Monoceros,7.6,,,
 NGC5236,M 83,Galaxy,Hydra,7.6,Southern Pinwheel Galaxy,,
@@ -496,7 +496,6 @@ HR 6241,e,Star,Scorpius,2.29,Larawag,,
 HAT-P-42,_,Star,Hydra,12.15,Lerna,,
 HR 6508,u,Star,Scorpius,2.7,Lesath,,
 HR 7595,X,Star,Aquila,4.71,Libertas,,
-PSR B1257+12,-,Star,Virgo,-,Lich,,
 HD 118203,_,Star,Ursa Major,8.05,Liesma,,
 HR 824,39,Star,Aries,4.52,Lilii Borea,,
 HD 212771,_,Star,Aquarius,7.6,Lionrock,,
@@ -718,3 +717,12 @@ IC 4628,ESO 332-14,Nebula,Scorpius,7.30,,,
 PGC 17223,,Galaxy,Dorado,0.90,"Large Magellanic Cloud,LMC",,
 IC 2944,Caldwell 100,Nebula,Centaurus,4.50,"Lambda Centauri Nebula,Running Chicken Nebula",,
 IC 2602,Caldwell 102,Open Cluster,Car,1.90,Southern Pleiades,,
+Mercury,,Planet,,0.74,,,
+Venus,,Planet,,-4.1,,,
+Mars,,Planet,,1.79,,,
+Jupiter,,Planet,,-2.3,,,
+Saturn,,Planet,,0.41,,,
+Uranus,,Planet,,5.5,,,
+Neptune,,Planet,,7.8,,,
+Moon,,Planet,,,,,
+Sun,,Planet,,-26.8,,,

@@ -1,9 +1,9 @@
 import 'package:astro_planner/models/json_data/skyobj_data.dart';
 import 'package:astro_planner/models/setup_m.dart';
 import 'package:astro_planner/models/sky_obj_m.dart';
-import 'package:astro_planner/util/plan/catalog_name.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:uuid/uuid.dart';
 import 'dart:convert';
 
 import '../util/plan/csv_row.dart';
@@ -25,18 +25,27 @@ class Plan {
 
   final String _weatherKey = '6556c094f33b40a0976230554232406';
 
-  final DateFormat _formatter = DateFormat('YYYY-MM-DD HH:MM:SS');
+  final Uuid uuidGen = const Uuid();
+  late String uuid;
 
-  Plan(this._target, this._setup, this._timespan, this._latitude, this._longitude);
+  final DateFormat _formatter = DateFormat('y-MM-dd HH:MM:SS');
 
-  Plan.fromCsvRow(CsvRow row, DateTime? startDate, Duration? duration, this._latitude, this._longitude){
+  Plan(this._target, this._setup, this._timespan, this._latitude, this._longitude){
+    uuid = uuidGen.v4();
+  }
+
+  Plan.fromCsvRow(CsvRow row, DateTime? startDate, DateTime? endDate, this._latitude, this._longitude){
+    uuid = uuidGen.v4();
     _target = SkyObject.fromCsvRow(row);
-    if(startDate != null){
-      _timespan = PlanTimespan(startDate, duration ?? const Duration(hours: 24));
-    }
+
+    startDate ?? DateTime.now();
+    endDate ?? DateTime.now().add(const Duration(minutes: 1));
+
+    _timespan = PlanTimespan(startDate!, endDate!.difference(startDate!));
   }
 
   Plan.incomplete(this._latitude, this._longitude, DateTime? startDate){
+    uuid = uuidGen.v4();
     if(startDate != null){
       _timespan = PlanTimespan(startDate, const Duration(hours: 72)); // Weather api can provide 3 day forecast
     }
@@ -72,6 +81,7 @@ class Plan {
   }
 
   Future<SkyObjectData> getObjInfo() async {
+    print(_formatter.format(timespan.dateTimeRange.end));
     Uri url = Uri.parse(
         'http://flask-env.eba-xndrjpjz.us-east-1.elasticbeanstalk.com'
             '/api/search?objname=${target.name}&starttime=${_formatter.format(timespan.startDateTime)}'

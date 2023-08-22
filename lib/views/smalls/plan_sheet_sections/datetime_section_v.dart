@@ -37,7 +37,7 @@ class _DatetimeSectionState extends State<DatetimeSection> {
           child: Container()
         ),
         CupertinoFormRow(
-          prefix: const Text('Start date'),
+          prefix: const Text('Start date & time'),
           child: CupertinoButton(
             borderRadius: BorderRadius.zero,
             onPressed: () {
@@ -48,20 +48,21 @@ class _DatetimeSectionState extends State<DatetimeSection> {
                     height: MediaQuery.of(context).size.height/3,
                     child: CupertinoPopupSurface(
                       child: CupertinoDatePicker(
-                        mode: CupertinoDatePickerMode.date,
+                        use24hFormat: true,
+                        minimumDate: DateTime.now(),
                         onDateTimeChanged: (DateTime value) {
-                          createPlanVm.startDate = value;
+                          createPlanVm.startDateTime = value;
                         },
                       ),
                     )
                   )
               );
             },
-            child: Text(DateFormat('M.d.yyyy').format(createPlanVm.getStartDate ?? DateTime.now())) //Change
+            child: Text(DateFormat('M.d.yyyy HH:MM').format(createPlanVm.getStartDateTime ?? DateTime.now())) //Change
           )
         ),
         CupertinoFormRow(
-          prefix: const Text('Start time'),
+          prefix: const Text('End date & time'),
           child: CupertinoButton(
             borderRadius: BorderRadius.zero,
             onPressed: () {
@@ -71,18 +72,16 @@ class _DatetimeSectionState extends State<DatetimeSection> {
                     height: MediaQuery.of(context).size.height/3,
                     child: CupertinoPopupSurface(
                       child: CupertinoDatePicker(
-                        minimumDate: DateTime.now(),
                         use24hFormat: true,
-                        mode: CupertinoDatePickerMode.time,
                         onDateTimeChanged: (DateTime value) {
-                          createPlanVm.startTime = value;
+                          createPlanVm.endDateTime = value;
                         },
                       ),
                     )
                 )
               );
             },
-            child: Text(DateFormat.Hm().format(createPlanVm.getStartTime ?? DateTime.now()))
+            child: Text(DateFormat('M.d.yyyy HH:MM').format(createPlanVm.getEndDateTime ?? DateTime.now().add(const Duration(minutes: 1))))
           )
         )
       ]

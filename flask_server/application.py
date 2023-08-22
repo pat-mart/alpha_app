@@ -7,6 +7,7 @@ from data.sky_obj import SkyObject
 
 application = app = Flask(__name__)
 
+
 @app.route('/api/search', methods=['GET'])
 # example search endpoint:
 # /api/search?objname=M31&starttime=2023-8-2T21:15:31.0&endtime=2023-8-3T01:12:00.0&lat=10.10&lon=10.10&altthresh=20.0&azthresh=0.0
@@ -35,8 +36,13 @@ def get_obj_pos():
             az_threshold=az_threshold
         )
 
-        start_time = obj.start_time
-        end_time = obj.end_time
+        start_time = obj.start_time.isoformat()
+        end_time = obj.end_time.isoformat()
+
+        rise_t = obj.obj_rise_t
+        set_t = obj.obj_set_t
+
+        peak_t = obj.peak_time
 
     else:
         obj = SkyObject(
@@ -50,6 +56,11 @@ def get_obj_pos():
 
         start_time = obj.start_time.iso
         end_time = obj.end_time.iso
+
+        rise_t = obj.rise_iso.iso
+        set_t = obj.set_iso.iso
+
+        peak_t = obj.peak_time.iso
 
     peak = obj.peak_alt_az
 
@@ -67,12 +78,12 @@ def get_obj_pos():
         'viewing_hours': {
             'h_visible': str_hrs,
             'h_suggested': obj.suggested_hours,
-            'obj_rise': obj.rise_iso.iso,
-            'obj_set': obj.set_iso.iso,
+            'obj_rise': str(rise_t),
+            'obj_set': str(set_t),
             'sunrise': obj.sunrise_t.isoformat(),
             'sunset': obj.sunset_t.isoformat()
         },
-        'peak': {'alt': round(peak['alt'].value, 2), 'az': peak['az'].value, 'time': str(obj.peak_time.iso)},
+        'peak': {'alt': round(peak['alt'].value, 2), 'az': peak['az'].value, 'time': str(peak_t)},
         'mer_flip': int(obj.needs_mer_flip)
     }
 
@@ -81,7 +92,6 @@ def get_obj_pos():
 
 @app.route('/')
 def hello_world():
-
     return "<h1></h1>"
 
 

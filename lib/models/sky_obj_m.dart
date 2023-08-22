@@ -34,6 +34,8 @@ class SkyObject {
 
   String get name => _name;
 
+  String get catName => _customCatName;
+
   num get magnitude => _magnitude;
 
   String getFormattedCatalogName() {

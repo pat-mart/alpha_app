@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../viewmodels/plan_vm.dart';
-import '../smalls/plan_create/plan_sheet_body.dart';
+import '../smalls/plan_sheet_body.dart';
 import '../smalls/plan_v.dart';
 
 class PlansScreen extends StatefulWidget {

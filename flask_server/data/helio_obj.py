@@ -38,7 +38,7 @@ class HelioObj:
         self.start_time = start_time.to_datetime()
         self.end_time = end_time.to_datetime()
 
-        self.start_dt = datetime.combine(self.start_time.date(),(self.start_time + self.utc_offset_td).time())
+        self.start_dt = datetime.combine(self.start_time.date(), (self.start_time + self.utc_offset_td).time())
         self.end_dt = datetime.combine(self.end_time.date(), (self.end_time + self.utc_offset_td).time())
 
         self.start_dt = self.start_dt.strftime('%Y/%m/%d %H:%M')

@@ -1,8 +1,10 @@
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:location/location.dart';
-
-import '../models/json_data/weather_data.dart';
-import '../models/plan_m.dart';
+import 'package:permission_handler/permission_handler.dart' as ph;
 
 class CreatePlanViewModel extends ChangeNotifier {
 
@@ -13,11 +15,15 @@ class CreatePlanViewModel extends ChangeNotifier {
 
   bool _usingFilter = false;
 
-  PermissionStatus? _permissionStatus;
+  bool _hasInternet = false;
+
+  ph.PermissionStatus? _permissionStatus;
   LocationData? _locData;
 
-  double? _lat = double.nan;
-  double? _lon = double.nan;
+  final _permissionController = StreamController<ph.PermissionStatus>();
+
+  double? _lat;
+  double? _lon;
 
   double? _altFilter = -1;
   double? _azFilter = -1;
@@ -27,11 +33,9 @@ class CreatePlanViewModel extends ChangeNotifier {
 
   final Location _location = Location();
 
-  // Begin DateTime stuff
-  DateTime? _startDate;
-  DateTime? _startTime;
+  DateTime? _startDateTime;
 
-  Duration? _duration;
+  DateTime? _endDateTime;
 
   CreatePlanViewModel._();
 
@@ -39,40 +43,69 @@ class CreatePlanViewModel extends ChangeNotifier {
     return _instance;
   }
 
-  Future<void> getLocation() async {
-    if(_permissionStatus == null) {
-      _serviceEnabled = await _location.serviceEnabled();
-      if (_serviceEnabled) {
-        _serviceEnabled = await _location.requestService();
-        if (!_serviceEnabled) {
-          _usingService = false;
-          return;
-        }
-      }
+  Stream<ph.PermissionStatus> get permissionStream => _permissionController.stream;
+  StreamController<bool> test = StreamController<bool>();
 
-      _permissionStatus = await _location.hasPermission();
-      if (_permissionStatus == PermissionStatus.denied) {
-        _permissionStatus = await _location.requestPermission();
-        if (_permissionStatus != PermissionStatus.granted) {
-          _usingService = false;
-          return;
-        }
-      }
+  @override
+  void dispose(){
+    _permissionController.close();
 
-      try {
-        _locData = await _location.getLocation();
-      } catch (error) {
-        _lat = double.nan;
-        _lon = double.nan;
-      }
-
-      _lat = _locData!.latitude ?? double.nan;
-      _lon = _locData!.longitude ?? double.nan;
-    }
+    super.dispose();
   }
 
+  Future<void> get location async {
+
+    await _checkHasPermission();
+
+    if(!_permissionStatus!.isGranted){
+      _usingService = false;
+      _serviceEnabled = false;
+      _lat = _lon = null;
+
+      return;
+    }
+
+    _locData = await _location.getLocation().timeout(const Duration(seconds: 5));
+
+    _lat = _locData?.latitude;
+    _lon = _locData?.longitude;
+
+    notifyListeners();
+  }
+
+  Future<void> _checkHasPermission() async {
+    _permissionStatus = await ph.Permission.locationWhenInUse.status;
+    _permissionController.add(_permissionStatus!);
+
+    ph.Permission.locationWhenInUse.request()
+      .then((status) {
+        if(status.isPermanentlyDenied){
+          ph.openAppSettings();
+          serviceEnabled = false;
+        }
+        else if(!status.isGranted){
+          serviceEnabled = false;
+        }
+        else {
+          serviceEnabled = true;
+        }
+        _permissionStatus = status;
+        _permissionController.add(status);
+    });
+  }
+
+  Future<bool> hasInternetConnection() async {
+    final connectivityResult = await(Connectivity().checkConnectivity());
+
+    return ([ConnectivityResult.ethernet, ConnectivityResult.wifi].contains(connectivityResult));
+  }
 
   // Field validation and presentation logic
+
+  void nullCoordinates(){
+    _lat = _lon = null;
+    notifyListeners();
+  }
 
   bool isNumeric(String query){
     if(query.isEmpty) {
@@ -130,6 +163,7 @@ class CreatePlanViewModel extends ChangeNotifier {
     return "Enter a valid azimuth";
   }
 
+  // Event handlers
   double? _onChangeDegree(String newValue){
     double? x;
     if(isNumeric(newValue)){
@@ -154,7 +188,7 @@ class CreatePlanViewModel extends ChangeNotifier {
     _azFilter = _onChangeDegree(newValue);
   }
 
-  //State management
+  // Notifications
 
   void clearFilters(){
     _lat = -1;
@@ -178,6 +212,8 @@ class CreatePlanViewModel extends ChangeNotifier {
 
   bool get isUsingFilter => _usingFilter;
 
+  bool get serviceEnabled => _serviceEnabled;
+
   LocationData? get locationData => _locData;
 
   double? get lat => _lat;
@@ -197,22 +233,19 @@ class CreatePlanViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  //DateTime stuff starts here
+  // DateTime stuff
 
-  DateTime? get getStartDate => _startDate;
+  DateTime? get getStartDateTime => _startDateTime;
 
-  DateTime? get getStartTime => _startTime;
+  DateTime? get getEndDateTime => _endDateTime;
 
-  Duration? get duration => _duration;
-
-  set startDate(DateTime date){
-    _startDate = date;
-
+  set startDateTime(DateTime date){
+    _startDateTime = date;
     notifyListeners();
   }
 
-  set startTime(DateTime time) {
-    _startTime = time;
+  set endDateTime(DateTime date){
+    _endDateTime = date;
     notifyListeners();
   }
 }

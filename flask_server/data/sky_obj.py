@@ -118,8 +118,6 @@ class SkyObject:
         alt = obj_coords.transform_to(AltAz(obstime=peak_t - self.utc_td, location=self.geo_loc)).alt
         az = obj_coords.transform_to(AltAz(obstime=peak_t - self.utc_td, location=self.geo_loc)).az
 
-        print(az)
-
         return {'alt': alt, 'az': az}
 
     @property

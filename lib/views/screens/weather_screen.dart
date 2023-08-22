@@ -19,8 +19,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
     CreatePlanViewModel createPlanVm = Provider.of<CreatePlanViewModel>(context);
 
-    if(createPlanVm.lon != null && createPlanVm.lat != null && createPlanVm.getStartDate != null){
-      plan = Plan.incomplete(createPlanVm.lat!, createPlanVm.lon!, createPlanVm.getStartDate);
+    if(createPlanVm.lon != null && createPlanVm.lat != null && createPlanVm.getStartDateTime != null){
+      plan = Plan.incomplete(createPlanVm.lat!, createPlanVm.lon!, createPlanVm.getStartDateTime);
     }
     return CupertinoPageScaffold (
       child: Column(

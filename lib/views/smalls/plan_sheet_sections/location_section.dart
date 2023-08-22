@@ -29,22 +29,22 @@ class _LocationSectionState extends State<LocationSection> {
         header: const Text('LOCATION'),
         children: [
           CupertinoFormRow(
-            prefix: const Text('Use current location'),
-            child: FutureBuilder<void>(
-              future: createPlanVm.getLocation(),
-              builder: (context, permission) => CupertinoSwitch(
-                onChanged: (newVal) async {
-                  createPlanVm.usingService = newVal;
+            prefix: const Text('Use this location'),
+            child: CupertinoSwitch(
+              onChanged: (newVal) async {
+
+                createPlanVm.usingService = newVal;
+
+                if(createPlanVm.isUsingService){
                   latController.clear();
                   lonController.clear();
-                  if(newVal && createPlanVm.locationData == null){
-                    await createPlanVm.getLocation();
-                  }
-                },
-                activeColor: CupertinoColors.activeGreen,
-                value: createPlanVm.isUsingService,
-              )
-          ),
+
+                  await createPlanVm.location;
+                }
+              },
+              activeColor: CupertinoColors.activeGreen,
+              value: createPlanVm.isUsingService && createPlanVm.serviceEnabled,
+            ),
         ),
         CupertinoTextFormFieldRow(
             key: const Key('Latitude'),
@@ -78,7 +78,7 @@ class _LocationSectionState extends State<LocationSection> {
             decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(6))
             ),
-            placeholder: (createPlanVm.isUsingService) ? '${createPlanVm.locationData?.longitude?.toStringAsFixed(4) ?? 0.000}°'  : '0.000°...',
+            placeholder: (createPlanVm.isUsingService && createPlanVm.locationData != null) ? '${createPlanVm.locationData?.longitude?.toStringAsFixed(4) ?? 0.000}°'  : '0.000°...',
             enabled: !createPlanVm.isUsingService,
 
             keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: true),

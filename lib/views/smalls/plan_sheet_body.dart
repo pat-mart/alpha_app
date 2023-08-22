@@ -1,14 +1,12 @@
 import 'package:astro_planner/viewmodels/create_plan_vm.dart';
-import 'package:astro_planner/views/screens/search_screen.dart';
-import 'package:astro_planner/views/smalls/plan_create/datetime_section_v.dart';
-import 'package:astro_planner/views/smalls/plan_create/plan_sheet_header.dart';
-import 'package:astro_planner/views/smalls/plan_create/target_section.dart';
+import 'package:astro_planner/views/smalls/plan_sheet_sections/datetime_section_v.dart';
+import 'package:astro_planner/views/smalls/plan_sheet_sections/plan_sheet_header.dart';
+import 'package:astro_planner/views/smalls/plan_sheet_sections/target_section.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../viewmodels/search_vm.dart';
-import 'location_section.dart';
+import 'package:astro_planner/views/smalls/plan_sheet_sections/location_section.dart';
 
 class PlanSheet extends StatefulWidget {
 
@@ -58,7 +56,7 @@ class _PlanSheetState extends State<PlanSheet> with SingleTickerProviderStateMix
       slivers: <Widget>[
         const SliverToBoxAdapter(
           child: Padding(
-              padding: EdgeInsets.only(top: 10)
+            padding: EdgeInsets.only(top: 10)
           )
         ),
         PlanSheetHeader(createPlanVm: createPlanVm),

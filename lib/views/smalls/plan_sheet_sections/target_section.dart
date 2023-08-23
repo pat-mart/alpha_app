@@ -39,20 +39,20 @@ class _TargetSectionState extends State<TargetSection> {
                         showCupertinoDialog(
                             context: context,
                             builder: (buildContext) =>
-                                CupertinoAlertDialog(
-                                  title: const Padding(
-                                    padding: EdgeInsets.only(bottom: 8.0),
-                                    child: Text('About coordinate filtering'),
-                                  ),
-                                  content: const Text('Alpha can indicate what times a target is above a minimum altitude or azimuth'),
-                                  actions: [
-                                    CupertinoDialogAction(
-                                        isDefaultAction: true,
-                                        onPressed: () => Navigator.pop(buildContext),
-                                        child: const Text('OK')
-                                    )
-                                  ],
-                                )
+                              CupertinoAlertDialog(
+                                title: const Padding(
+                                  padding: EdgeInsets.only(bottom: 8.0),
+                                  child: Text('About coordinate filtering'),
+                                ),
+                                content: const Text('Alpha can indicate what times a target is above a minimum altitude or azimuth'),
+                                actions: [
+                                  CupertinoDialogAction(
+                                      isDefaultAction: true,
+                                      onPressed: () => Navigator.pop(buildContext),
+                                      child: const Text('OK')
+                                  )
+                                ],
+                              )
                         );
                       },
                       padding: EdgeInsets.zero,

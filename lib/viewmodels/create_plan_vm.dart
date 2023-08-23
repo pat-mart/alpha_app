@@ -15,8 +15,6 @@ class CreatePlanViewModel extends ChangeNotifier {
 
   bool _usingFilter = false;
 
-  bool _hasInternet = false;
-
   ph.PermissionStatus? _permissionStatus;
   LocationData? _locData;
 
@@ -43,9 +41,6 @@ class CreatePlanViewModel extends ChangeNotifier {
     return _instance;
   }
 
-  Stream<ph.PermissionStatus> get permissionStream => _permissionController.stream;
-  StreamController<bool> test = StreamController<bool>();
-
   @override
   void dispose(){
     _permissionController.close();
@@ -55,7 +50,7 @@ class CreatePlanViewModel extends ChangeNotifier {
 
   Future<void> get location async {
 
-    await _checkHasPermission();
+    await checkHasPermission();
 
     if(!_permissionStatus!.isGranted){
       _usingService = false;
@@ -65,7 +60,9 @@ class CreatePlanViewModel extends ChangeNotifier {
       return;
     }
 
-    _locData = await _location.getLocation().timeout(const Duration(seconds: 5));
+    _serviceEnabled = true;
+
+    _locData = await _location.getLocation().timeout(const Duration(seconds: 3));
 
     _lat = _locData?.latitude;
     _lon = _locData?.longitude;
@@ -73,25 +70,16 @@ class CreatePlanViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _checkHasPermission() async {
+  Future<void> checkHasPermission() async {
     _permissionStatus = await ph.Permission.locationWhenInUse.status;
-    _permissionController.add(_permissionStatus!);
 
-    ph.Permission.locationWhenInUse.request()
-      .then((status) {
-        if(status.isPermanentlyDenied){
-          ph.openAppSettings();
-          serviceEnabled = false;
-        }
-        else if(!status.isGranted){
-          serviceEnabled = false;
-        }
-        else {
-          serviceEnabled = true;
-        }
-        _permissionStatus = status;
-        _permissionController.add(status);
-    });
+    _serviceEnabled = _permissionStatus!.isGranted;
+
+    if(!_serviceEnabled){
+      _usingService = false;
+    }
+
+    notifyListeners();
   }
 
   Future<bool> hasInternetConnection() async {
@@ -104,6 +92,13 @@ class CreatePlanViewModel extends ChangeNotifier {
 
   void nullCoordinates(){
     _lat = _lon = null;
+    notifyListeners();
+  }
+
+  void clearControllers(textEditingControllers){
+    for(TextEditingController c in textEditingControllers){
+      c.clear();
+    }
     notifyListeners();
   }
 

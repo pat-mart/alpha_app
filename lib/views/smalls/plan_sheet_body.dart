@@ -18,14 +18,8 @@ class PlanSheet extends StatefulWidget {
 
 class _PlanSheetState extends State<PlanSheet> with SingleTickerProviderStateMixin{
 
-  TextEditingController latController = TextEditingController();
-  TextEditingController lonController = TextEditingController();
-
   late AnimationController animationController;
   late Animation<double> animation;
-
-  TextEditingController altController = TextEditingController();
-  TextEditingController azController = TextEditingController();
 
   @override
   void initState(){
@@ -33,17 +27,6 @@ class _PlanSheetState extends State<PlanSheet> with SingleTickerProviderStateMix
 
     animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 150));
     animation = CurvedAnimation(parent: animationController, curve: Curves.easeInOut);
-  }
-
-  @override
-  void dispose() {
-    latController.dispose();
-    lonController.dispose();
-
-    altController.dispose();
-    azController.dispose();
-
-    super.dispose();
   }
 
   @override
@@ -65,7 +48,7 @@ class _PlanSheetState extends State<PlanSheet> with SingleTickerProviderStateMix
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             children: [
-              LocationSection(latController: latController, lonController: lonController, createPlanVm: createPlanVm),
+              LocationSection(createPlanVm: createPlanVm),
               const DatetimeSection(),
               TargetSection(createPlanVm: createPlanVm, animationController: animationController, animation: animation),
             ]

@@ -4,6 +4,7 @@
 *.pyc
 *.swp
 .DS_Store
+/lib/assets/.weather_key
 .atom/
 .buildlog/
 .history

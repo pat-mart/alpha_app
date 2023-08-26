@@ -57,7 +57,24 @@ class _LocationSectionState extends State<LocationSection> with WidgetsBindingOb
             prefix: const Text('Use this location'),
             child: CupertinoSwitch(
               onChanged: (newVal) async {
+
+                await createPlanVm.checkHasPermission();
+
                 if(!createPlanVm.serviceEnabled){
+                  createPlanVm.usingService = false;
+                  return;
+                }
+
+                createPlanVm.usingService = newVal;
+
+                if(newVal){
+                  latController.clear();
+                  lonController.clear();
+
+                  await createPlanVm.location;
+                }
+
+                if(createPlanVm.serviceEnabled == false){
                   showCupertinoDialog(context: context, builder: (buildContext) {
                     return CupertinoAlertDialog(
                       title: const Padding(
@@ -74,22 +91,6 @@ class _LocationSectionState extends State<LocationSection> with WidgetsBindingOb
                       ],
                     );
                   });
-                }
-
-                await createPlanVm.checkHasPermission();
-
-                if(!createPlanVm.serviceEnabled){
-                  createPlanVm.usingService = false;
-                  return;
-                }
-
-                createPlanVm.usingService = newVal;
-
-                if(newVal){
-                  latController.clear();
-                  lonController.clear();
-
-                  await createPlanVm.location;
                 }
               },
               activeColor: CupertinoColors.activeGreen,

@@ -15,6 +15,8 @@ class CreatePlanViewModel extends ChangeNotifier {
 
   bool _usingFilter = false;
 
+  bool validStartDate = true;
+
   ph.PermissionStatus? _permissionStatus;
   LocationData? _locData;
 
@@ -34,6 +36,8 @@ class CreatePlanViewModel extends ChangeNotifier {
   DateTime? _startDateTime;
 
   DateTime? _endDateTime;
+
+  DateTime now = DateTime.now();
 
   CreatePlanViewModel._();
 
@@ -191,7 +195,7 @@ class CreatePlanViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void showFilterWidgets(AnimationController controller) {
+  void showFilterWidgets(AnimationController controller){
     if(_usingFilter){
       controller.forward();
     }
@@ -215,15 +219,15 @@ class CreatePlanViewModel extends ChangeNotifier {
 
   double? get lon => _lon;
 
-  set usingService (newVal) {
+  set usingService(newVal){
     _usingService = newVal;
     notifyListeners();
   }
-  set serviceEnabled (newVal) {
+  set serviceEnabled(newVal){
     _serviceEnabled = newVal;
     notifyListeners();
   }
-  set usingFilter (newVal){
+  set usingFilter(newVal){
     _usingFilter = newVal;
     notifyListeners();
   }
@@ -234,6 +238,11 @@ class CreatePlanViewModel extends ChangeNotifier {
 
   DateTime? get getEndDateTime => _endDateTime;
 
+  void setNow() {
+    now = DateTime.now();
+    notifyListeners();
+  }
+
   set startDateTime(DateTime date){
     _startDateTime = date;
     notifyListeners();
@@ -241,6 +250,17 @@ class CreatePlanViewModel extends ChangeNotifier {
 
   set endDateTime(DateTime date){
     _endDateTime = date;
+    notifyListeners();
+  }
+
+  void validateStartDate(){
+    if(_startDateTime != null){
+      var endDt = _endDateTime ?? DateTime.now().add(const Duration(minutes: 1));
+      if(_startDateTime! == endDt || _startDateTime!.isAfter(endDt)){
+        validStartDate = true;
+      }
+    }
+    validStartDate = false;
     notifyListeners();
   }
 }

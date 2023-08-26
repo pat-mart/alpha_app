@@ -16,7 +16,7 @@ class PlanSheet extends StatefulWidget {
   State<StatefulWidget> createState() => _PlanSheetState();
 }
 
-class _PlanSheetState extends State<PlanSheet> with SingleTickerProviderStateMixin{
+class _PlanSheetState extends State<PlanSheet> with SingleTickerProviderStateMixin, WidgetsBindingObserver{
 
   late AnimationController animationController;
   late Animation<double> animation;

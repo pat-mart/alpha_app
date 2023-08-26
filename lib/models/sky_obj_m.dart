@@ -9,7 +9,7 @@ class SkyObject {
 
   String _customCatName = '';
 
-  String _name = '';
+  String _properName = '';
 
   String _constellation = '';
 
@@ -17,24 +17,26 @@ class SkyObject {
 
   num _magnitude = 0;
 
-  SkyObject(this._name, this._catName, this._constellation, [this._magnitude=double.nan]);
+  SkyObject(this._properName, this._catName, this._constellation, [this._magnitude=double.nan]);
 
-  SkyObject.customCatalogName(this._name, this._customCatName, [this._magnitude=double.nan]);
+  SkyObject.customCatalogName(this._properName, this._customCatName, [this._magnitude=double.nan]);
 
   SkyObject.fromCatalogName(this._catName){
-    _name = _catName.toString();
+    _properName = _catName.toString();
   }
 
   SkyObject.fromCsvRow(CsvRow row){
-    _name = row.properName;
+    _properName = row.properName;
     _customCatName = row.catalogName;
     _magnitude = row.magnitude;
     _constellation = row.constellation;
   }
 
-  String get name => _name;
+  String get name => _properName;
 
   String get catName => _customCatName;
+
+  String get constellation => _constellation;
 
   num get magnitude => _magnitude;
 

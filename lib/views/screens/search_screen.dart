@@ -1,9 +1,11 @@
+import 'package:astro_planner/viewmodels/create_plan_vm.dart';
 import 'package:astro_planner/viewmodels/search_vm.dart';
 import 'package:astro_planner/views/smalls/search_result.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 class SearchScreen extends StatefulWidget {
+
   const SearchScreen({super.key});
 
   @override
@@ -26,10 +28,17 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
 
+    final CreatePlanViewModel createPlanVm = Provider.of<CreatePlanViewModel>(context);
+    searchVm = Provider.of<SearchViewModel>(context);
+
     return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
+      navigationBar: CupertinoNavigationBar(
         previousPageTitle: 'New plan',
         backgroundColor: CupertinoColors.black,
+        trailing: CupertinoButton(
+            onPressed: (searchVm.selectedResult != null) ? () => Navigator.pop(context) : null,
+            child: const Text('Add', overflow: TextOverflow.visible)
+        ),
       ),
       child: SafeArea(
         child: Container(
@@ -44,33 +53,27 @@ class _SearchScreenState extends State<SearchScreen> {
                 },
                 onChanged: (String q) async {
                   searchVm.loadSearchResults(q);
-                  await searchVm.loadPlanData();
                 },
                 placeholder: 'Search for a target',
                 autofocus: true,
               ),
               Expanded(
-                child: Consumer<SearchViewModel>(
-                  builder: (context, searchVm, _) {
-                    if(searchVm.resultsList.isEmpty && controller.text.isNotEmpty){
-                      return Center(child: Text('No results', style: TextStyle(color: CupertinoColors.systemGrey.darkColor)));
+                child: (searchVm.resultsList.isEmpty && controller.text.isNotEmpty) ? Center(child: Text('No results', style: TextStyle(color: CupertinoColors.systemGrey.darkColor)))
+                : ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: searchVm.resultsList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    if(searchVm.resultsList.isNotEmpty){
+                      return SearchResult(index: index, searchVm: searchVm, createPlanVm: createPlanVm, csvData: searchVm.csvData[index]);
                     }
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: searchVm.resultsList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        if(searchVm.resultsList.isNotEmpty){
-                          return SearchResult(index: index);
-                        }
-                      },
-                    );
+                    return null;
                   }
-                ),
+                )
               )
-            ],
-          ),
-        ),
-      ),
+            ]
+          )
+        )
+      )
     );
   }
 }

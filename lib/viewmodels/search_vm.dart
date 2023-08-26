@@ -18,7 +18,7 @@ class SearchViewModel extends ChangeNotifier {
 
   List<SkyObjectData?> dataList = [];
 
-  final List<CsvRow> _csvData = [];
+  List<CsvRow> _csvData = [];
 
   final Map<String, Plan?> _infoMap = {};
   final Map<String, CsvRow> _searchMap = {};
@@ -32,16 +32,26 @@ class SearchViewModel extends ChangeNotifier {
 
   bool canUseData = false;
 
+  final Map<int, dynamic> tappedInstance = {};
+
+  CsvRow? selectedResult;
+  bool canAdd = false;
+
   SearchViewModel._();
 
   factory SearchViewModel(){
     return _instance;
   }
 
+  List<CsvRow> get csvData => _csvData;
+
+  Map<String, Plan?> get infoMap => _infoMap;
+
+  Map<String, SkyObjectData> get infoCache => _cache;
+
   Future<void> loadCsvData() async {
     if (_searchMap.isEmpty) {
-
-      final astroData = await rootBundle.loadString('lib/assets/alpha_astro_data.csv');
+      final astroData = await rootBundle.loadString('assets/alpha_astro_data.csv', cache: false);
 
       List<List<dynamic>> data = const CsvToListConverter().convert(astroData);
 
@@ -54,19 +64,21 @@ class SearchViewModel extends ChangeNotifier {
           key = (row[2] != 'Star')
               ? ',${row[0]},${row[1]},${row[5].toString().toUpperCase()}'
               : ',${row[1].toString().toUpperCase()} ${row[3]
-              .toUpperCase()},${row[0]},${row[5]}';
+              .toUpperCase()},${row[0]},${row[5].toString().toUpperCase()}';
         }
         CsvRow value = CsvRow(
-            catalogName: row[0],
-            catalogAlias: (row[1] is String || row[2] == 'Planet') ? row[1] : '',
-            objType: row[2],
-            constellation: row[3],
-            magnitude: (row[4] is num) ? row[4] : double.nan,
-            properName: (row[2] == 'Planet') ? row[0] : row[5]
+          catalogName: row[0],
+          catalogAlias: (row[1] is String && row[1] != '_' || row[2] == 'Planet') ? row[1] : '',
+          objType: row[2],
+          constellation: row[3],
+          magnitude: (row[4] is num) ? row[4] : double.nan,
+          properName: (row[2] == 'Planet') ? row[0] : row[5],
+          isStar: (row[2] == 'Star')
         );
         _searchMap[key] = value;
       }
     }
+    _csvData = _searchMap.values.toList();
   }
 
   String _cleanQuery(String query){
@@ -94,11 +106,11 @@ class SearchViewModel extends ChangeNotifier {
           if(createPlanVm.lon != null && createPlanVm.lat != null) {
             _infoMap[key] =
               Plan.fromCsvRow(
-                  value,
-                  startDt,
-                  endDt,
-                  createPlanVm.lat!,
-                  createPlanVm.lon!
+                value,
+                startDt,
+                endDt,
+                createPlanVm.lat!,
+                createPlanVm.lon!
               );
           }
         }
@@ -121,37 +133,60 @@ class SearchViewModel extends ChangeNotifier {
 
   void loadSearchResults(String query) {
     _currentQuery = query;
+
     resultsList = _filteredResults(_currentQuery).values.toList();
 
-  }
-
-  Future<void> loadPlanData() async {
-    bool hasInternet = await CreatePlanViewModel().hasInternetConnection();
-
-    if(hasInternet){
-      for(var plan in _infoMap.values){
-        if(plan != null && _infoMap.values.isNotEmpty){
-          if(_cache.containsKey(plan.uuid)){
-            dataList.add(_cache[plan.uuid]);
-          }
-          else {
-            var data = await plan.getObjInfo();
-            dataList.add(data);
-            _cache[plan.uuid] = data;
-          }
-        }
-        else {
-          dataList.add(null);
-        }
-      }
+    if(!resultsList.contains(selectedResult)){
+      selectedResult = null;
+      canAdd = false;
     }
-    else {
-      throw Exception('No internet');
-    }
+
     notifyListeners();
   }
 
-  /// doNotifyListeners is used to prevent reloading of widgets not yet in context
+  Future<void> loadSinglePlanData(String uuid) async {
+    bool hasInternet = await CreatePlanViewModel().hasInternetConnection();
+
+    if(!hasInternet || _infoMap.isEmpty) {
+      return;
+    }
+
+    var plan = _infoMap[uuid];
+
+    if(plan != null && _cache.containsKey(uuid)){
+      dataList.add(_cache[plan.uuid]);
+    } else {
+      var data = await plan?.getObjInfo();
+    }
+  }
+
+  // Future<void> loadPlanData() async {
+  //   bool hasInternet = await CreatePlanViewModel().hasInternetConnection();
+  //
+  //   if(hasInternet && _infoMap.values.isNotEmpty){
+  //     for(var plan in _infoMap.values){
+  //       if(plan != null){
+  //         if(_cache.containsKey(plan.uuid)){
+  //           dataList.add(_cache[plan.uuid]);
+  //         }
+  //         else {
+  //           var data = await plan.getObjInfo();
+  //           dataList.add(data);
+  //           _cache[plan.uuid] = data;
+  //         }
+  //       }
+  //       else {
+  //         dataList.add(null);
+  //       }
+  //     }
+  //   }
+  //   else {
+  //     throw Exception('No internet');
+  //   }
+  //   notifyListeners();
+  // }
+
+  /// doNotifyListeners is used to prevent reloading of widgets not yet in context (which leads to runtime error)
   void clearResults({required bool doNotifyListeners}){
     _currentQuery = '';
     resultsList.clear();
@@ -161,5 +196,17 @@ class SearchViewModel extends ChangeNotifier {
     }
   }
 
-  List<CsvRow> get csvData => _csvData;
+  void selectResult(CsvRow row){
+    selectedResult = row;
+    canAdd = true;
+
+    notifyListeners();
+  }
+
+  void deselectResult(CsvRow row){
+    selectedResult = null;
+    canAdd = false;
+
+    notifyListeners();
+  }
 }

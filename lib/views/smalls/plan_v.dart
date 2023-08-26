@@ -25,7 +25,7 @@ class _PlanCardState extends State<PlanCard> {
     super.initState();
     Plan plan = PlanViewModel().getPlan(widget.index);
 
-    weatherFuture = plan.getFromWeatherApi(requestType: RequestType.forecast);
+    weatherFuture = plan.getWeatherData();
   }
 
   @override
@@ -35,7 +35,6 @@ class _PlanCardState extends State<PlanCard> {
       child: Consumer<PlanViewModel>(
         builder: (context, planVm, _) {
           Plan plan = planVm.getPlan(widget.index);
-
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -45,8 +44,8 @@ class _PlanCardState extends State<PlanCard> {
               ),
               const Padding(padding: EdgeInsets.only(bottom: 8)),
               Card(
-                color: const Color(0xFF494949),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                color: CupertinoColors.secondarySystemGroupedBackground.darkColor,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 child: SizedBox (
                   width: double.infinity,
                   height: MediaQuery.of(context).size.height/6,

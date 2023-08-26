@@ -1,3 +1,5 @@
+import 'package:uuid/uuid.dart';
+
 class CsvRow{
 
   String catalogName = '';
@@ -10,8 +12,10 @@ class CsvRow{
 
   String properName = '';
 
+  bool isStar = false;
+
   CsvRow({required this.catalogName, required this.catalogAlias, required this.objType, required this.constellation,
-      required this.magnitude, required this.properName});
+      required this.magnitude, required this.properName, required this.isStar});
 
   CsvRow.empty(){
     catalogName = '';

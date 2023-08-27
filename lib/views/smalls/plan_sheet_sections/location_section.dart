@@ -54,10 +54,10 @@ class _LocationSectionState extends State<LocationSection> with WidgetsBindingOb
         header: const Text('LOCATION'),
         children: [
           CupertinoFormRow(
-            prefix: const Text('Use this location'),
+            prefix: Text('Use this location', style: TextStyle(color: createPlanVm.serviceEnabled ? CupertinoColors.white : CupertinoColors.inactiveGray.darkColor)),
+            helper: !createPlanVm.serviceEnabled ? Text('Location permission denied', style: TextStyle(fontSize: 12, color: CupertinoColors.inactiveGray.darkColor)) : null,
             child: CupertinoSwitch(
-              onChanged: (newVal) async {
-
+              onChanged: (newVal) async { // DO NOT TOUCH
                 await createPlanVm.checkHasPermission();
 
                 if(!createPlanVm.serviceEnabled){
@@ -73,29 +73,10 @@ class _LocationSectionState extends State<LocationSection> with WidgetsBindingOb
 
                   await createPlanVm.location;
                 }
-
-                if(createPlanVm.serviceEnabled == false){
-                  showCupertinoDialog(context: context, builder: (buildContext) {
-                    return CupertinoAlertDialog(
-                      title: const Padding(
-                        padding: EdgeInsets.only(bottom: 8.0),
-                        child: Text('Location permission denied'),
-                      ),
-                      content: const Text('Alpha cannot currently access your current location. You can change this in Settings.'),
-                      actions: [
-                        CupertinoDialogAction(
-                            isDefaultAction: true,
-                            onPressed: () => Navigator.pop(buildContext),
-                            child: const Text('OK')
-                        )
-                      ],
-                    );
-                  });
-                }
               },
               activeColor: CupertinoColors.activeGreen,
               value: createPlanVm.isUsingService && createPlanVm.serviceEnabled,
-            ),
+            )
         ),
         CupertinoTextFormFieldRow(
             key: const Key('Latitude'),
@@ -131,7 +112,6 @@ class _LocationSectionState extends State<LocationSection> with WidgetsBindingOb
             ),
             placeholder: (createPlanVm.serviceEnabled && createPlanVm.isUsingService && createPlanVm.locationData != null) ? '${createPlanVm.locationData?.longitude?.toStringAsFixed(4) ?? 0.000}°'  : '0.000°...',
             enabled: !createPlanVm.isUsingService,
-
             keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: true),
             autocorrect: false
         )

@@ -1,15 +1,18 @@
+import 'dart:io';
+
 import 'package:astro_planner/models/json_data/skyobj_data.dart';
 import 'package:astro_planner/models/setup_m.dart';
 import 'package:astro_planner/models/sky_obj_m.dart';
 import 'package:astro_planner/viewmodels/search_vm.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:uuid/uuid.dart';
 import 'dart:convert';
-import 'dart:io';
 
 import '../util/plan/csv_row.dart';
 import '../util/plan/plan_timespan.dart';
+import '../viewmodels/create_plan_vm.dart';
 import 'json_data/weather_data.dart';
 
 class Plan {
@@ -22,12 +25,10 @@ class Plan {
 
   double _latitude, _longitude;
 
-  double alt_thresh = -1;
-  double az_thresh = -1;
+  double altThresh = -1;
+  double azThresh = -1;
 
-  final File keyFile = File('../assets/.weather_key');
-  late String weatherKey;
-  late String countryCode;
+  dynamic httpClient = HttpClient();
 
   final Uuid uuidGen = const Uuid();
   late String uuid;
@@ -36,12 +37,6 @@ class Plan {
 
   Plan(this._target, this._setup, this._timespan, this._latitude, this._longitude){
     uuid = uuidGen.v4();
-
-    try {
-      weatherKey = keyFile.readAsStringSync().trim();
-    } catch (e) {
-      print('E');
-    }
   }
 
   Plan.fromCsvRow(CsvRow row, DateTime? startDate, DateTime? endDate, this._latitude, this._longitude){
@@ -73,27 +68,18 @@ class Plan {
 
   String get formattedEndDate => DateFormat('yyyy-MM-d').format(timespan.dateTimeRange.end);
 
-  Future<WeatherData> getWeatherData([double? latitude, double? longitude]) async {
+  Future<WeatherData> getWeatherData() async {
 
-    double lat, lon;
+    final String weatherKey = await rootBundle.loadString('assets/.weather_key', cache: false);
 
-    if(latitude != null && longitude != null) {
-      lat = latitude;
-      lon = longitude;
-    }
-    else {
-      lat = _latitude;
-      lon = _longitude;
-    }
+    Uri url = Uri.parse('https://weatherkit.apple.com/api/v1/weather/en-US/$_latitude/$_longitude?dataSets=forecastHourly&country=US');
 
-    Uri url = Uri.parse('https://weatherkit.apple.com/api/v1/weather/en-US/$lat/$lon?dataSets=forecastHourly&country=US');
-
-    final response = await http.get(
+    dynamic response = await http.get(
       url,
       headers: {
         'Authorization': 'Bearer $weatherKey'
       }
-    );
+    ).timeout(const Duration(seconds: 5));
 
     if(response.statusCode == 200){
       return WeatherData.fromJson(jsonDecode(response.body), this);
@@ -105,12 +91,10 @@ class Plan {
     Uri url = Uri.parse(
         'http://flask-env.eba-xndrjpjz.us-east-1.elasticbeanstalk.com'
             '/api/search?objname=${target.catName}&starttime=${_formatter.format(timespan.startDateTime)}'
-            '&endtime=${_formatter.format(timespan.dateTimeRange.end)}&lat=$_latitude&lon=$_longitude&altthresh=$alt_thresh&azthresh=$az_thresh'
+            '&endtime=${_formatter.format(timespan.dateTimeRange.end)}&lat=$_latitude&lon=$_longitude&altthresh=$altThresh&azthresh=$azThresh'
     );
 
-    print(url.toString());
-
-    final response = await http.get(url).timeout(const Duration(seconds: 15));
+    final response = await http.get(url).timeout(const Duration(seconds: 10));
 
     if(response.statusCode == 200) {
       var searchVm = SearchViewModel();
@@ -125,9 +109,4 @@ class Plan {
     }
     throw Exception('Error code ${response.statusCode}');
   }
-}
-
-enum RequestType{
-  astro,
-  forecast
 }

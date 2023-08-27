@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart' as ph;
+
+import '../models/json_data/weather_data.dart';
+import '../models/plan_m.dart';
 
 class CreatePlanViewModel extends ChangeNotifier {
 
@@ -92,18 +94,10 @@ class CreatePlanViewModel extends ChangeNotifier {
     return ([ConnectivityResult.ethernet, ConnectivityResult.wifi].contains(connectivityResult));
   }
 
-  // Field validation and presentation logic
+  // Field validation
 
-  void nullCoordinates(){
-    _lat = _lon = null;
-    notifyListeners();
-  }
-
-  void clearControllers(textEditingControllers){
-    for(TextEditingController c in textEditingControllers){
-      c.clear();
-    }
-    notifyListeners();
+  bool get isValidLocation {
+    return _lon != null && _lat != null;
   }
 
   bool isNumeric(String query){
@@ -163,6 +157,19 @@ class CreatePlanViewModel extends ChangeNotifier {
   }
 
   // Event handlers
+
+  void nullCoordinates(){
+    _lat = _lon = null;
+    notifyListeners();
+  }
+
+  void clearControllers(textEditingControllers){
+    for(TextEditingController c in textEditingControllers){
+      c.clear();
+    }
+    notifyListeners();
+  }
+
   double? _onChangeDegree(String newValue){
     double? x;
     if(isNumeric(newValue)){
@@ -173,10 +180,12 @@ class CreatePlanViewModel extends ChangeNotifier {
 
   void onChangeLat(String newValue){
     _lat = _onChangeDegree(newValue);
+    notifyListeners();
   }
 
   void onChangeLon(String newValue){
     _lon = _onChangeDegree(newValue);
+    notifyListeners();
   }
 
   void onChangeAltFilter(String newValue){
@@ -186,8 +195,6 @@ class CreatePlanViewModel extends ChangeNotifier {
   void onChangeAzFilter(String newValue){
     _azFilter = _onChangeDegree(newValue);
   }
-
-  // Notifications
 
   void clearFilters(){
     _lat = -1;
@@ -205,7 +212,7 @@ class CreatePlanViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Getters
+  // Getters & setters
 
   bool get isUsingService => _usingService;
 

@@ -7,7 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../../models/plan_m.dart';
+
 class DatetimeSection extends StatefulWidget {
+
   const DatetimeSection({super.key});
 
   @override
@@ -25,19 +28,20 @@ class _DatetimeSectionState extends State<DatetimeSection> {
       margin: EdgeInsets.zero,
       header: const Text('WEATHER, DATE AND TIME'),
       children: [
-        const WeatherSection(),
+        WeatherSection(createPlanVm: createPlanVm),
         CupertinoFormRow(
           prefix: const Text('Start date & time'),
-          error: (createPlanVm.validStartDate) ? null : const Text('Please make sure the start date is before the end'),
+          error: (createPlanVm.validStartDate) ? null : const Text('The start date must be before the end'),
           child: CupertinoButton(
             borderRadius: BorderRadius.zero,
-            onPressed: () {
+            onPressed: () async {
               createPlanVm.setNow();
               showCupertinoModalPopup(
                 barrierColor: CupertinoColors.darkBackgroundGray,
                 context: context,
                 builder: (context) => SizedBox(
                   height: MediaQuery.of(context).size.height/3,
+
                   child: CupertinoDatePicker(
                     use24hFormat: true,
                     minimumDate: createPlanVm.now,

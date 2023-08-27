@@ -1,37 +1,34 @@
-
+import 'package:intl/intl.dart';
 
 import '../plan_m.dart';
 
 class WeatherData {
-  // A more organized way of pulling API data that is part of the Plan model
-  final WeatherTypes weatherType;
-  Map<int, dynamic>? hourData;
 
-  WeatherData({required this.weatherType});
+  static final DateFormat format = DateFormat('y-MM-ddTHH:MM:SSZ');
 
-  WeatherData.clearHours({required this.weatherType, required this.hourData});
+  WeatherData({required Map<int, List<DateTime?>> clearHoursByDay});
 
+  /// Weather forecast times are in GMT
   factory WeatherData.fromJson(Map<String, dynamic> json, Plan plan) {
 
-    int startHour = plan.timespan.dateTimeRange.start.hour;
-    int endHour = plan.timespan.dateTimeRange.end.hour;
+    List<dynamic> hours = json['forecastHourly']['hours'];
 
-    List<dynamic> allConditionsJoined = (json['forecast']['forecastday'] as List).expand((day) => day['hour'])
-      .toList()
-      .map((hour) => hour['condition']['text'].toString())
-      .toList();
-    //Consolidates every condition at every hour of all days involved in the span
+    List<DateTime> tempClearHours = [];
 
-    print(allConditionsJoined.sublist(startHour, endHour));
+    Map<int, List<DateTime>> clearHoursByDay = {}; // Index of day, clear hours for that day
 
-    final bool isClear = allConditionsJoined.sublist(startHour, endHour).every((condition) => condition == 'Clear');
+    for(int i = 0; i < hours.length; i++){
+      if(hours[i]['conditionCode'] == 'Clear') {
+        tempClearHours.add(DateTime.parse(hours[i]['forecastStart']).toLocal());
+        if(i != hours.length && tempClearHours[i].day != tempClearHours[i+1].day){
+          clearHoursByDay[0] = tempClearHours;
+          tempClearHours.clear();
+        }
+      }
+    }
+    clearHoursByDay[1] = tempClearHours;
+    tempClearHours.clear();
 
-    return WeatherData(weatherType: (isClear) ? WeatherTypes.good : WeatherTypes.bad);
+    return WeatherData(clearHoursByDay: clearHoursByDay);
   }
-}
-
-enum WeatherTypes {
-  good,
-  bad,
-  unavailable
 }

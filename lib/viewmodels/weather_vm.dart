@@ -1,13 +1,22 @@
+import 'package:astro_planner/viewmodels/create_plan_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
+import '../models/json_data/weather_data.dart';
+import '../models/plan_m.dart';
+import '../util/plan/date.dart';
+
 class WeatherViewModel extends ChangeNotifier {
 
-  DateTime _min = DateTime.now();
-  DateTime _max = DateTime.now().add(const Duration(days: 9));
+  DateTime _min = Date.current;
+  DateTime _max = Date.max;
 
-  DateTime _selectedDateTime = DateTime.now();
+  DateTime _selectedDateTime = Date.forecastDays[0];
+  int selectedIndex = 0;
+
   final DateFormat _dateFormat = DateFormat('EE, MMMM d');
+
+  WeatherData? weatherData;
 
   static final WeatherViewModel instance = WeatherViewModel._();
 
@@ -21,13 +30,16 @@ class WeatherViewModel extends ChangeNotifier {
     return _dateFormat.format(_selectedDateTime);
   }
 
-  void onChangeTime (DateTime newTime) {
-    _selectedDateTime = newTime;
+  void onChangeTime (int index) {
+    _selectedDateTime = Date.forecastDays[index];
+    selectedIndex = index;
     notifyListeners();
   }
 
+  DateTime get selectedDateTime => _selectedDateTime;
+
   DateTime get minDateTime {
-    _min = DateTime.now();
+    _min = Date.forecastDays[0];
     return _min;
   }
 
@@ -36,4 +48,15 @@ class WeatherViewModel extends ChangeNotifier {
     return _max;
   }
 
+  void updateWeatherData() async {
+    var createPlanVm = CreatePlanViewModel();
+
+    if(createPlanVm.lat != null && createPlanVm.lon != null){
+      weatherData = await Plan.onlyLocation(createPlanVm.lat!, createPlanVm.lon!).getWeatherData();
+    }
+    else {
+      weatherData = null;
+    }
+    notifyListeners();
+  }
 }

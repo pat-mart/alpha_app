@@ -1,9 +1,17 @@
+import 'package:astro_planner/viewmodels/create_plan_vm.dart';
 import 'package:astro_planner/viewmodels/weather_vm.dart';
+import 'package:astro_planner/views/smalls/plan_sheet_sections/weather_day.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../util/plan/date.dart';
+
 class WeatherSection extends StatefulWidget {
-  const WeatherSection({super.key});
+
+  final CreatePlanViewModel createPlanVm;
+
+  const WeatherSection({super.key, required this.createPlanVm});
 
   @override
   State<WeatherSection> createState() => _WeatherSectionState();
@@ -13,6 +21,8 @@ class _WeatherSectionState extends State<WeatherSection> {
 
   @override
   Widget build(BuildContext context) {
+
+    var createPlanVm = widget.createPlanVm;
 
     return Container(
       padding: const EdgeInsets.only(top: 10),
@@ -33,24 +43,33 @@ class _WeatherSectionState extends State<WeatherSection> {
                 )
               ]
             ),
-            CupertinoButton(
-              onPressed: () {
-                showCupertinoModalPopup(context: context, builder: (context) =>
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height/3,
-                  )
-                );
-              },
-              alignment: Alignment.centerLeft,
-              borderRadius: BorderRadius.zero,
-              padding: EdgeInsets.zero,
-              child: Row(
-                children: [
-                  Text(weatherVm.getFormattedDate(), style: const TextStyle(color: CupertinoColors.activeBlue)),
-                  const Icon(CupertinoIcons.chevron_up_chevron_down, size: 20)
-                ],
-              ),
-            )
+            Expanded(
+              child: ListView.builder(
+                padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
+                clipBehavior: Clip.antiAlias,
+                scrollDirection: Axis.horizontal,
+                itemCount: 2,
+                shrinkWrap: true,
+                itemBuilder: (context, index){
+                  return Transform.scale(
+                    scale: (!createPlanVm.isValidLocation) ? 1 : (index == weatherVm.selectedIndex ? 1.1 : 0.9),
+                    child: CupertinoButton(
+                      borderRadius: BorderRadius.zero,
+                      padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 30, 0),
+                      alignment: Alignment.centerLeft,
+                      onPressed: (!createPlanVm.isValidLocation) ? null : () {
+                        weatherVm.onChangeTime(index);
+                      },
+                      child: Text(
+                        Date.previewOf(Date.forecastDays[index]),
+                        style: TextStyle(fontWeight: index == weatherVm.selectedIndex && createPlanVm.isValidLocation ? FontWeight.bold : FontWeight.normal)
+                      ),
+                    ),
+                  );
+                }
+              )
+            ),
+            Expanded(child: WeatherDay(weatherVm: weatherVm, createPlanVm: widget.createPlanVm))
           ],
         ),
       )

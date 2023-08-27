@@ -160,32 +160,6 @@ class SearchViewModel extends ChangeNotifier {
     }
   }
 
-  // Future<void> loadPlanData() async {
-  //   bool hasInternet = await CreatePlanViewModel().hasInternetConnection();
-  //
-  //   if(hasInternet && _infoMap.values.isNotEmpty){
-  //     for(var plan in _infoMap.values){
-  //       if(plan != null){
-  //         if(_cache.containsKey(plan.uuid)){
-  //           dataList.add(_cache[plan.uuid]);
-  //         }
-  //         else {
-  //           var data = await plan.getObjInfo();
-  //           dataList.add(data);
-  //           _cache[plan.uuid] = data;
-  //         }
-  //       }
-  //       else {
-  //         dataList.add(null);
-  //       }
-  //     }
-  //   }
-  //   else {
-  //     throw Exception('No internet');
-  //   }
-  //   notifyListeners();
-  // }
-
   /// doNotifyListeners is used to prevent reloading of widgets not yet in context (which leads to runtime error)
   void clearResults({required bool doNotifyListeners}){
     _currentQuery = '';

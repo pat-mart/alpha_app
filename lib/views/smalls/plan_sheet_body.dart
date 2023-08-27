@@ -49,7 +49,7 @@ class _PlanSheetState extends State<PlanSheet> with SingleTickerProviderStateMix
             shrinkWrap: true,
             children: [
               LocationSection(createPlanVm: createPlanVm),
-              const DatetimeSection(),
+              const DatetimeSection(), //This can't have the same Provider because of context changes
               TargetSection(createPlanVm: createPlanVm, animationController: animationController, animation: animation),
             ]
           )

@@ -57,23 +57,23 @@ class _PlanCardState extends State<PlanCard> {
                         padding: const EdgeInsets.only(left: 12, top: 8, bottom: 12),
                         child: Text(plan.target.name, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w500, color: Colors.white)),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 12),
-                        child: FutureBuilder<WeatherData> (
-                          future: weatherFuture,
-                          builder: (context, weatherData) {
-                            if(weatherData.hasData){
-                              if(weatherData.data?.weatherType == WeatherTypes.good){
-                                return const Text('Good weather', style: TextStyle(color: Colors.white));
-                              }
-                              else {
-                                return const Text('Weather bad', style: TextStyle(color: Colors.white));
-                              }
-                            }
-                            return const Text('Weather unavailable', style: TextStyle(color: Colors.white));
-                          }
-                        )
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(left: 12),
+                      //   child: FutureBuilder<WeatherData> (
+                      //     future: weatherFuture,
+                      //     builder: (context, weatherData) {
+                      //       if(weatherData.hasData){
+                      //         if(weatherData.data?.weatherType == WeatherTypes.good){
+                      //           return const Text('Good weather', style: TextStyle(color: Colors.white));
+                      //         }
+                      //         else {
+                      //           return const Text('Weather bad', style: TextStyle(color: Colors.white));
+                      //         }
+                      //       }
+                      //       return const Text('Weather unavailable', style: TextStyle(color: Colors.white));
+                      //     }
+                      //   )
+                      // ),
                       IconButton(
                         icon: const Icon(CupertinoIcons.delete, size: 18, color: CupertinoColors.destructiveRed),
                         onPressed: () => planVm.removeModelAt(widget.index)

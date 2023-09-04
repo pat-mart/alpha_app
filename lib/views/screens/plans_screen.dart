@@ -44,16 +44,18 @@ class _PlansScreenState extends State<PlansScreen>{
         ),
 
         SliverToBoxAdapter(
-          child: Container(
-            margin: const EdgeInsets.only(left: 14, right: 14),
-            child: Consumer<PlanViewModel>(
-              builder: (context, planVm, _) => ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: planVm.modelList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return PlanCard(index: index);
-                }
+          child: SafeArea(
+            child: Container(
+              margin: const EdgeInsets.only(left: 14, right: 14),
+              child: Consumer<PlanViewModel>(
+                builder: (context, planVm, _) => ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: planVm.modelList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return PlanCard(index: index);
+                  }
+                ),
               ),
             ),
           ),

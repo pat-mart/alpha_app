@@ -1,28 +1,32 @@
-import 'package:astro_planner/viewmodels/create_plan_vm.dart';
+import 'package:astro_planner/viewmodels/create_plan/datetime_vm.dart';
+import 'package:astro_planner/viewmodels/create_plan/target_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../viewmodels/search_vm.dart';
 import '../../screens/search_screen.dart';
 
 class TargetSection extends StatefulWidget {
-  final CreatePlanViewModel createPlanVm;
+
   final AnimationController animationController;
   final Animation<double> animation;
 
-  const TargetSection({super.key, required this.createPlanVm, required this.animationController, required this.animation});
+  final TargetViewModel targetVm;
+
+  const TargetSection({super.key, required this.animationController, required this.animation, required this.targetVm});
 
   @override
   State<TargetSection> createState() => _TargetSectionState();
 }
 
 class _TargetSectionState extends State<TargetSection> {
+
   @override
   Widget build(BuildContext context) {
-    final createPlanVm = widget.createPlanVm;
-
     final animationController = widget.animationController;
     final animation = widget.animation;
+    final targetVm = widget.targetVm;
 
     return CupertinoFormSection.insetGrouped(
         margin: EdgeInsets.zero,
@@ -63,13 +67,13 @@ class _TargetSectionState extends State<TargetSection> {
               ),
               child: CupertinoSwitch(
                   key: const Key('Filter switch'),
-                  value: createPlanVm.isUsingFilter,
+                  value: targetVm.isUsingFilter,
                   onChanged: (newVal) {
-                    createPlanVm.usingFilter = newVal;
-                    createPlanVm.showFilterWidgets(animationController);
+                    targetVm.usingFilter = newVal;
+                    targetVm.showFilterWidgets(animationController);
 
                     if(!newVal){
-                      createPlanVm.clearFilters();
+                      targetVm.clearFilters();
                     }
                   },
                   activeColor: CupertinoColors.activeGreen
@@ -83,9 +87,9 @@ class _TargetSectionState extends State<TargetSection> {
                   child: Column (
                       children: [
                         CupertinoTextFormFieldRow(
-                          key: const Key('Azimuth filter'),
-                          validator: createPlanVm.azValidator,
-                          onChanged: createPlanVm.onChangeAzFilter,
+                          key: const Key('Azimuth minimum'),
+                          validator: targetVm.azValidator,
+                          onChanged: targetVm.onChangeAzFilter,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           prefix: Padding(
                             padding: EdgeInsets.only(right: MediaQuery.of(context).size.width/3),
@@ -99,42 +103,72 @@ class _TargetSectionState extends State<TargetSection> {
                           autocorrect: false,
                         ),
                         CupertinoTextFormFieldRow(
-                            key: const Key('Altitude filter'),
-                            validator: createPlanVm.altValidator,
-                            onChanged: createPlanVm.onChangeLat,
-                            autovalidateMode: AutovalidateMode.onUserInteraction,
-                            prefix: Padding(
-                              padding: EdgeInsets.only(right: MediaQuery.of(context).size.width/3),
-                              child: const Text('Minimum altitude '),
-                            ),
-                            decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(6))
-                            ),
-                            placeholder: '0.00°',
-                            keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: true),
-                            autocorrect: false
+                          key: const Key('Altitude filter'),
+                          validator: targetVm.altValidator,
+                          onChanged: targetVm.onChangeAltFilter,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          prefix: Padding(
+                            padding: EdgeInsets.only(right: MediaQuery.of(context).size.width/3),
+                            child: const Text('Minimum altitude '),
+                          ),
+                          decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(6))
+                          ),
+                          placeholder: '0.00°',
+                          keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: true),
+                          autocorrect: false
                         )
                       ]
                   ),
                 );
               }
           ),
-          CupertinoFormRow(
-            prefix: const Text('Target      '),
-            child: CupertinoSearchTextField(
-              enabled: true,
-              placeholder: 'Search for a target',
-              onTap: () async {
-                FocusScope.of(context).unfocus();
-                Navigator.push(
+          Consumer<SearchViewModel>(
+            builder: (context, searchVm, _) =>  CupertinoFormRow(
+              prefix: const Text('Target      '),
+              child: (searchVm.selectedResult == null) ? (CupertinoSearchTextField(
+                enabled: true,
+                placeholder: 'Search for a target',
+                onTap: () async {
+                  FocusScope.of(context).unfocus();
+                  Navigator.push(
                     context,
-                    CupertinoPageRoute(builder: (context) => const SearchScreen())
-                );
-                await SearchViewModel().loadCsvData();
-              },
-            ),
+                    CupertinoPageRoute(builder: (context) => const SearchScreen(initialQueryValue: ''))
+                  );
+
+                  await searchVm.loadCsvData();
+                },
+              )
+            ): CupertinoButton(
+                onPressed: () {
+                  searchVm.previewedResult = searchVm.selectedResult;
+
+                  String toLoad;
+                  final result = searchVm.selectedResult;
+
+                  if(result!.properName == ''){
+                    toLoad = result.catalogName;
+                  }
+                  else {
+                    toLoad = searchVm.removeProperAlias(result.properName);
+                  }
+
+                  searchVm.loadSearchResults(toLoad);
+
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(builder: (context) => SearchScreen(initialQueryValue: toLoad))
+                  );
+                },
+                child: Text(
+                  (searchVm.selectedResult!.properName == '')
+                      ? searchVm.selectedResult!.catalogName
+                      : searchVm.removeProperAlias(searchVm.selectedResult!.properName)
+                ),
+              )
           ),
-        ]
+        )
+      ]
     );
   }
 }

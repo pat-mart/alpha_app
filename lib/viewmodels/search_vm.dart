@@ -1,7 +1,9 @@
 import 'dart:core';
 
+import 'package:astro_planner/viewmodels/create_plan/location_vm.dart';
+import 'package:astro_planner/viewmodels/create_plan_util.dart';
 import 'package:astro_planner/util/plan/csv_row.dart';
-import 'package:astro_planner/viewmodels/create_plan_vm.dart';
+import 'package:astro_planner/viewmodels/create_plan/datetime_vm.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -28,13 +30,16 @@ class SearchViewModel extends ChangeNotifier {
 
   String _currentQuery = '';
 
-  CreatePlanViewModel createPlanVm = CreatePlanViewModel();
+  LocationViewModel locationVm = LocationViewModel();
+  DateTimeViewModel dateTimeVm = DateTimeViewModel();
 
   bool canUseData = false;
 
   final Map<int, dynamic> tappedInstance = {};
 
+  CsvRow? previewedResult;
   CsvRow? selectedResult;
+
   bool canAdd = false;
 
   SearchViewModel._();
@@ -62,9 +67,9 @@ class SearchViewModel extends ChangeNotifier {
         }
         else {
           key = (row[2] != 'Star')
-              ? ',${row[0]},${row[1]},${row[5].toString().toUpperCase()}'
-              : ',${row[1].toString().toUpperCase()} ${row[3]
-              .toUpperCase()},${row[0]},${row[5].toString().toUpperCase()}';
+            ? ',${row[0]},${row[1]},${row[5].toString().toUpperCase()}'
+            : ',${row[1].toString().toUpperCase()} ${row[3]
+            .toUpperCase()},${row[0]},${row[5].toString().toUpperCase()}';
         }
         CsvRow value = CsvRow(
           catalogName: row[0],
@@ -81,6 +86,13 @@ class SearchViewModel extends ChangeNotifier {
     _csvData = _searchMap.values.toList();
   }
 
+  String removeProperAlias(String properName){
+    if(properName.contains(',')){
+      return properName.substring(0, properName.indexOf(','));
+    }
+    return properName;
+  }
+
   String _cleanQuery(String query){
     return query.replaceAll(',', '');
   }
@@ -92,31 +104,38 @@ class SearchViewModel extends ChangeNotifier {
 
     query = _cleanQuery(query).trim();
 
+    int numRemoved = 0;
+
     if(query.isEmpty){
       return {};
     }
 
-    var startDt = createPlanVm.getStartDateTime ?? DateTime.now();
-    var endDt = createPlanVm.getEndDateTime ?? DateTime.now().add(const Duration(minutes: 1));
+    var startDt = dateTimeVm.getStartDateTime ?? DateTime.now();
+    var endDt = dateTimeVm.getEndDateTime ?? DateTime.now().add(const Duration(minutes: 1));
 
     _searchMap.forEach((key, value) {
-      if(key.contains(',${query.toUpperCase()}') || key.contains(' ${query.toUpperCase()}')) {
-        if(_results.length < 10){
+
+      final upper = query.toUpperCase();
+      final title = query.toTitle();
+
+      if(key.contains(',$upper') || key.contains(' $upper') || key.contains(',$title') || key.contains(' $title')) {
+        if(_results.length < 10 + numRemoved){
           _results[key] = value;
-          if(createPlanVm.lon != null && createPlanVm.lat != null) {
+          if(locationVm.lon != null && locationVm.lat != null) {
             _infoMap[key] =
               Plan.fromCsvRow(
                 value,
                 startDt,
                 endDt,
-                createPlanVm.lat!,
-                createPlanVm.lon!
+                locationVm.lat!,
+                locationVm.lon!
               );
           }
         }
       }
       else {
         if(_results.containsKey(key)) {
+          numRemoved++;
           keysToRemove.add(key);
           dataKeysToRemove.add(key);
         }
@@ -136,8 +155,7 @@ class SearchViewModel extends ChangeNotifier {
 
     resultsList = _filteredResults(_currentQuery).values.toList();
 
-    if(!resultsList.contains(selectedResult)){
-      selectedResult = null;
+    if(!resultsList.contains(previewedResult)){
       canAdd = false;
     }
 
@@ -145,13 +163,13 @@ class SearchViewModel extends ChangeNotifier {
   }
 
   Future<void> loadSinglePlanData(String uuid) async {
-    bool hasInternet = await CreatePlanViewModel().hasInternetConnection();
+    bool hasInternet = await CreatePlanUtil.hasInternetConnection();
 
     if(!hasInternet || _infoMap.isEmpty) {
       return;
     }
 
-    var plan = _infoMap[uuid];
+    final plan = _infoMap[uuid];
 
     if(plan != null && _cache.containsKey(uuid)){
       dataList.add(_cache[plan.uuid]);
@@ -160,7 +178,7 @@ class SearchViewModel extends ChangeNotifier {
     }
   }
 
-  /// doNotifyListeners is used to prevent reloading of widgets not yet in context (which leads to runtime error)
+  /// doNotifyListeners is used to prevent reloading of widgets not currently in context (-> runtime error)
   void clearResults({required bool doNotifyListeners}){
     _currentQuery = '';
     resultsList.clear();
@@ -170,17 +188,27 @@ class SearchViewModel extends ChangeNotifier {
     }
   }
 
-  void selectResult(CsvRow row){
-    selectedResult = row;
+  void selectResult(){
+
+    selectedResult = previewedResult;
+    previewedResult = null;
+
+    notifyListeners();
+  }
+
+  void previewResult(CsvRow row){
+    previewedResult = row;
     canAdd = true;
 
     notifyListeners();
   }
 
   void deselectResult(CsvRow row){
-    selectedResult = null;
+    previewedResult = null;
     canAdd = false;
 
     notifyListeners();
   }
+
+  Map<String, CsvRow> get searchMap => _searchMap;
 }

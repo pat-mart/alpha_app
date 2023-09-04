@@ -1,4 +1,5 @@
-import 'package:astro_planner/viewmodels/create_plan_vm.dart';
+import 'package:astro_planner/viewmodels/create_plan/datetime_vm.dart';
+import 'package:astro_planner/viewmodels/create_plan/location_vm.dart';
 import 'package:astro_planner/viewmodels/search_vm.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -10,11 +11,12 @@ class SearchResult extends StatefulWidget {
   final int index;
 
   final SearchViewModel searchVm;
-  final CreatePlanViewModel createPlanVm;
+  final LocationViewModel locationVm;
+  final DateTimeViewModel dateTimeVm;
 
   final CsvRow csvData;
 
-  const SearchResult({super.key, required this.index, required this.searchVm, required this.createPlanVm, required this.csvData});
+  const SearchResult({super.key, required this.index, required this.searchVm, required this.locationVm, required this.dateTimeVm, required this.csvData});
 
   @override
   State<SearchResult> createState() => _SearchResultState();
@@ -29,13 +31,13 @@ class _SearchResultState extends State<SearchResult> {
   void initState() {
     super.initState();
 
-    if(widget.createPlanVm.lat != null && widget.createPlanVm.lon != null){
+    if(widget.locationVm.lat != null && widget.locationVm.lon != null){
       Plan? plan = Plan.fromCsvRow(
         widget.csvData,
-        widget.createPlanVm.getStartDateTime,
-        widget.createPlanVm.getEndDateTime,
-        widget.createPlanVm.lat!,
-        widget.createPlanVm.lon!
+        widget.dateTimeVm.getStartDateTime,
+        widget.dateTimeVm.getEndDateTime,
+        widget.locationVm.lat!,
+        widget.locationVm.lon!
       );
       dataFuture = plan.getObjInfo();
     }
@@ -58,9 +60,9 @@ class _SearchResultState extends State<SearchResult> {
 
     return CupertinoListTile.notched(
       title: Text(hasProperName ? properName : csvRow.catalogName),
-      backgroundColor: (searchVm.selectedResult == csvRow) ? CupertinoColors.activeBlue : CupertinoColors.black,
+      backgroundColor: (searchVm.previewedResult == csvRow) ? CupertinoColors.activeBlue : CupertinoColors.black,
       onTap: () {
-        searchVm.selectResult(csvRow);
+        searchVm.previewResult(csvRow);
       },
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

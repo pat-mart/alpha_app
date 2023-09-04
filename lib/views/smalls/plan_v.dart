@@ -1,6 +1,7 @@
 import 'package:astro_planner/viewmodels/plan_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/json_data/weather_data.dart';
@@ -18,14 +19,17 @@ class PlanCard extends StatefulWidget {
 
 class _PlanCardState extends State<PlanCard> {
 
-  late Future<WeatherData> weatherFuture;
+  late Future<WeatherData?> weatherFuture;
+
+  final DateFormat dayFormat = DateFormat('E, M/d');
+  final DateFormat timeFormat = DateFormat('H:mm');
 
   @override
   void initState() {
     super.initState();
     Plan plan = PlanViewModel().getPlan(widget.index);
 
-    weatherFuture = plan.getWeatherData();
+    weatherFuture = plan.getWeatherData(RequestType.planDuration);
   }
 
   @override
@@ -39,16 +43,20 @@ class _PlanCardState extends State<PlanCard> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text( //Date in EE, MM, d
-                plan.timespan.formattedRange,
-                style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)
+                plan.timespan.numDays > 1 ? plan.timespan.formattedRange : dayFormat.format(plan.timespan.startDateTime),
+                style: const TextStyle(color: CupertinoColors.white, fontSize: 20, fontWeight: FontWeight.bold)
+              ),
+              Text(
+                '${timeFormat.format(plan.timespan.startDateTime)} (${plan.timezone}) to ${timeFormat.format(plan.timespan.dateTimeRange.end)}',
+                style: TextStyle(color: CupertinoColors.secondaryLabel.darkColor, fontSize: 16)
               ),
               const Padding(padding: EdgeInsets.only(bottom: 8)),
               Card(
-                color: CupertinoColors.secondarySystemGroupedBackground.darkColor,
+                color: CupertinoColors.systemFill.darkColor,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 child: SizedBox (
                   width: double.infinity,
-                  height: MediaQuery.of(context).size.height/6,
+                  height: (MediaQuery.of(context).orientation == Orientation.portrait) ? MediaQuery.of(context).size.height/6 : MediaQuery.of(context).size.height/2.5,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -57,23 +65,18 @@ class _PlanCardState extends State<PlanCard> {
                         padding: const EdgeInsets.only(left: 12, top: 8, bottom: 12),
                         child: Text(plan.target.name, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w500, color: Colors.white)),
                       ),
-                      // Padding(
-                      //   padding: const EdgeInsets.only(left: 12),
-                      //   child: FutureBuilder<WeatherData> (
-                      //     future: weatherFuture,
-                      //     builder: (context, weatherData) {
-                      //       if(weatherData.hasData){
-                      //         if(weatherData.data?.weatherType == WeatherTypes.good){
-                      //           return const Text('Good weather', style: TextStyle(color: Colors.white));
-                      //         }
-                      //         else {
-                      //           return const Text('Weather bad', style: TextStyle(color: Colors.white));
-                      //         }
-                      //       }
-                      //       return const Text('Weather unavailable', style: TextStyle(color: Colors.white));
-                      //     }
-                      //   )
-                      // ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 12),
+                        child: FutureBuilder(
+                          future: weatherFuture,
+                          builder: (context, snapshot) {
+                            if(snapshot.data != null){
+                              return Text('Data');
+                            }
+                            return Text('No Data');
+                          }
+                        )
+                      ),
                       IconButton(
                         icon: const Icon(CupertinoIcons.delete, size: 18, color: CupertinoColors.destructiveRed),
                         onPressed: () => planVm.removeModelAt(widget.index)

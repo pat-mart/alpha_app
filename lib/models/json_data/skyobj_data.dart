@@ -1,3 +1,5 @@
+import '../../util/plan/date.dart';
+
 class SkyObjectData {
 
   final List<dynamic> hoursVis;
@@ -22,5 +24,23 @@ class SkyObjectData {
         peakTime: json['peak']['time'], name: json['obj_name'],
         peakBearing: json['peak']['az'], peakAlt: json['peak']['alt']
     );
+  }
+
+  factory SkyObjectData.fromString(String str){
+    List<String> paramList = str.split('*');
+
+    return SkyObjectData(
+      hoursVis: Date.parseDtString(paramList[0]),
+      hoursSuggested: Date.parseDtString(paramList[1]),
+      peakTime: paramList[2],
+      name: paramList[3],
+      peakBearing: double.parse(paramList[4]),
+      peakAlt: double.parse(paramList[5])
+    );
+  }
+
+  @override
+  String toString(){
+    return '${hoursVis.toString()}*${hoursSuggested.toString()}*$peakTime*$name*$peakBearing*$peakAlt';
   }
 }

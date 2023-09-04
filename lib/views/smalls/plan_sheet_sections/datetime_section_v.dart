@@ -1,13 +1,9 @@
-import 'dart:ui';
-
-import 'package:astro_planner/viewmodels/create_plan_vm.dart';
-import 'package:astro_planner/views/smalls/plan_sheet_sections/weather_info.dart';
+import 'package:astro_planner/viewmodels/create_plan/datetime_vm.dart';
+import 'package:astro_planner/viewmodels/create_plan/location_vm.dart';
+import 'package:astro_planner/views/smalls/plan_sheet_sections/weather_section.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
-import '../../../models/plan_m.dart';
 
 class DatetimeSection extends StatefulWidget {
 
@@ -19,42 +15,44 @@ class DatetimeSection extends StatefulWidget {
 
 class _DatetimeSectionState extends State<DatetimeSection> {
 
+
   @override
   Widget build(BuildContext context) {
 
-    CreatePlanViewModel createPlanVm = Provider.of<CreatePlanViewModel>(context);
+    DateTimeViewModel dateTimeVm = Provider.of<DateTimeViewModel>(context);
 
     return CupertinoFormSection.insetGrouped(
       margin: EdgeInsets.zero,
-      header: const Text('WEATHER, DATE AND TIME'),
+      header: const Text('DATE AND TIME'),
       children: [
-        WeatherSection(createPlanVm: createPlanVm),
         CupertinoFormRow(
           prefix: const Text('Start date & time'),
-          error: (createPlanVm.validStartDate) ? null : const Text('The start date must be before the end'),
+          helper: Text("Times are in device's current time zone (${DateTime.now().timeZoneName})", style: TextStyle(fontSize: 12, color: CupertinoColors.secondaryLabel.darkColor)),
+          error: dateTimeVm.validStartDate ? null : const Text('The start date must be before the end'),
           child: CupertinoButton(
             borderRadius: BorderRadius.zero,
-            onPressed: () async {
-              createPlanVm.setNow();
+            onPressed: () {
+              dateTimeVm.setNow();
               showCupertinoModalPopup(
                 barrierColor: CupertinoColors.darkBackgroundGray,
                 context: context,
                 builder: (context) => SizedBox(
                   height: MediaQuery.of(context).size.height/3,
-
                   child: CupertinoDatePicker(
                     use24hFormat: true,
-                    minimumDate: createPlanVm.now,
-                    maximumYear: 2033,
-                    initialDateTime: createPlanVm.getStartDateTime ?? createPlanVm.now,
+                    minimumDate: dateTimeVm.now,
+                    maximumYear: dateTimeVm.now.year + 5,
+                    initialDateTime: dateTimeVm.initialStartDate,
                     onDateTimeChanged: (DateTime value) {
-                      createPlanVm.startDateTime = value;
+                      dateTimeVm.startDateTime = value;
                     },
                   )
                 )
               );
             },
-            child: Text(DateFormat('M.d.yyyy H:mm').format(createPlanVm.getStartDateTime ?? createPlanVm.now)) //Change
+            child: (dateTimeVm.getStartDateTime != null)
+              ? Text(DateFormat('M.d.yyyy H:mm').format(dateTimeVm.getStartDateTime!))
+              : const Text('Select start date')
           )
         ),
         CupertinoFormRow(
@@ -62,7 +60,7 @@ class _DatetimeSectionState extends State<DatetimeSection> {
           child: CupertinoButton(
             borderRadius: BorderRadius.zero,
             onPressed: () {
-              createPlanVm.setNow();
+              dateTimeVm.setNow();
               showCupertinoModalPopup(
                 context: context,
                 builder: (context) => SizedBox(
@@ -71,17 +69,19 @@ class _DatetimeSectionState extends State<DatetimeSection> {
                     child: CupertinoDatePicker(
                       use24hFormat: true,
                       maximumYear: 2033,
-                      minimumDate: createPlanVm.getStartDateTime ?? createPlanVm.now,
-                      initialDateTime: createPlanVm.getEndDateTime ?? createPlanVm.now.add(const Duration(minutes: 1)),
+                      minimumDate: dateTimeVm.now,
+                      initialDateTime: dateTimeVm.initialEndDate,
                       onDateTimeChanged: (DateTime value) {
-                        createPlanVm.endDateTime = value;
+                        dateTimeVm.endDateTime = value;
                       },
                     )
                   )
                 )
               );
             },
-            child: Text(DateFormat('M.d.yyyy H:mm').format(createPlanVm.getEndDateTime ?? DateTime.now().add(const Duration(minutes: 1))))
+            child: (dateTimeVm.getEndDateTime != null)
+                ? Text(DateFormat('M.d.yyyy H:mm').format(dateTimeVm.getEndDateTime!))
+                : const Text('Select end date')
           )
         )
       ]

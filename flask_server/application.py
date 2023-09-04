@@ -98,6 +98,10 @@ def get_obj_pos():
 @app.route('/')
 def hello_world():
 
+    # encoded = jwt.encode(payload=payload, key=private_key, headers=header)
+    #
+    # print(encoded)
+
     return "<h1></h1>"
 
 

@@ -4,24 +4,25 @@ abstract class Date {
 
   static DateFormat prevFormat = DateFormat('EE d');
 
-  static String previewOf(DateTime dt) {
+  static String? previewOf(DateTime? dt) {
+    if(dt == null){
+      return null;
+    }
     return prevFormat.format(dt);
   }
 
-  static DateTime get current {
-    var now = DateTime.now();
-    return DateTime(now.year, now.month, now.day);
+  static String formatInt(int hour){
+    return hour.toString().padLeft(2, '0');
   }
 
-  static DateTime get max {
-    return current.add(const Duration(days: 1));
-  }
+  static List<DateTime> parseDtString(String str){
+    List<DateTime> dtList = List.empty(growable: true);
+    List<String> trimmed = str.substring(1, str.length-1).split(', ');
 
-  static List<DateTime> get forecastDays {
-    List<DateTime> days = [];
-    for(int i = 0; i < 2; i++){
-      days.add(Date.current.add(Duration(days: i)));
+    for(String dt in trimmed){
+      dtList.add(DateTime.parse(dt));
     }
-    return days;
+
+    return dtList;
   }
 }

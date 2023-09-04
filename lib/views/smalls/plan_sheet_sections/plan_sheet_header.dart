@@ -1,20 +1,14 @@
-import 'package:astro_planner/viewmodels/create_plan_vm.dart';
+import 'package:astro_planner/viewmodels/create_plan/datetime_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class PlanSheetHeader extends StatefulWidget {
-  final CreatePlanViewModel createPlanVm;
 
-  const PlanSheetHeader({super.key, required this.createPlanVm});
+class PlanSheetHeader extends StatelessWidget {
+  const PlanSheetHeader({super.key});
 
-  @override
-  State<PlanSheetHeader> createState() => _PlanSheetHeaderState();
-}
-
-class _PlanSheetHeaderState extends State<PlanSheetHeader> {
   @override
   Widget build(BuildContext context) {
-    final createPlanVm = widget.createPlanVm;
+
     return CupertinoSliverNavigationBar(
       automaticallyImplyLeading: false,
       largeTitle: const Text('New plan'),
@@ -30,8 +24,6 @@ class _PlanSheetHeaderState extends State<PlanSheetHeader> {
           ),
           onPressed: () {
             Navigator.pop(context);
-            createPlanVm.clearFilters();
-            createPlanVm.usingFilter = false;
           },
         )
       ),

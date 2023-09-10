@@ -75,10 +75,11 @@ class _PlanSheetState extends State<PlanSheet> with SingleTickerProviderStateMix
                 child: Consumer<DateTimeViewModel>(
                   builder: (context, dateTimeVm, _) => CupertinoButton.filled(
                     onPressed: (!dateTimeVm.validStartDate  || !locationVm.isValidLocation || SearchViewModel().selectedResult == null) ? null : () {
-                      PlanViewModel().addToList(
+                      PlanViewModel().add(
                         Plan(
                           SkyObject.fromCsvRow(SearchViewModel().selectedResult!),
-                          PlanTimespan(dateTimeVm.getStartDateTime!, dateTimeVm.getEndDateTime!),
+                          dateTimeVm.getStartDateTime!,
+                          dateTimeVm.getEndDateTime!,
                           locationVm.lat!,
                           locationVm.lon!,
                           dateTimeVm.now.timeZoneName,

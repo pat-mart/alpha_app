@@ -34,13 +34,14 @@ class Plan {
   final httpClient = HttpClient();
 
   final Uuid uuidGen = const Uuid();
-  late String uuid;
+  String? uuid;
   int? primaryKey;
 
   final DateFormat _formatter = DateFormat('y-MM-ddTHH:MM:00');
 
-  Plan(this._target, this._timespan, this._latitude, this._longitude, this.timezone, this._apiData, [this.primaryKey]){
-    uuid = uuidGen.v4();
+  Plan(this._target, DateTime startDt, DateTime endDt, this._latitude, this._longitude, this.timezone, this._apiData, [this.weatherSuitable=false, this.azMax=-1, this.azMin=-1, this.altThresh=-1, this.uuid]){
+    uuid ??= uuidGen.v4();
+    _timespan = PlanTimespan(startDt, endDt);
   }
 
   Plan.fromCsvRow(CsvRow row, DateTime? startDate, DateTime? endDate, this._latitude, this._longitude){
@@ -62,29 +63,25 @@ class Plan {
 
   Plan.onlyLocation(this._latitude, this._longitude);
 
-  factory Plan.fromMap(Map<String, dynamic> map){
-    PlanTimespan timespan = PlanTimespan(DateTime.parse(map['startTime']), DateTime.parse(map['endTime']));
+  factory Plan.fromMap(Map<String, dynamic> map) {
     return Plan(
       SkyObject.fromString(map['sky_obj']),
-      timespan,
+      DateTime.parse(map['start_dt']),
+      DateTime.parse(map['end_dt']),
       map['latitude'],
       map['longitude'],
       map['timezone'],
-      SkyObjectData.fromString(map['sky_obj_data'])
+      map['sky_obj_data'] == 'null' ? null : SkyObjectData.fromString(map['sky_obj_data']),
+      (map['suitable_weather'] == 1),
+      map['az_filter_max'],
+      map['az_filter_min'],
+      map['alt_filter'],
+      map['uuid']
     );
   }
 
-  SkyObject get target => _target!;
-
-  PlanTimespan get timespan => _timespan!;
-
-  String get formattedStartDate => DateFormat('yyyy-MM-d').format(timespan.startDateTime);
-
-  String get formattedEndDate => DateFormat('yyyy-MM-d').format(timespan.dateTimeRange.end);
-
   Map<String, dynamic> toMap() {
     return {
-      'uuid': uuid,
       'start_dt': _timespan!.startDateTime.toIso8601String(),
       'end_dt': _timespan!.dateTimeRange.end.toIso8601String(),
       'latitude': _latitude,
@@ -94,10 +91,19 @@ class Plan {
       'az_filter_min': azMin,
       'az_filter_max': azMax,
       'alt_filter': altThresh,
-      'suitable_weather': weatherSuitable,
-      'timezone': timezone
+      'suitable_weather': (weatherSuitable) ? 1 : 0,
+      'timezone': timezone,
+      'uuid': uuid
     };
   }
+
+  SkyObject get target => _target!;
+
+  PlanTimespan get timespan => _timespan!;
+
+  String get formattedStartDate => DateFormat('yyyy-MM-d').format(timespan.startDateTime);
+
+  String get formattedEndDate => DateFormat('yyyy-MM-d').format(timespan.dateTimeRange.end);
 
   Future<WeatherData?> getWeatherData([RequestType requestType = RequestType.forecast]) async {
 
@@ -155,9 +161,10 @@ class Plan {
     if(response.statusCode == 200) {
 
       final searchVm = SearchViewModel();
+
       //Caches data
       if(!searchVm.infoCache.containsKey(uuid)){
-        searchVm.infoCache[uuid] = _apiData = SkyObjectData.fromJson(jsonDecode(response.body));
+        searchVm.infoCache[uuid!] = _apiData = SkyObjectData.fromJson(jsonDecode(response.body));
       }
       else {
         return searchVm.infoCache[uuid];

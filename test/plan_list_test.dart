@@ -7,8 +7,6 @@ void main () {
   testWidgets('Plan list smoke test', (WidgetTester tester) async {
     await tester.pumpWidget(const Main());
 
-    PlanViewModel().debugClearList();
-
     await tester.tap(find.byIcon(CupertinoIcons.info_circle));
 
     await tester.pump();

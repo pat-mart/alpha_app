@@ -5,9 +5,9 @@ import 'package:intl/intl.dart';
 
 class PlanTimespan {
 
-  late final DateTime _startDateTime;
+  late DateTime _startDateTime;
 
-  late final DateTime _endDateTime;
+  late DateTime _endDateTime;
 
   DateTimeRange? _dateRange;
 

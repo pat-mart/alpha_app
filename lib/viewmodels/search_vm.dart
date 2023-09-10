@@ -157,6 +157,7 @@ class SearchViewModel extends ChangeNotifier {
 
     if(!resultsList.contains(previewedResult)){
       canAdd = false;
+      previewedResult = null;
     }
 
     notifyListeners();
@@ -181,6 +182,10 @@ class SearchViewModel extends ChangeNotifier {
   /// doNotifyListeners is used to prevent reloading of widgets not currently in context (-> runtime error)
   void clearResults({required bool doNotifyListeners}){
     _currentQuery = '';
+
+    if(selectedResult == null || selectedResult != previewedResult){
+      previewedResult = null;
+    }
     resultsList.clear();
 
     if(doNotifyListeners){

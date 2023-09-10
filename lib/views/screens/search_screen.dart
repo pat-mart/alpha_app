@@ -51,7 +51,7 @@ class _SearchScreenState extends State<SearchScreen> {
           alignment: Alignment.center,
           borderRadius: BorderRadius.zero,
           padding: EdgeInsets.zero,
-          onPressed: (searchVm.previewedResult != null) ? () {
+          onPressed: (searchVm.previewedResult != null && searchVm.previewedResult != searchVm.selectedResult) ? () {
             searchVm.selectResult();
             Navigator.pop(context);
           } : null,
@@ -68,7 +68,6 @@ class _SearchScreenState extends State<SearchScreen> {
                 onSuffixTap: () {
                   controller.clear();
                   searchVm.clearResults(doNotifyListeners: true);
-                  searchVm.resultsList.clear();
                 },
                 onChanged: (String q)  {
                   searchVm.loadSearchResults(q);

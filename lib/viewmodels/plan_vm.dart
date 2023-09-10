@@ -1,53 +1,75 @@
 import 'package:astro_planner/models/plan_m.dart';
+import 'package:astro_planner/util/db/database_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 
-import 'list_vm.dart';
-
-class PlanViewModel extends ChangeNotifier implements ListViewModel<Plan> {
+class PlanViewModel extends ChangeNotifier {
 
   final List<Plan> _planList = [];
 
-  static final PlanViewModel _instance = PlanViewModel._internal();
+  static final PlanViewModel _instance = PlanViewModel._();
 
-  factory PlanViewModel() {
-    return _instance;
+  factory PlanViewModel() => _instance;
+
+  PlanViewModel._();
+
+  Future<List<Plan>> get savedPlans async {
+    final Database db = await DatabaseManager().database;
+    final planList = await db.query('plans', orderBy: 'id');
+
+    if(planList.isNotEmpty){
+      for(final map in planList){
+        _planList.add(Plan.fromMap(map));
+      }
+    }
+    return _planList;
   }
 
-  PlanViewModel._internal();
+  Future<void> add(Plan toAdd) async {
+    final Database db = await DatabaseManager().database;
+    if((Sqflite.firstIntValue(await db.query('plans')) ?? 0) < 64){
+      await db.insert(
+        'plans',
+        toAdd.toMap()
+      );
+      _planList.add(toAdd);
+    }
+    else {
+      throw Exception('You can store a maximum of 64 plans.');
+    }
 
-  @override
-  List<Plan> get modelList => _planList;
-
-  @override
-  void addToList(Plan plan){
-    _planList.add(plan);
     notifyListeners();
   }
 
-  @override
-  void removeModelAt(int index) {
-    _planList.removeAt(index);
+  Future<void> update(Plan toUpdate) async {
+    final Database db = await DatabaseManager().database;
+    await db.update(
+      'plans',
+      toUpdate.toMap(),
+      where: 'uuid = ?',
+      whereArgs: [toUpdate.uuid]
+    );
     notifyListeners();
   }
 
-  @override
-  void debugClearList(){
-    _planList.clear();
-    notifyListeners();
-  }
+  Future<void> delete(String deleteUuid) async {
+    final Database db = await DatabaseManager().database;
 
-  void removeModel(Plan plan){
-    _planList.remove(plan);
-    notifyListeners();
-  }
-
-  void editPlan(int index, Plan newPlan){
-    _planList[index] = newPlan;
+    if(await DatabaseManager().dbLength > 0 && _planList.isNotEmpty){
+      await db.delete(
+        'plans',
+        where: 'uuid = ?',
+        whereArgs: [deleteUuid]
+      );
+      _planList.removeWhere((plan) => plan.uuid == deleteUuid);
+    }
     notifyListeners();
   }
 
   Plan getPlan(int index){
     return _planList.elementAt(index);
   }
+
+  set planList (List<Plan> newList) => _planList;
 }

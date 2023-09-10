@@ -26,8 +26,6 @@ class _LocationSectionState extends State<LocationSection> with WidgetsBindingOb
   late Future<bool> locationPermissionFuture;
   late Future<bool> internetFuture;
 
-  late StreamSubscription<ConnectivityResult> subscription;
-
   @override
   void initState () {
     super.initState();
@@ -61,8 +59,6 @@ class _LocationSectionState extends State<LocationSection> with WidgetsBindingOb
 
   @override
   void dispose() {
-
-    subscription.cancel();
 
     latController.dispose();
     lonController.dispose();

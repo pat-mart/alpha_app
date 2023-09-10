@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_down_button/pull_down_button.dart';
 
 import '../../models/json_data/weather_data.dart';
 import '../../models/plan_m.dart';
@@ -61,26 +62,66 @@ class _PlanCardState extends State<PlanCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 12, top: 8, bottom: 12),
-                        child: Text(plan.target.name, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w500, color: Colors.white)),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 12, top: 8, bottom: 12),
+                            child: Text(plan.target.name, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white)),
+                          ),
+                          PullDownButton(
+                            itemBuilder: (context) => [
+                              PullDownMenuItem(
+                                onTap: () {},
+                                title: 'Edit',
+                                icon: CupertinoIcons.pencil
+                              ),
+                              PullDownMenuItem(
+                                onTap: () {
+                                  showCupertinoDialog(
+                                      context: context,
+                                      builder: (context) => CupertinoAlertDialog(
+                                        title: Text('Delete plan ${plan.target.catName}?'),
+                                        content: const Text('This action cannot be undone.'),
+                                        actions: [
+                                          CupertinoDialogAction(
+                                            isDefaultAction: true,
+                                            child: const Text('Cancel'),
+                                            onPressed: () => Navigator.pop(context),
+                                          ),
+                                          CupertinoDialogAction(
+                                            isDestructiveAction: true,
+                                            child: const Text('Delete'),
+                                            onPressed: () {
+                                              planVm.delete(plan.uuid!);
+                                              Navigator.pop(context);
+                                            },
+                                          )
+                                        ],
+                                      )
+                                  );
+                                },
+                                title: 'Delete',
+                                isDestructive: true,
+                                icon: CupertinoIcons.delete,
+                              )
+                            ],
+                            buttonBuilder: (context, showMenu) => CupertinoButton(onPressed: showMenu, child: const Icon(CupertinoIcons.pencil_ellipsis_rectangle))
+                          )
+                        ]
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 12),
                         child: FutureBuilder(
                           future: weatherFuture,
                           builder: (context, snapshot) {
-                            if(snapshot.data != null){
-                              return Text('Data');
+                            if(snapshot.data != null && !snapshot.hasError){
+                              return const Text('Data');
                             }
-                            return Text('No Data');
+                            return const Text('No Data');
                           }
                         )
                       ),
-                      IconButton(
-                        icon: const Icon(CupertinoIcons.delete, size: 18, color: CupertinoColors.destructiveRed),
-                        onPressed: () => planVm.removeModelAt(widget.index)
-                      )
                     ],
                   )
                 )

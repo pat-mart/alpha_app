@@ -27,6 +27,7 @@ class SkyObjectData {
   }
 
   factory SkyObjectData.fromString(String str){
+
     List<String> paramList = str.split('*');
 
     return SkyObjectData(

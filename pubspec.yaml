@@ -53,6 +53,7 @@ dependencies:
   url_launcher: ^6.1.12
   sqflite: ^2.3.0
   path: ^1.8.3
+  pull_down_button: ^0.9.3
 
 dev_dependencies:
   flutter_test:

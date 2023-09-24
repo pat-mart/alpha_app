@@ -1,11 +1,13 @@
+import math
 from datetime import datetime, timedelta
 
+import astropy.time
+import astropy.units as u
 import ephem
-from astropy.coordinates import Angle
+from astropy.coordinates import Angle, EarthLocation
 from astropy.time import Time
 
 from data.obj_util import ObjUtil
-from data.sky_obj import SkyObject
 
 """
 Why does this class not extend SkyObject? Because the methods are quite different in their implementations. 
@@ -14,7 +16,8 @@ I suppose I could have had them both extend a more generic class, but I thought 
 
 
 class HelioObj:
-    def __init__(self, start_time: Time, end_time: Time, obj_name: str, coords: (float, float), alt_threshold: float, az_threshold: float):
+    def __init__(self, start_time: Time, end_time: Time, obj_name: str, coords: (float, float),
+                 alt_threshold: float, az_min: float, az_max: float):
 
         self.target = ephem.Jupiter()  # Placeholder
         self.utc_offset_td = timedelta(hours=ObjUtil.utc_offset(coords))
@@ -24,7 +27,8 @@ class HelioObj:
         self.end_astropy_time = end_time
 
         self.alt_threshold = alt_threshold
-        self.az_threshold = az_threshold
+        self.az_min = az_min
+        self.az_max = az_max
 
         self.coords = coords
 
@@ -140,11 +144,11 @@ class HelioObj:
     def suggested_hours(self) -> [datetime]:
 
         """
-        This is mostly copy-pasted from SkyObj but has enough operational distinction to be justifiable IMO
+        This is similar to the one in SkyObj but has enough operational distinction to be justifiable IMO
         :return: The suggested hours as defined by the degree threshold
         """
 
-        if self.alt_threshold <= 0 or self.az_threshold <= 0 or self.hours_visible[0] == -1:
+        if self.alt_threshold <= 0 or self.az_min <= 0 or self.hours_visible[0] == -1:
             return [-1]
 
         if self.hours_visible[1] >= self.hours_visible[0] and not self.target_always_up:
@@ -155,40 +159,26 @@ class HelioObj:
         start = datetime.combine(start_day, self.hours_visible[0])
         end = datetime.combine(self.end_astropy_time.to_datetime().date(), self.hours_visible[1])
 
-        t_interval = (end - start) / 12
+        lst = Time(datetime.utcnow()).sidereal_time('mean', longitude=self.coords[1])
 
-        points = [start + (i * t_interval) for i in range(1, 12)]
+        lst = (lst * u.deg).value * (15 * math.pi/180)
 
-        points[-1] = end
+        ra = float(repr(self.target.g_ra))
 
-        times = []
+        print(lst)
 
-        times_i = -1
+        lha = lst - ra
 
-        obs_copy = self.observer.copy()
+        print(lha)
 
-        for t_point in points:  # Filters times, opted to not use enumerate because times_i = -1
+        return [-1, -1]
 
-            t = Time(t_point).to_datetime()
+        # ha = lst.to_datetime() - timedelta(hours=datetime.strptime(self.target.g_ra).hour)
+        #
+        # peak = self.peak_time
+        #
+        # if(ha < )
 
-            obs_copy.date = t.strftime('%Y/%m/%d %H:%M')
-
-            self.target.compute(obs_copy)
-            altitude = self.target.alt
-            az = self.target.az
-
-            if ObjUtil.to_float(altitude) >= self.alt_threshold and ObjUtil.to_float(az) >= self.az_threshold:
-                if len(times) >= 2 and times[times_i - 1] + t_interval == times[times_i]:  # Ensures no gaps
-                    times.append(t_point)
-                    times_i += 1
-                elif len(times) < 2:
-                    times.append(t_point)
-                    times_i += 1
-
-        if len(times) < 2:
-            return [-1]
-
-        return [times[0].isoformat(), times[-1].isoformat()]
 
     @property
     def needs_mer_flip(self) -> bool:

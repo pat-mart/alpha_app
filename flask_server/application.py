@@ -1,21 +1,16 @@
 from astropy.time import Time
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import serialization
 from flask import Flask, request, jsonify
 
 from data.helio_obj import HelioObj
 from data.obj_util import ObjUtil
 from data.sky_obj import SkyObject
 
-import jwt
-import cryptography
-
 application = app = Flask(__name__)
 
 
 @app.route('/api/search', methods=['GET'])
 # example search endpoint:
-# /api/search?objname=M31&starttime=2023-8-2T21:15:31.0&endtime=2023-8-3T01:12:00.0&lat=10.10&lon=10.10&altthresh=20.0&azthresh=0.0
+# /api/search?objname=M31&starttime=2023-8-2T21:15:31.0&endtime=2023-8-3T01:12:00.0&lat=10.10&lon=10.10&altthresh=20.0&azmin=0.0
 def get_obj_pos():
     args = request.args
 
@@ -29,16 +24,16 @@ def get_obj_pos():
     end = Time(end_time)
 
     alt_threshold = float(args.get('altthresh'))
-    az_threshold = float(args.get('azthresh'))
+    az_min = float(args.get('azmin'))
 
     if obj_name in ['mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune']:
         obj = HelioObj(
             start_time=start,
             end_time=end,
             obj_name=obj_name,
-            coords=(float(lat), float(lat)),
+            coords=(float(lat), float(lon)),
             alt_threshold=alt_threshold,
-            az_threshold=az_threshold
+            az_min=az_min
         )
 
         start_time = obj.start_time.isoformat()
@@ -56,7 +51,7 @@ def get_obj_pos():
             obj_name=obj_name,
             coords=(float(lat), float(lon)),
             alt_threshold=alt_threshold,
-            az_threshold=az_threshold
+            az_min=az_min
         )
 
         start_time = obj.start_time.iso
@@ -98,9 +93,17 @@ def get_obj_pos():
 @app.route('/')
 def hello_world():
 
-    # encoded = jwt.encode(payload=payload, key=private_key, headers=header)
-    #
-    # print(encoded)
+    mars = HelioObj(
+        start_time=Time.now(),
+        end_time=Time.now(),
+        obj_name='mars',
+        coords=(40.8, -73.1),
+        alt_threshold=32,
+        az_min=12,
+        az_max=200
+    )
+
+    print(mars.suggested_hours)
 
     return "<h1></h1>"
 

@@ -38,7 +38,7 @@ class ObjUtil:
         if morn_twi <= rise_time <= set_time <= even_twi:
             return [-1, -1]
 
-        elif set_time <= rise_time <= morn_twi:  # Target rises before "sunrise", after "sunset"
+        elif set_time <= rise_time <= morn_twi:  # Target rises before "sunrise", after "sunset" (rarely happens)
             return [[rise_time, morn_twi], [even_twi, set_time]]
 
         elif rise_time <= morn_twi and set_time <= even_twi:

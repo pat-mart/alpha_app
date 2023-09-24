@@ -20,7 +20,7 @@ class SkyObject:
     :param coords: The (latitude, longitude) coordinate pair of the observation site
     """
 
-    def __init__(self, start_time: Time, end_time: Time, obj_name: str, coords: (float, float), alt_threshold: float, az_threshold: float):
+    def __init__(self, start_time: Time, end_time: Time, obj_name: str, coords: (float, float), alt_threshold: float, az_min: float):
 
         self.coords = coords
         self.utc_td = timedelta(hours=ObjUtil.utc_offset(self.coords))
@@ -34,7 +34,7 @@ class SkyObject:
         self.target = FixedTarget.from_name(obj_name)
         self.observer_loc = Observer(latitude=coords[0], longitude=coords[1])
         self.alt_threshold = alt_threshold
-        self.az_threshold = az_threshold
+        self.az_min = az_min
 
         self.target_always_up = self.target_always_down = self.sun_always_up = self.sun_always_down = False
 
@@ -130,14 +130,14 @@ class SkyObject:
 
     @property
     def suggested_hours(self) -> [datetime] or str:
-        if self.alt_threshold <= 0 or self.az_threshold <= 0 or self.hours_visible[0] == -1:
+        if self.alt_threshold <= 0 or self.az_min <= 0 or self.hours_visible[0] == -1:
             return [-1]
 
         elif self.sun_always_down:
             return [self.start_time.to_datetime().isoformat(), self.end_time.to_datetime().isoformat()]
 
         alt_threshold = self.alt_threshold * u.deg
-        az_threshold = self.az_threshold * u.deg
+        az_min = self.az_min * u.deg
 
         start_dt = datetime.combine(self.start_time.to_datetime().date(), self.hours_visible[0])
         end_dt = datetime.combine(self.end_time.to_datetime().date(), self.hours_visible[1])
@@ -160,7 +160,7 @@ class SkyObject:
             altitude = coord.alt
             az = coord.az
 
-            if altitude >= alt_threshold and az >= az_threshold:
+            if altitude >= alt_threshold and az >= az_min:
                 if len(times) >= 2 and times[times_i] - t_interval == times[times_i - 1]:  # Ensures no gaps
                     times.append(t_point)
                     times_i += 1

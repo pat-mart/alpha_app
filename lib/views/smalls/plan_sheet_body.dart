@@ -19,7 +19,9 @@ import '../../models/sky_obj_m.dart';
 
 class PlanSheet extends StatefulWidget {
 
-  const PlanSheet({super.key});
+  final Plan? planToLoad;
+
+  const PlanSheet({super.key, this.planToLoad});
 
   @override
   State<StatefulWidget> createState() => _PlanSheetState();
@@ -30,12 +32,16 @@ class _PlanSheetState extends State<PlanSheet> with SingleTickerProviderStateMix
   late AnimationController animationController;
   late Animation<double> animation;
 
+  late bool isEdit;
+
   @override
   void initState(){
     super.initState();
 
     animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 150));
     animation = CurvedAnimation(parent: animationController, curve: Curves.easeInOut);
+
+    isEdit = widget.planToLoad == null;
   }
 
   @override

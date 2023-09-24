@@ -115,7 +115,6 @@ class LocationViewModel extends ChangeNotifier {
     notifyListeners();
   }
   set serviceEnabled(newVal){
-    print(newVal);
     _serviceEnabled = newVal;
     notifyListeners();
   }

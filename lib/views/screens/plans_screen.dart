@@ -4,8 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../models/plan_m.dart';
-import '../../models/sky_obj_m.dart';
-import '../../util/plan/plan_timespan.dart';
 import '../../viewmodels/plan_vm.dart';
 import '../smalls/plan_sheet_body.dart';
 import '../smalls/plan_v.dart';
@@ -30,8 +28,6 @@ class _PlansScreenState extends State<PlansScreen>{
 
   @override
   Widget build(BuildContext context) {
-
-    final planVm = Provider.of<PlanViewModel>(context);
 
     return CustomScrollView(
       scrollBehavior: const CupertinoScrollBehavior(),
@@ -65,16 +61,15 @@ class _PlansScreenState extends State<PlansScreen>{
                 builder: (context, planVm, _) => FutureBuilder(
                   future: planListFuture,
                   builder: (context, snapshot) {
-
                     if(snapshot.connectionState == ConnectionState.done && !snapshot.hasError && snapshot.data != null){
                       planVm.planList = snapshot.data!;
                       return ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: snapshot.data == null ? 0 : snapshot.data!.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return PlanCard(index: index);
-                          }
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: snapshot.data == null ? 0 : snapshot.data!.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return PlanCard(index: index);
+                        }
                       );
                     }
                     else if(snapshot.connectionState == ConnectionState.waiting && !snapshot.hasError){

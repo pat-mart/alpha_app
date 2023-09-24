@@ -95,7 +95,6 @@ class _WeatherDayState extends State<WeatherDay> {
       if([ConnectivityResult.wifi, ConnectivityResult.ethernet, ConnectivityResult.mobile, ConnectivityResult.other].contains(result)){
         widget.weatherVm.clearCaches();
       }
-      setState(() {});
     });
 
     initFuture();
@@ -106,6 +105,12 @@ class _WeatherDayState extends State<WeatherDay> {
     super.didUpdateWidget(old);
 
     initFuture();
+  }
+
+  @override
+  void dispose(){
+    subscription.cancel();
+    super.dispose();
   }
 
   @override

@@ -25,8 +25,6 @@ class WeatherSection extends StatefulWidget {
 
 class _WeatherSectionState extends State<WeatherSection> with WidgetsBindingObserver {
 
-
-
   Future<WeatherData>? forecastFuture;
 
   void checkDays() {

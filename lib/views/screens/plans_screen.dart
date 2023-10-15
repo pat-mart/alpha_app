@@ -1,3 +1,4 @@
+import 'package:astro_planner/util/db/database_manager.dart';
 import 'package:astro_planner/views/screens/empty_modal_sheet.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -38,12 +39,12 @@ class _PlansScreenState extends State<PlansScreen>{
           trailing:
           IconButton(
             icon: const Icon(CupertinoIcons.add_circled, size: 32),
-            onPressed: () {
+            onPressed: () async {
               setState(() {
                 showCupertinoModalPopup(
                   context: context,
                   barrierDismissible: false,
-                  barrierColor: const Color(0xBB000000),
+                  barrierColor: CupertinoColors.darkBackgroundGray,
                   builder: (BuildContext context) {
                     return const EmptyModalSheet(child: PlanSheet());
                   },

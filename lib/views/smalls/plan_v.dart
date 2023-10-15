@@ -1,4 +1,6 @@
 import 'package:astro_planner/viewmodels/plan_vm.dart';
+import 'package:astro_planner/views/screens/empty_modal_sheet.dart';
+import 'package:astro_planner/views/smalls/plan_sheet_body.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -67,12 +69,23 @@ class _PlanCardState extends State<PlanCard> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(left: 12, top: 8, bottom: 12),
-                            child: Text(plan.target.name, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white)),
+                            child: Text(plan.target.properName == '' ? plan.target.catalogName : plan.target.properName, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white)),
                           ),
                           PullDownButton(
                             itemBuilder: (context) => [
                               PullDownMenuItem(
-                                onTap: () {},
+                                onTap: () {
+                                  setState(() {
+                                    showCupertinoModalPopup(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      barrierColor: CupertinoColors.secondarySystemFill.darkColor,
+                                      builder: (context) {
+                                        return EmptyModalSheet(child: PlanSheet(planToLoad: plan));
+                                      }
+                                    );
+                                  });
+                                },
                                 title: 'Edit',
                                 icon: CupertinoIcons.pencil
                               ),
@@ -81,7 +94,7 @@ class _PlanCardState extends State<PlanCard> {
                                   showCupertinoDialog(
                                       context: context,
                                       builder: (context) => CupertinoAlertDialog(
-                                        title: Text('Delete plan ${plan.target.catName}?'),
+                                        title: Text('Delete \'${plan.target.properName == '' ? plan.target.catalogName : plan.target.properName}\' plan on ${plan.formattedStartDate}?'),
                                         content: const Text('This action cannot be undone.'),
                                         actions: [
                                           CupertinoDialogAction(

@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 
-abstract class Date {
+sealed class Date {
 
   static DateFormat prevFormat = DateFormat('EE d');
 

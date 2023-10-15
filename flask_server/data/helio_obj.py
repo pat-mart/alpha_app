@@ -1,10 +1,7 @@
-import math
 from datetime import datetime, timedelta
 
-import astropy.time
-import astropy.units as u
 import ephem
-from astropy.coordinates import Angle, EarthLocation
+from astropy.coordinates import Angle
 from astropy.time import Time
 
 from data.obj_util import ObjUtil
@@ -125,14 +122,19 @@ class HelioObj:
     def peak_time(self):
         gmt_time = self.observer.next_transit(self.target, start=self.start_time.date().strftime('%Y/%m/%d')).datetime()
 
+        gmt_time += timedelta(hours=ObjUtil.utc_offset(self.coords))
+
         local_time = gmt_time.strftime('%Y/%m/%d %H:%M')
 
         return local_time
 
     @property
     def peak_alt_az(self):
+
+        gmt_peak = self.observer.next_transit(self.target, start=self.start_time.date().strftime('%Y/%m/%d')).datetime()
+
         obs_copy = self.observer.copy()
-        obs_copy.date = self.peak_time
+        obs_copy.date = gmt_peak.strftime('%Y/%m/%d %H:%M')
 
         target_copy = self.target
 
@@ -142,43 +144,23 @@ class HelioObj:
 
     @property
     def suggested_hours(self) -> [datetime]:
+        dec_rad = float(repr(self.target.dec))
+        ra_rad = float(repr(self.target.ra))
 
-        """
-        This is similar to the one in SkyObj but has enough operational distinction to be justifiable IMO
-        :return: The suggested hours as defined by the degree threshold
-        """
+        print(self.peak_time)
 
-        if self.alt_threshold <= 0 or self.az_min <= 0 or self.hours_visible[0] == -1:
-            return [-1]
-
-        if self.hours_visible[1] >= self.hours_visible[0] and not self.target_always_up:
-            start_day = self.end_astropy_time.to_datetime().date()
-        else:
-            start_day = self.start_astropy_time.to_datetime().date()
-
-        start = datetime.combine(start_day, self.hours_visible[0])
-        end = datetime.combine(self.end_astropy_time.to_datetime().date(), self.hours_visible[1])
-
-        lst = Time(datetime.utcnow()).sidereal_time('mean', longitude=self.coords[1])
-
-        lst = (lst * u.deg).value * (15 * math.pi/180)
-
-        ra = float(repr(self.target.g_ra))
-
-        print(lst)
-
-        lha = lst - ra
-
-        print(lha)
-
-        return [-1, -1]
-
-        # ha = lst.to_datetime() - timedelta(hours=datetime.strptime(self.target.g_ra).hour)
-        #
-        # peak = self.peak_time
-        #
-        # if(ha < )
-
+        return ObjUtil.suggested_hours(
+            self.coords,
+            az_min=self.az_min,
+            az_max=self.az_max,
+            alt_threshold=self.alt_threshold,
+            start_time=self.start_time,
+            end_time=self.end_time,
+            ra_rad=ra_rad,
+            dec_rad=dec_rad,
+            peak_time=datetime.strptime(self.peak_time, '%Y/%m/%d %H:%M'),
+            hours_visible=self.hours_visible
+        )
 
     @property
     def needs_mer_flip(self) -> bool:

@@ -1,4 +1,3 @@
-import 'package:astro_planner/viewmodels/create_plan/datetime_vm.dart';
 import 'package:astro_planner/viewmodels/create_plan/target_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,13 +13,36 @@ class TargetSection extends StatefulWidget {
 
   final TargetViewModel targetVm;
 
-  const TargetSection({super.key, required this.animationController, required this.animation, required this.targetVm});
+  final bool isEdit;
+
+  const TargetSection({super.key, required this.animationController, required this.animation, required this.targetVm,  required this.isEdit});
 
   @override
   State<TargetSection> createState() => _TargetSectionState();
 }
 
 class _TargetSectionState extends State<TargetSection> {
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    final targetVm = TargetViewModel();
+
+    bool validFilter(double? value){
+      return (value ??= -1) > 0;
+    }
+
+    if(widget.isEdit){
+      if(validFilter(targetVm.altFilter) || validFilter(targetVm.azMax) || validFilter(targetVm.azMin)){
+        targetVm.usingFilter(true, false);
+      }
+      else {
+        targetVm.usingFilter(false, false);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +91,7 @@ class _TargetSectionState extends State<TargetSection> {
                   key: const Key('Filter switch'),
                   value: targetVm.isUsingFilter,
                   onChanged: (newVal) {
-                    targetVm.usingFilter = newVal;
+                    targetVm.usingFilter(newVal);
                     targetVm.showFilterWidgets(animationController);
 
                     if(!newVal){
@@ -88,12 +110,28 @@ class _TargetSectionState extends State<TargetSection> {
                       children: [
                         CupertinoTextFormFieldRow(
                           key: const Key('Azimuth minimum'),
-                          validator: targetVm.azValidator,
-                          onChanged: targetVm.onChangeAzFilter,
+                          validator: targetVm.azMinValidator,
+                          onChanged: targetVm.onChangeAzMin,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           prefix: Padding(
                             padding: EdgeInsets.only(right: MediaQuery.of(context).size.width/3),
-                            child: const Text('Minimum azimuth'),
+                            child: const Text('Minimum azimuth '),
+                          ),
+                          decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(6))
+                          ),
+                          placeholder: '0.00°',
+                          keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: true),
+                          autocorrect: false,
+                        ),
+                        CupertinoTextFormFieldRow(
+                          key: const Key('Azimuth maximum'),
+                          validator: targetVm.azMaxValidator,
+                          onChanged: targetVm.onChangeAzMax,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          prefix: Padding(
+                            padding: EdgeInsets.only(right: MediaQuery.of(context).size.width/3),
+                            child: const Text('Maximum azimuth'),
                           ),
                           decoration: const BoxDecoration(
                               borderRadius: BorderRadius.all(Radius.circular(6))
@@ -109,7 +147,7 @@ class _TargetSectionState extends State<TargetSection> {
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           prefix: Padding(
                             padding: EdgeInsets.only(right: MediaQuery.of(context).size.width/3),
-                            child: const Text('Minimum altitude '),
+                            child: const Text('Minimum altitude  '),
                           ),
                           decoration: const BoxDecoration(
                               borderRadius: BorderRadius.all(Radius.circular(6))
@@ -133,7 +171,7 @@ class _TargetSectionState extends State<TargetSection> {
                   FocusScope.of(context).unfocus();
                   Navigator.push(
                     context,
-                    CupertinoPageRoute(builder: (context) => const SearchScreen(initialQueryValue: ''))
+                    CupertinoPageRoute(builder: (context) => SearchScreen(initialQueryValue: '', isEdit: widget.isEdit))
                   );
 
                   await searchVm.loadCsvData();
@@ -157,7 +195,7 @@ class _TargetSectionState extends State<TargetSection> {
 
                   Navigator.push(
                     context,
-                    CupertinoPageRoute(builder: (context) => SearchScreen(initialQueryValue: toLoad))
+                    CupertinoPageRoute(builder: (context) => SearchScreen(initialQueryValue: toLoad, isEdit: widget.isEdit))
                   );
                 },
                 child: Text(

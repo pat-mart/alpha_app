@@ -44,14 +44,14 @@ class _DatetimeSectionState extends State<DatetimeSection> {
                     maximumYear: dateTimeVm.now.year + 5,
                     initialDateTime: dateTimeVm.initialStartDate,
                     onDateTimeChanged: (DateTime value) {
-                      dateTimeVm.startDateTime = value;
+                      dateTimeVm.setStartDateTime(value);
                     },
                   )
                 )
               );
             },
-            child: (dateTimeVm.getStartDateTime != null)
-              ? Text(DateFormat('M.d.yyyy H:mm').format(dateTimeVm.getStartDateTime!))
+            child: (dateTimeVm.startDateTime != null)
+              ? Text(DateFormat('M.d.yyyy H:mm').format(dateTimeVm.startDateTime!))
               : const Text('Select start date')
           )
         ),
@@ -72,15 +72,15 @@ class _DatetimeSectionState extends State<DatetimeSection> {
                       minimumDate: dateTimeVm.now,
                       initialDateTime: dateTimeVm.initialEndDate,
                       onDateTimeChanged: (DateTime value) {
-                        dateTimeVm.endDateTime = value;
+                        dateTimeVm.setEndDateTime(value);
                       },
                     )
                   )
                 )
               );
             },
-            child: (dateTimeVm.getEndDateTime != null)
-                ? Text(DateFormat('M.d.yyyy H:mm').format(dateTimeVm.getEndDateTime!))
+            child: (dateTimeVm.endDateTime != null)
+                ? Text(DateFormat('M.d.yyyy H:mm').format(dateTimeVm.endDateTime!))
                 : const Text('Select end date')
           )
         )

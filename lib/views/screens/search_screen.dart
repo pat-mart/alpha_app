@@ -8,8 +8,9 @@ import 'package:provider/provider.dart';
 class SearchScreen extends StatefulWidget {
 
   final String initialQueryValue;
+  final bool isEdit;
 
-  const SearchScreen({super.key, required this.initialQueryValue});
+  const SearchScreen({super.key, required this.initialQueryValue, required this.isEdit});
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();

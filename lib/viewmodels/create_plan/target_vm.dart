@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 
 import '../create_plan_util.dart';
 
@@ -6,8 +7,10 @@ class TargetViewModel extends ChangeNotifier {
 
   bool _isUsingFilter = false;
 
-  double? _altFilter = -1;
-  double? _azFilter = -1;
+  double? altFilter = -1;
+
+  double? azMin = -1;
+  double? azMax = -1;
 
   Map<String, bool> validFilter = {'alt': false, 'az': false};
 
@@ -26,26 +29,69 @@ class TargetViewModel extends ChangeNotifier {
     return "Enter a valid altitude";
   }
 
-  String? azValidator(String? query){
-    if(CreatePlanUtil.isInRange(query, 0, 360)){
+  String? _azValidator(String? query, bool condition){
+    if(query == null){
       validFilter['az'] = true;
       return null;
+    }
+    else if(CreatePlanUtil.isInRange(query, 0, 360)){
+      if(condition){
+        validFilter['az'] = true;
+        return null;
+      }
     }
     validFilter['az'] = false;
     return "Enter a valid azimuth";
   }
 
-  void onChangeAltFilter(String newValue){
-    _altFilter = CreatePlanUtil.onChangeDegree(newValue);
+  String? azMinValidator(String? query){
+
+    bool hasMax = azMax != null;
+    bool hasMin = azMin != null;
+
+    if(hasMin && !hasMax){
+      return CreatePlanUtil.isInRange(query, 0, 360) ? null : "Enter a valid minimum azimuth";
+    }
+    else if(hasMin && hasMax){
+      return (CreatePlanUtil.isInRange(query, 0, azMax! < azMin! ? 360 : azMax!)) ? null : "Enter a valid minimum azimuth";
+    }
+    return null;
   }
 
-  void onChangeAzFilter(String newValue){
-    _azFilter = CreatePlanUtil.onChangeDegree(newValue);
+  String? azMaxValidator(String? query){
+
+    bool hasMax = azMax != null;
+    bool hasMin = azMin != null;
+
+    if(hasMax && !hasMin){
+      return CreatePlanUtil.isInRange(query, 0, 360) ? null : "Enter a valid azimuth";
+    }
+    else if(hasMax && hasMin){
+        return (CreatePlanUtil.isInRange(query, azMin! > azMax! ? 0 : azMin!, 360)) ? null : "Enter a valid maximum azimuth";
+    }
+    return null;
+  }
+
+  void onChangeAltFilter(String newValue, [bool notify=true]){
+    altFilter = CreatePlanUtil.onChangeDegree(newValue);
+    if(notify) notifyListeners();
+
+  }
+
+  void onChangeAzMin(String newValue, [bool notify=true]){
+    azMin = CreatePlanUtil.onChangeDegree(newValue);
+    if(notify) notifyListeners();
+  }
+
+  void onChangeAzMax(String newValue, [bool notify=true]){
+    azMax = CreatePlanUtil.onChangeDegree(newValue);
+    if(notify) notifyListeners();
   }
 
   void clearFilters(){
-    _altFilter = null;
-    _azFilter = null;
+    altFilter = null;
+    azMin = null;
+    azMax = null;
 
     validFilter['alt'] = false;
     validFilter['az'] = false;
@@ -63,9 +109,9 @@ class TargetViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  set usingFilter(newVal){
+  void usingFilter(newVal, [bool notify=true]){
     _isUsingFilter = newVal;
-    notifyListeners();
+    if(notify) notifyListeners();
   }
 
   bool get isUsingFilter => _isUsingFilter;

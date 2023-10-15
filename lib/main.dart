@@ -4,6 +4,7 @@ import 'package:astro_planner/viewmodels/create_plan/target_vm.dart';
 import 'package:astro_planner/viewmodels/plan_vm.dart';
 import 'package:astro_planner/viewmodels/search_vm.dart';
 import 'package:astro_planner/viewmodels/create_plan/weather_vm.dart';
+import 'package:astro_planner/viewmodels/theme_vm.dart';
 import 'package:astro_planner/views/parent_screen.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -27,7 +28,8 @@ class Main extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => DateTimeViewModel()),
         ChangeNotifierProvider(create: (_) => WeatherViewModel()),
         ChangeNotifierProvider(create: (_) => LocationViewModel()),
-        ChangeNotifierProvider(create: (_) => TargetViewModel())
+        ChangeNotifierProvider(create: (_) => TargetViewModel()),
+        ChangeNotifierProvider(create: (_) => ThemeViewModel())
       ],
       child: const CupertinoApp (
         theme: CupertinoThemeData(brightness: Brightness.dark, applyThemeToAll: true),

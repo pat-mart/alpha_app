@@ -1,3 +1,4 @@
+import math
 import warnings
 
 import astropy.units as u
@@ -20,7 +21,8 @@ class SkyObject:
     :param coords: The (latitude, longitude) coordinate pair of the observation site
     """
 
-    def __init__(self, start_time: Time, end_time: Time, obj_name: str, coords: (float, float), alt_threshold: float, az_min: float):
+    def __init__(self, start_time: Time, end_time: Time, obj_name: str, coords: (float, float), alt_threshold: float,
+                 az_min: float, az_max: float):
 
         self.coords = coords
         self.utc_td = timedelta(hours=ObjUtil.utc_offset(self.coords))
@@ -33,8 +35,10 @@ class SkyObject:
 
         self.target = FixedTarget.from_name(obj_name)
         self.observer_loc = Observer(latitude=coords[0], longitude=coords[1])
+
         self.alt_threshold = alt_threshold
         self.az_min = az_min
+        self.az_max = az_max
 
         self.target_always_up = self.target_always_down = self.sun_always_up = self.sun_always_down = False
 
@@ -136,42 +140,18 @@ class SkyObject:
         elif self.sun_always_down:
             return [self.start_time.to_datetime().isoformat(), self.end_time.to_datetime().isoformat()]
 
-        alt_threshold = self.alt_threshold * u.deg
-        az_min = self.az_min * u.deg
+        alt_threshold = self.alt_threshold
+        az_min = self.az_min
+        az_max = self.az_max
 
         start_dt = datetime.combine(self.start_time.to_datetime().date(), self.hours_visible[0])
         end_dt = datetime.combine(self.end_time.to_datetime().date(), self.hours_visible[1])
+        peak_dt = self.peak_time
 
-        t_interval = (end_dt - start_dt) / 12  # 12 to hold balance between precision and speed
-
-        points = [start_dt + (i * t_interval) for i in range(1, 12)]
-
-        points[-1] = end_dt
-
-        times = []
-
-        times_i = -1
-
-        for t_point in points:  # Filters times, opted to not use enumerate because times_i = -1
-
-            t = Time(t_point).to_datetime()
-
-            coord = self.observer_loc.altaz(time=t - self.utc_td, target=self.target)
-            altitude = coord.alt
-            az = coord.az
-
-            if altitude >= alt_threshold and az >= az_min:
-                if len(times) >= 2 and times[times_i] - t_interval == times[times_i - 1]:  # Ensures no gaps
-                    times.append(t_point)
-                    times_i += 1
-                elif len(times) < 2:
-                    times.append(t_point)
-                    times_i += 1
-
-        if len(times) < 2:
-            return [-1]
-
-        return [times[0].isoformat(), times[-1].isoformat()]
+        return ObjUtil.suggested_hours(self.coords, az_min=az_min, az_max=az_max, alt_threshold=alt_threshold,
+                                       start_time=start_dt, end_time=end_dt, peak_time=peak_dt.to_datetime(),
+                                       hours_visible=self.hours_visible,
+                                       ra_rad=self.target.ra.value * (math.pi/180), dec_rad=self.target.dec.value * (math.pi/180))
 
     @property
     def needs_mer_flip(self) -> bool:

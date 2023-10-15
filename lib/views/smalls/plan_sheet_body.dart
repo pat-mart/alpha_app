@@ -1,4 +1,3 @@
-import 'package:astro_planner/util/plan/plan_timespan.dart';
 import 'package:astro_planner/viewmodels/create_plan/datetime_vm.dart';
 import 'package:astro_planner/viewmodels/create_plan/location_vm.dart';
 import 'package:astro_planner/viewmodels/create_plan/target_vm.dart';
@@ -15,7 +14,6 @@ import 'package:provider/provider.dart';
 import 'package:astro_planner/views/smalls/plan_sheet_sections/location_section.dart';
 
 import '../../models/plan_m.dart';
-import '../../models/sky_obj_m.dart';
 
 class PlanSheet extends StatefulWidget {
 
@@ -41,7 +39,43 @@ class _PlanSheetState extends State<PlanSheet> with SingleTickerProviderStateMix
     animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 150));
     animation = CurvedAnimation(parent: animationController, curve: Curves.easeInOut);
 
-    isEdit = widget.planToLoad == null;
+    isEdit = widget.planToLoad != null;
+
+    if(isEdit){
+
+      final locationVm = LocationViewModel();
+      final targetVm = TargetViewModel();
+      final dateTimeVm = DateTimeViewModel();
+
+      locationVm.onChangeLat(widget.planToLoad!.latitude.toString(), false);
+      locationVm.onChangeLon(widget.planToLoad!.longitude.toString(), false);
+
+      targetVm.onChangeAzMin(widget.planToLoad!.azMin.toString(), false);
+      targetVm.onChangeAzMax(widget.planToLoad!.azMax.toString(), false);
+      targetVm.onChangeAltFilter(widget.planToLoad!.altThresh.toString(), false);
+
+      dateTimeVm.setStartDateTime(widget.planToLoad!.timespan.dateTimeRange.start, false);
+      dateTimeVm.setEndDateTime(widget.planToLoad!.timespan.dateTimeRange.end, false);
+
+      SearchViewModel().selectedResult = widget.planToLoad!.target;
+    }
+  }
+
+  @override
+  void dispose(){
+
+    LocationViewModel().lon = null;
+    LocationViewModel().lat = null;
+
+    DateTimeViewModel().startDateTime = null;
+    DateTimeViewModel().endDateTime = null;
+
+    TargetViewModel().altFilter = null;
+    TargetViewModel().azMax = null;
+    TargetViewModel().azMin = null;
+    TargetViewModel().usingFilter(false, false);
+
+    super.dispose();
   }
 
   @override
@@ -74,7 +108,7 @@ class _PlanSheetState extends State<PlanSheet> with SingleTickerProviderStateMix
                 ]
               ),
               const DatetimeSection(),
-              TargetSection(targetVm: targetVm, animationController: animationController, animation: animation),
+              TargetSection(targetVm: targetVm, animationController: animationController, animation: animation, isEdit: isEdit),
               Container(
                 margin: EdgeInsets.only(left: MediaQuery.of(context).size.width/5, right: MediaQuery.of(context).size.width/5),
                 padding: const EdgeInsets.only(top: 20),
@@ -83,19 +117,18 @@ class _PlanSheetState extends State<PlanSheet> with SingleTickerProviderStateMix
                     onPressed: (!dateTimeVm.validStartDate  || !locationVm.isValidLocation || SearchViewModel().selectedResult == null) ? null : () {
                       PlanViewModel().add(
                         Plan(
-                          SkyObject.fromCsvRow(SearchViewModel().selectedResult!),
-                          dateTimeVm.getStartDateTime!,
-                          dateTimeVm.getEndDateTime!,
+                          SearchViewModel().selectedResult!,
+                          dateTimeVm.startDateTime!,
+                          dateTimeVm.endDateTime!,
                           locationVm.lat!,
                           locationVm.lon!,
                           dateTimeVm.now.timeZoneName,
                           null
                         )
                       );
-
                       Navigator.pop(context);
                     },
-                    child: const Text('Add plan', style: TextStyle(color: CupertinoColors.white))
+                    child: Text(widget.planToLoad == null ? 'Add plan' : 'Save changes', style: const TextStyle(color: CupertinoColors.white))
                   ),
                 )
               )

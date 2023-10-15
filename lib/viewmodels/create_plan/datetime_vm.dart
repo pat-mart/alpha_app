@@ -4,9 +4,9 @@ class DateTimeViewModel extends ChangeNotifier {
 
   static final DateTimeViewModel _instance = DateTimeViewModel._();
 
-  DateTime? _startDateTime;
+  DateTime? startDateTime;
 
-  DateTime? _endDateTime;
+  DateTime? endDateTime;
 
   DateTime now = DateTime.now();
 
@@ -17,35 +17,35 @@ class DateTimeViewModel extends ChangeNotifier {
   }
 
   bool get validStartDate {
-    if(_startDateTime == null || _endDateTime == null){
+    if(startDateTime == null || endDateTime == null){
       return true;
     }
-    return _startDateTime!.isBefore(_endDateTime!);
+    return startDateTime!.isBefore(endDateTime!);
   }
 
   bool get canAdd {
-    if(_startDateTime == null || _endDateTime == null){
+    if(startDateTime == null || endDateTime == null){
       return false;
     }
     return validStartDate;
   }
 
   bool get timesNull{
-    return (_startDateTime == null || _endDateTime == null);
+    return (startDateTime == null || endDateTime == null);
   }
 
   DateTime get initialStartDate {
-    if(_startDateTime == null || _startDateTime!.isBefore(now)){
+    if(startDateTime == null || startDateTime!.isBefore(now)){
       return now;
     }
-    return _startDateTime!;
+    return startDateTime!;
   }
 
   DateTime get initialEndDate {
-    if(_endDateTime == null || _endDateTime!.isBefore(now.add(const Duration(minutes: 1)))){
+    if(endDateTime == null || endDateTime!.isBefore(now.add(const Duration(minutes: 1)))){
       return now;
     }
-    return _endDateTime!;
+    return endDateTime!;
   }
 
   void clearControllers(textEditingControllers){
@@ -60,18 +60,14 @@ class DateTimeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  DateTime? get getStartDateTime => _startDateTime;
-
-  DateTime? get getEndDateTime => _endDateTime;
-
-  set startDateTime(DateTime date){
-    _startDateTime = date;
-    notifyListeners();
+  void setStartDateTime(DateTime date, [bool notify=true]){
+    startDateTime = date;
+    if(notify) notifyListeners();
   }
 
-  set endDateTime(DateTime date){
-    _endDateTime = date;
-    notifyListeners();
+  void setEndDateTime(DateTime date, [bool notify=true]){
+    endDateTime = date;
+    if(notify) notifyListeners();
   }
 }
 

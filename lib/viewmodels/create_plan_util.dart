@@ -14,10 +14,8 @@ abstract class CreatePlanUtil {
 
   static bool isInRange(String? query, double minValue, double maxValue){
     if(query != null && query.isNotEmpty && _numericValidator(query) == null) {
-      if (double.parse(query) > minValue && double.parse(query) <= maxValue) {
-        return true;
-      }
-      return false;
+      return (double.parse(query) > minValue
+          && double.parse(query) <= maxValue);
     }
     return (query != null) ? query.isEmpty : false;
   }

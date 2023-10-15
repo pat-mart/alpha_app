@@ -33,6 +33,11 @@ class _LocationSectionState extends State<LocationSection> with WidgetsBindingOb
 
     locationPermissionFuture = widget.locationVm.hasLocationPermission();
     internetFuture = CreatePlanUtil.hasInternetConnection();
+
+    if(LocationViewModel().lat != null && LocationViewModel().lon != null){
+      latController.text = LocationViewModel().lat.toString();
+      lonController.text = LocationViewModel().lon.toString();
+    }
   }
 
   @override
@@ -59,7 +64,6 @@ class _LocationSectionState extends State<LocationSection> with WidgetsBindingOb
 
   @override
   void dispose() {
-
     latController.dispose();
     lonController.dispose();
 

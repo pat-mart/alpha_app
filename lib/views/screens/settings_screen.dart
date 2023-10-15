@@ -10,6 +10,20 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return CustomScrollView(
+      slivers: [
+        CupertinoSliverNavigationBar(
+          backgroundColor: CupertinoColors.black,
+          largeTitle: const Text('Settings'),
+        ),
+        SliverToBoxAdapter(
+          child: SafeArea(
+            child: Column(
+              
+            )
+          ),
+        )
+      ],
+    );
   }
 }

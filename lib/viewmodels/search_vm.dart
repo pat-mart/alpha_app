@@ -2,7 +2,7 @@ import 'dart:core';
 
 import 'package:astro_planner/viewmodels/create_plan/location_vm.dart';
 import 'package:astro_planner/viewmodels/create_plan_util.dart';
-import 'package:astro_planner/util/plan/csv_row.dart';
+import 'package:astro_planner/models/sky_obj_m.dart';
 import 'package:astro_planner/viewmodels/create_plan/datetime_vm.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,17 +16,17 @@ class SearchViewModel extends ChangeNotifier {
 
   static final SearchViewModel _instance = SearchViewModel._();
 
-  List<CsvRow> resultsList = [];
+  List<SkyObj> resultsList = [];
 
   List<SkyObjectData?> dataList = [];
 
-  List<CsvRow> _csvData = [];
+  List<SkyObj> _csvData = [];
 
   final Map<String, Plan?> _infoMap = {};
-  final Map<String, CsvRow> _searchMap = {};
+  final Map<String, SkyObj> _searchMap = {};
 
   final Map<String, SkyObjectData> _cache = {};
-  final Map<String, CsvRow> _results = {};
+  final Map<String, SkyObj> _results = {};
 
   String _currentQuery = '';
 
@@ -37,8 +37,8 @@ class SearchViewModel extends ChangeNotifier {
 
   final Map<int, dynamic> tappedInstance = {};
 
-  CsvRow? previewedResult;
-  CsvRow? selectedResult;
+  SkyObj? previewedResult;
+  SkyObj? selectedResult;
 
   bool canAdd = false;
 
@@ -48,7 +48,7 @@ class SearchViewModel extends ChangeNotifier {
     return _instance;
   }
 
-  List<CsvRow> get csvData => _csvData;
+  List<SkyObj> get csvData => _csvData;
 
   Map<String, Plan?> get infoMap => _infoMap;
 
@@ -71,7 +71,7 @@ class SearchViewModel extends ChangeNotifier {
             : ',${row[1].toString().toUpperCase()} ${row[3]
             .toUpperCase()},${row[0]},${row[5].toString().toUpperCase()}';
         }
-        CsvRow value = CsvRow(
+        SkyObj value = SkyObj(
           catalogName: row[0],
           catalogAlias: (row[1] is String && row[1] != '_' || row[2] == 'Planet') ? row[1] : '',
           objType: row[2],
@@ -97,7 +97,7 @@ class SearchViewModel extends ChangeNotifier {
     return query.replaceAll(',', '');
   }
 
-  Map<String, CsvRow> _filteredResults (String query) {
+  Map<String, SkyObj> _filteredResults (String query) {
 
     final List<String> keysToRemove = [];
     final List<String> dataKeysToRemove = [];
@@ -110,8 +110,8 @@ class SearchViewModel extends ChangeNotifier {
       return {};
     }
 
-    var startDt = dateTimeVm.getStartDateTime ?? DateTime.now();
-    var endDt = dateTimeVm.getEndDateTime ?? DateTime.now().add(const Duration(minutes: 1));
+    var startDt = dateTimeVm.startDateTime ?? DateTime.now();
+    var endDt = dateTimeVm.endDateTime ?? DateTime.now().add(const Duration(minutes: 1));
 
     _searchMap.forEach((key, value) {
 
@@ -201,19 +201,19 @@ class SearchViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void previewResult(CsvRow row){
+  void previewResult(SkyObj row){
     previewedResult = row;
     canAdd = true;
 
     notifyListeners();
   }
 
-  void deselectResult(CsvRow row){
+  void deselectResult(SkyObj row){
     previewedResult = null;
     canAdd = false;
 
     notifyListeners();
   }
 
-  Map<String, CsvRow> get searchMap => _searchMap;
+  Map<String, SkyObj> get searchMap => _searchMap;
 }

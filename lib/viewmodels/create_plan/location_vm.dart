@@ -1,5 +1,4 @@
 import 'package:astro_planner/viewmodels/create_plan/weather_vm.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart' as ph;
@@ -8,7 +7,7 @@ import '../create_plan_util.dart';
 
 class LocationViewModel extends ChangeNotifier {
 
-  double? _lat, _lon;
+  double? lat, lon;
 
   bool _usingService = false;
   bool _serviceEnabled = true;
@@ -47,7 +46,7 @@ class LocationViewModel extends ChangeNotifier {
     if(!_permissionStatus!.isGranted){
       _usingService = false;
       _serviceEnabled = false;
-      _lat = _lon = null;
+      lat = lon = null;
 
       notifyListeners();
       return;
@@ -57,8 +56,8 @@ class LocationViewModel extends ChangeNotifier {
 
     _locData = await _location.getLocation().timeout(const Duration(seconds: 4));
 
-    _lat = _locData?.latitude;
-    _lon = _locData?.longitude;
+    lat = _locData?.latitude;
+    lon = _locData?.longitude;
 
     notifyListeners();
   }
@@ -71,25 +70,25 @@ class LocationViewModel extends ChangeNotifier {
   }
 
   void nullCoordinates(){
-    _lat = _lon = null;
+    lat = lon = null;
     notifyListeners();
   }
 
-  void onChangeLat(String newValue){
-    _lat = CreatePlanUtil.onChangeDegree(newValue);
-    if(_lat != null && hasInternet) {
+  void onChangeLat(String newValue, [bool notify=true]){
+    lat = CreatePlanUtil.onChangeDegree(newValue);
+    if(lat != null && hasInternet) {
       WeatherViewModel().dataCache.clear();
     }
-    notifyListeners();
+    if(notify) notifyListeners();
   }
 
-  void onChangeLon(String newValue){
-    _lon = CreatePlanUtil.onChangeDegree(newValue);
-    if(_lon != null && hasInternet){
+  void onChangeLon(String newValue, [bool notify=true]){
+    lon = CreatePlanUtil.onChangeDegree(newValue);
+    if(lon != null && hasInternet){
       WeatherViewModel().dataCache.clear();
     }
 
-    notifyListeners();
+    if(notify) notifyListeners();
   }
 
   String? latValidator(String? query){
@@ -119,16 +118,12 @@ class LocationViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  double? get lat => _lat;
-
-  double? get lon => _lon;
-
   bool get isUsingService => _usingService;
 
   bool get serviceEnabled => _serviceEnabled;
 
   bool get isValidLocation {
-    return _lon != null && _lat != null;
+    return lon != null && lat != null;
   }
 
   LocationData? get locationData => _locData;

@@ -8,6 +8,8 @@ class PlanViewModel extends ChangeNotifier {
 
   final List<Plan> _planList = [];
 
+  bool loadedPlans = false;
+
   static final PlanViewModel _instance = PlanViewModel._();
 
   factory PlanViewModel() => _instance;
@@ -18,10 +20,11 @@ class PlanViewModel extends ChangeNotifier {
     final Database db = await DatabaseManager().database;
     final planList = await db.query('plans', orderBy: 'id');
 
-    if(planList.isNotEmpty){
+    if(planList.isNotEmpty && !loadedPlans){
       for(final map in planList){
         _planList.add(Plan.fromMap(map));
       }
+      loadedPlans = true;
     }
     return _planList;
   }

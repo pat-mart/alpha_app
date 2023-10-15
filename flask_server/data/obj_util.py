@@ -1,8 +1,10 @@
-from datetime import datetime
+import math
+from datetime import datetime, timedelta
 
 import ephem
 import pytz
 import astropy.units as u
+from astropy.coordinates import AltAz, SkyCoord, EarthLocation
 from astropy.time import Time
 from timezonefinder import TimezoneFinder
 
@@ -57,6 +59,68 @@ class ObjUtil:
             return [even_twi, morn_twi]
 
         return [-1, -1]
+
+    @staticmethod
+    def suggested_hours(coords,az_min: float, az_max: float, alt_threshold: float, start_time: datetime, end_time: datetime,
+                        ra_rad: float, dec_rad: float,
+                        peak_time: datetime, hours_visible: [datetime]) -> [datetime]:
+        az_start = az_end = -1
+        alt_start = alt_end = -1
+
+        if alt_threshold <= 0 or hours_visible[0] == -1 or az_max > 360 or az_max <= 0 \
+                or az_max < az_min or az_min <= 0:
+            return [-1]
+
+        k_deg_to_rad = math.pi/180
+
+        numer = math.sin(alt_threshold * k_deg_to_rad) - (math.sin(coords[0] * k_deg_to_rad) * math.sin(dec_rad))
+        denom = math.cos(coords[0] * k_deg_to_rad) * math.cos(dec_rad)
+
+        if not abs(numer/denom) > 1:
+            lha = math.acos(numer/denom) * 3.8197  # LHA in hour angles
+
+            lha_td = timedelta(hours=lha)
+
+            alt_start = peak_time - lha_td
+            alt_end = peak_time + lha_td
+
+        if az_min > 0 and az_max < 360:
+            obj_coord = SkyCoord(ra=ra_rad * (180/math.pi) * u.deg, dec=dec_rad * (180/math.pi) * u.deg, frame="icrs")
+
+            location = EarthLocation.from_geodetic(lon=coords[1], lat=coords[0])
+
+            td = timedelta(hours = ObjUtil.utc_offset(coords))
+
+            time_i = (end_time - start_time) / 40
+
+            print(start_time + td)
+
+            for i in range(40):
+
+                if i == 39:
+                    time = end_time + td
+                else:
+                    time = start_time + (time_i * i) + td
+
+                altaz_coord = obj_coord.transform_to(AltAz(obstime=time, location=location))
+
+                if az_min < (altaz_coord.az * u.deg).value < az_max and (altaz_coord.alt * u.deg).value > 0:
+                    if az_start == -1:
+                        az_start = time
+                    else:
+                        az_end = time
+
+        if alt_start == alt_end == az_start == az_end == -1:
+            return [-1, -1]
+
+        elif alt_start != -1 and alt_end != -1 and (az_start == -1 or az_end == -1):
+            return [alt_start, alt_end]
+
+        elif az_start != -1 and az_end != -1 and (alt_start == -1 or alt_end == -1):
+            return [az_start, az_end]
+
+        return [max(alt_start, az_start), max(alt_end, az_end)]
+
 
     @staticmethod
     def to_float(angle: ephem.Angle) -> float:

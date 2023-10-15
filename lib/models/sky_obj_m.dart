@@ -1,49 +1,48 @@
-import 'dart:core';
+class SkyObj{
 
-import '../util/plan/csv_row.dart';
+  String catalogName = '';
+  String catalogAlias = '';
 
-class SkyObject {
+  String objType = '';
+  String constellation = '';
 
-  String _customCatName = '';
+  num magnitude = 0.0;
 
-  String _properName = '';
+  String properName = '';
 
-  String _constellation = '';
+  bool isStar = false;
 
-  num? _magnitude;
+  SkyObj({required this.catalogName, required this.catalogAlias, required this.objType, required this.constellation,
+      required this.magnitude, required this.properName, required this.isStar});
 
-  SkyObject(this._properName, this._customCatName, this._constellation, [this._magnitude=double.nan]);
+  SkyObj.empty(){
+    catalogName = '';
+    catalogAlias = '';
 
-  SkyObject.custom(this._properName, this._customCatName, [this._magnitude=double.nan]);
+    objType = '';
+    constellation = '';
 
-  SkyObject.fromCsvRow(CsvRow row){
-    _properName = row.properName;
-    _customCatName = row.catalogName;
-    _magnitude = row.magnitude;
-    _constellation = row.constellation;
+    magnitude = 0;
+
+    properName = '';
   }
 
-  factory SkyObject.fromString(String str){
-    List<String> list = str.split("*");
+  factory SkyObj.fromString(String str){
+    List<String> list = str.split('*');
 
-    return SkyObject(
-      list[0],
-      list[1],
-      list[2],
-      num.tryParse(list[3])
+    return SkyObj(
+      properName: list[0],
+      catalogName: list[1],
+      catalogAlias: list[2],
+      objType: list[3],
+      constellation: list[4],
+      magnitude: num.tryParse(list[5]) ?? double.nan,
+      isStar: list[6] == 'true'
     );
   }
 
   @override
-  String toString() {
-    return '$_properName*$_customCatName*$_magnitude*$_constellation';
+  String toString(){
+    return '$properName*$catalogName*$catalogAlias*$objType*$constellation*$magnitude*$isStar';
   }
-
-  String get name => _properName;
-
-  String get catName => _customCatName;
-
-  String get constellation => _constellation;
-
-  num? get magnitude => _magnitude;
 }

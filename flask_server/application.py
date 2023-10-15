@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from astropy.time import Time
 from flask import Flask, request, jsonify
 
@@ -10,7 +12,7 @@ application = app = Flask(__name__)
 
 @app.route('/api/search', methods=['GET'])
 # example search endpoint:
-# /api/search?objname=M31&starttime=2023-8-2T21:15:31.0&endtime=2023-8-3T01:12:00.0&lat=10.10&lon=10.10&altthresh=20.0&azmin=0.0
+# /api/search?objname=M31&starttime=2023-8-2T21:15:31.0&endtime=2023-8-3T01:12:00.0&lat=10.10&lon=10.10&altthresh=20.0&azmin=-1&azmax=-1
 def get_obj_pos():
     args = request.args
 
@@ -25,6 +27,7 @@ def get_obj_pos():
 
     alt_threshold = float(args.get('altthresh'))
     az_min = float(args.get('azmin'))
+    az_max = float(args.get('azmax'))
 
     if obj_name in ['mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune']:
         obj = HelioObj(
@@ -33,7 +36,8 @@ def get_obj_pos():
             obj_name=obj_name,
             coords=(float(lat), float(lon)),
             alt_threshold=alt_threshold,
-            az_min=az_min
+            az_min=az_min,
+            az_max=az_max
         )
 
         start_time = obj.start_time.isoformat()
@@ -51,7 +55,8 @@ def get_obj_pos():
             obj_name=obj_name,
             coords=(float(lat), float(lon)),
             alt_threshold=alt_threshold,
-            az_min=az_min
+            az_min=az_min,
+            az_max=az_max
         )
 
         start_time = obj.start_time.iso
@@ -93,12 +98,12 @@ def get_obj_pos():
 @app.route('/')
 def hello_world():
 
-    mars = HelioObj(
+    mars = SkyObject(
         start_time=Time.now(),
-        end_time=Time.now(),
-        obj_name='mars',
+        end_time=Time.now() + timedelta(hours=2),
+        obj_name='M31',
         coords=(40.8, -73.1),
-        alt_threshold=32,
+        alt_threshold=30,
         az_min=12,
         az_max=200
     )

@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 
 import '../../models/json_data/skyobj_data.dart';
 import '../../models/plan_m.dart';
-import '../../util/plan/csv_row.dart';
+import '../../models/sky_obj_m.dart';
 
 class SearchResult extends StatefulWidget {
   final int index;
@@ -14,7 +14,7 @@ class SearchResult extends StatefulWidget {
   final LocationViewModel locationVm;
   final DateTimeViewModel dateTimeVm;
 
-  final CsvRow csvData;
+  final SkyObj csvData;
 
   const SearchResult({super.key, required this.index, required this.searchVm, required this.locationVm, required this.dateTimeVm, required this.csvData});
 
@@ -34,8 +34,8 @@ class _SearchResultState extends State<SearchResult> {
     if(widget.locationVm.lat != null && widget.locationVm.lon != null){
       Plan? plan = Plan.fromCsvRow(
         widget.csvData,
-        widget.dateTimeVm.getStartDateTime,
-        widget.dateTimeVm.getEndDateTime,
+        widget.dateTimeVm.startDateTime,
+        widget.dateTimeVm.endDateTime,
         widget.locationVm.lat!,
         widget.locationVm.lon!
       );

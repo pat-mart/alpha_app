@@ -173,7 +173,6 @@ class _TargetSectionState extends State<TargetSection> {
                     context,
                     CupertinoPageRoute(builder: (context) => SearchScreen(initialQueryValue: '', isEdit: widget.isEdit))
                   );
-
                   await searchVm.loadCsvData();
                 },
               )

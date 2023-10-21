@@ -45,14 +45,24 @@ class PlanViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> update(Plan toUpdate) async {
+  Future<void> update(Plan toUpdate, Plan newVersion) async {
     final Database db = await DatabaseManager().database;
+
+    final uuid = toUpdate.uuid!;
+    final index = _planList.indexOf(toUpdate);
+
+    toUpdate = newVersion;
+    toUpdate.uuid = uuid; // Not sure if this is bad or not. Probably not
+
+    _planList[index] = toUpdate;
+
     await db.update(
       'plans',
       toUpdate.toMap(),
       where: 'uuid = ?',
       whereArgs: [toUpdate.uuid]
     );
+
     notifyListeners();
   }
 

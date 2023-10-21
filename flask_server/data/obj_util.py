@@ -89,11 +89,9 @@ class ObjUtil:
 
             location = EarthLocation.from_geodetic(lon=coords[1], lat=coords[0])
 
-            td = timedelta(hours = ObjUtil.utc_offset(coords))
+            td = timedelta(hours=ObjUtil.utc_offset(coords))
 
             time_i = (end_time - start_time) / 40
-
-            print(start_time + td)
 
             for i in range(40):
 

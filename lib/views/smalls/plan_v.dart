@@ -42,6 +42,7 @@ class _PlanCardState extends State<PlanCard> {
       child: Consumer<PlanViewModel>(
         builder: (context, planVm, _) {
           Plan plan = planVm.getPlan(widget.index);
+
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

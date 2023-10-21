@@ -175,7 +175,7 @@ class SearchViewModel extends ChangeNotifier {
     if(plan != null && _cache.containsKey(uuid)){
       dataList.add(_cache[plan.uuid]);
     } else {
-      var data = await plan?.getObjInfo();
+      await plan?.getObjInfo();
     }
   }
 

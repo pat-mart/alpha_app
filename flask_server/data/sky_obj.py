@@ -6,6 +6,7 @@ from astroplan.exceptions import *
 
 from astropy.coordinates import EarthLocation, SkyCoord, AltAz
 from astroplan import Observer, FixedTarget
+from astropy.coordinates.name_resolve import NameResolveError
 from astropy.time import Time
 from datetime import datetime, timedelta
 
@@ -34,6 +35,7 @@ class SkyObject:
         self.geo_loc = EarthLocation.from_geodetic(lat=coords[0], lon=coords[1])
 
         self.target = FixedTarget.from_name(obj_name)
+
         self.observer_loc = Observer(latitude=coords[0], longitude=coords[1])
 
         self.alt_threshold = alt_threshold
@@ -41,8 +43,6 @@ class SkyObject:
         self.az_max = az_max
 
         self.target_always_up = self.target_always_down = self.sun_always_up = self.sun_always_down = False
-
-        day_diff = end_time.to_datetime().date() - start_time.to_datetime().date()
 
         try:
             self.observer_loc.target_rise_time(start_time, self.target)
@@ -91,8 +91,12 @@ class SkyObject:
     @property
     def hours_visible(self) -> [datetime]:
 
-        _morning_twilight = self.observer_loc.twilight_morning_astronomical(self.start_time).to_datetime() + self.utc_td
-        _evening_twilight = self.observer_loc.twilight_evening_astronomical(self.end_time).to_datetime() + self.utc_td
+        try:
+            _morning_twilight = self.observer_loc.twilight_morning_astronomical(self.start_time).to_datetime() + self.utc_td
+            _evening_twilight = self.observer_loc.twilight_evening_astronomical(self.end_time).to_datetime() + self.utc_td
+        except TargetAlwaysUpWarning or TargetNeverUpWarning:
+            _morning_twilight = None
+            _evening_twilight = None
 
         return ObjUtil.hours_visible(
             target_always_up=self.target_always_up,

@@ -81,9 +81,10 @@ class _PlanSheetState extends State<PlanSheet> with SingleTickerProviderStateMix
   @override
   Widget build(BuildContext context) {
 
-    LocationViewModel locationVm = Provider.of<LocationViewModel>(context);
-    TargetViewModel targetVm = Provider.of<TargetViewModel>(context);
-    WeatherViewModel weatherVm = Provider.of<WeatherViewModel>(context);
+    final locationVm = Provider.of<LocationViewModel>(context);
+    final targetVm = Provider.of<TargetViewModel>(context);
+    final weatherVm = Provider.of<WeatherViewModel>(context);
+    final dateTimeVm = Provider.of<DateTimeViewModel>(context);
 
     return CustomScrollView(
       scrollBehavior: const CupertinoScrollBehavior(),
@@ -112,25 +113,27 @@ class _PlanSheetState extends State<PlanSheet> with SingleTickerProviderStateMix
               Container(
                 margin: EdgeInsets.only(left: MediaQuery.of(context).size.width/5, right: MediaQuery.of(context).size.width/5),
                 padding: const EdgeInsets.only(top: 20),
-                child: Consumer<DateTimeViewModel>(
-                  builder: (context, dateTimeVm, _) => CupertinoButton.filled(
+                child: CupertinoButton.filled(
                     onPressed: (!dateTimeVm.validStartDate  || !locationVm.isValidLocation || SearchViewModel().selectedResult == null) ? null : () {
-                      PlanViewModel().add(
-                        Plan(
-                          SearchViewModel().selectedResult!,
-                          dateTimeVm.startDateTime!,
-                          dateTimeVm.endDateTime!,
-                          locationVm.lat!,
-                          locationVm.lon!,
-                          dateTimeVm.now.timeZoneName,
-                          null
-                        )
+                      final newPlan = Plan(
+                        SearchViewModel().selectedResult!,
+                        dateTimeVm.startDateTime!,
+                        dateTimeVm.endDateTime!,
+                        locationVm.lat!,
+                        locationVm.lon!,
+                        dateTimeVm.now.timeZoneName,
+                        null
                       );
-                      Navigator.pop(context);
-                    },
-                    child: Text(widget.planToLoad == null ? 'Add plan' : 'Save changes', style: const TextStyle(color: CupertinoColors.white))
-                  ),
-                )
+                      if(widget.planToLoad == null){
+                        PlanViewModel().add(newPlan);
+                      }
+                      else {
+                        PlanViewModel().update(widget.planToLoad!, newPlan);
+                      }
+                    Navigator.pop(context);
+                  },
+                  child: Text(widget.planToLoad == null ? 'Add plan' : 'Save', style: const TextStyle(color: CupertinoColors.white))
+                ),
               )
             ]
           )

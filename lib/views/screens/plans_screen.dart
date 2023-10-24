@@ -1,4 +1,3 @@
-import 'package:astro_planner/util/db/database_manager.dart';
 import 'package:astro_planner/views/screens/empty_modal_sheet.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -36,8 +35,7 @@ class _PlansScreenState extends State<PlansScreen>{
         CupertinoSliverNavigationBar(
           backgroundColor: CupertinoColors.black,
           largeTitle: const Text('My plans'),
-          trailing:
-          IconButton(
+          trailing: IconButton(
             icon: const Icon(CupertinoIcons.add_circled, size: 32),
             onPressed: () async {
               setState(() {

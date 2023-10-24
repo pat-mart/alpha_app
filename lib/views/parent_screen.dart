@@ -1,4 +1,3 @@
-import 'package:astro_planner/viewmodels/plan_vm.dart';
 import 'package:astro_planner/viewmodels/theme_vm.dart';
 import 'package:astro_planner/views/screens/plans_screen.dart';
 import 'package:astro_planner/views/screens/settings_screen.dart';
@@ -12,7 +11,7 @@ class ParentScreen extends StatefulWidget {
   State createState() => ParentScreenState();
 }
 
-class ParentScreenState extends State<ParentScreen> {
+class ParentScreenState extends State<ParentScreen> { // Like main but stateful
 
   int _cIndex = 0;
   final List<Widget> _tabs = [

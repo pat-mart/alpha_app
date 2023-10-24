@@ -19,7 +19,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         SliverToBoxAdapter(
           child: SafeArea(
             child: Column(
-              
+              children: [],
             )
           ),
         )

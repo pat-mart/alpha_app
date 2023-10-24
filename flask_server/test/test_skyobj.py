@@ -6,6 +6,11 @@ from astropy.time import Time
 
 from data.sky_obj import SkyObject
 
+'''
+None of this stuff is really of any use because testing try/except with 
+warnings (not really errors in the literal sense) is a pain and totally unnecessary
+'''
+
 
 class TestSkyObj(unittest.TestCase):
 
@@ -20,8 +25,8 @@ class TestSkyObj(unittest.TestCase):
             end_time=Time('2023-7-16T01:12:00.0'),
             obj_name="Polaris",
             coords=(ran_lat, ran_lon),
-            alt_threshold= -1,
-            az_threshold= -1
+            alt_threshold=-1,
+            az_threshold=-1
         )
 
     def test_obj_never_sets(self):

@@ -18,6 +18,10 @@ class PlanViewModel extends ChangeNotifier {
 
   Future<List<Plan>> get savedPlans async {
     final Database db = await DatabaseManager().database;
+
+    await DatabaseManager().initDatabase();
+    await db.query('plans', orderBy: 'id');
+
     final planList = await db.query('plans', orderBy: 'id');
 
     if(planList.isNotEmpty && !loadedPlans){

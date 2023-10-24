@@ -56,8 +56,6 @@ class DatabaseManager {
 
   Future<void> _onCreate(Database db, int version) async {
 
-    await db.execute('ALTER TABLE plans ADD COLUMN uuid TEXT');
-
     await db.execute(
       '''CREATE TABLE plans (
         id INTEGER PRIMARY KEY AUTOINCREMENT,

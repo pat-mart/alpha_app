@@ -45,18 +45,15 @@ def get_obj_pos():
         end_time = obj.end_time.isoformat()
 
     else:
-        try:
-            obj = SkyObject(
-                start_time=start,
-                end_time=end,
-                obj_name=obj_name,
-                coords=(float(lat), float(lon)),
-                alt_threshold=alt_threshold,
-                az_min=az_min,
-                az_max=az_max
-            )
-        except NameResolveError:
-            return jsonify({'msg': 'failure'})
+        obj = SkyObject(
+            start_time=start,
+            end_time=end,
+            obj_name=obj_name,
+            coords=(float(lat), float(lon)),
+            alt_threshold=alt_threshold,
+            az_min=az_min,
+            az_max=az_max
+        )
 
         start_time = obj.start_time.iso
         end_time = obj.end_time.iso
@@ -91,7 +88,6 @@ def get_obj_pos():
         str_hrs = [-1]
 
     obj_data = {
-        'msg': 'good',
         'obj_name': obj.obj_name,
         'time_start': start_time,
         'time_end': end_time,

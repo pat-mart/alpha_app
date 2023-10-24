@@ -28,9 +28,9 @@ class _WeatherDayState extends State<WeatherDay> {
   Icon getWeatherIcon(String condition, bool isDay) {
 
     Map<String, Icon> iconMap = {
-      'Clear': Icon(!isDay ? CupertinoIcons.moon_stars : CupertinoIcons.sun_max, color: CupertinoColors.white),
+      'Clear': Icon(isDay ? CupertinoIcons.sun_max : CupertinoIcons.moon_stars, color: CupertinoColors.white),
       'Cloudy':  const Icon(CupertinoIcons.cloud, color: CupertinoColors.white),
-      'PartlyCloudy': Icon(!isDay ? CupertinoIcons.cloud_sun : CupertinoIcons.cloud_moon, color: CupertinoColors.white),
+      'PartlyCloudy': Icon(isDay ? CupertinoIcons.cloud_sun : CupertinoIcons.cloud_moon, color: CupertinoColors.white),
       'MostlyCloudy': const Icon(CupertinoIcons.cloud, color: CupertinoColors.white),
       'Drizzle':  const Icon(CupertinoIcons.cloud_drizzle, color: CupertinoColors.white),
       'HeavyRain': const Icon(CupertinoIcons.cloud_heavyrain, color: CupertinoColors.white),

@@ -121,6 +121,7 @@ class SearchViewModel extends ChangeNotifier {
       if(key.contains(',$upper') || key.contains(' $upper') || key.contains(',$title') || key.contains(' $title')) {
         if(_results.length < 10 + numRemoved){
           _results[key] = value;
+
           if(locationVm.lon != null && locationVm.lat != null) {
             _infoMap[key] =
               Plan.fromCsvRow(

@@ -12,7 +12,7 @@ class TargetViewModel extends ChangeNotifier {
   double? azMin = -1;
   double? azMax = -1;
 
-  Map<String, bool> validFilter = {'alt': false, 'az': false};
+  Map<String, bool> validFilter = {'alt': true, 'az_min': true, 'az_max': true};
 
   static final instance = TargetViewModel._();
 
@@ -29,21 +29,6 @@ class TargetViewModel extends ChangeNotifier {
     return "Enter a valid altitude";
   }
 
-  String? _azValidator(String? query, bool condition){
-    if(query == null){
-      validFilter['az'] = true;
-      return null;
-    }
-    else if(CreatePlanUtil.isInRange(query, 0, 360)){
-      if(condition){
-        validFilter['az'] = true;
-        return null;
-      }
-    }
-    validFilter['az'] = false;
-    return "Enter a valid azimuth";
-  }
-
   String? azMinValidator(String? query){
 
     bool hasMax = azMax != null;
@@ -55,6 +40,7 @@ class TargetViewModel extends ChangeNotifier {
     else if(hasMin && hasMax){
       return (CreatePlanUtil.isInRange(query, 0, azMax! < azMin! ? 360 : azMax!)) ? null : "Enter a valid minimum azimuth";
     }
+    validFilter['az_min'] = true;
     return null;
   }
 
@@ -69,7 +55,12 @@ class TargetViewModel extends ChangeNotifier {
     else if(hasMax && hasMin){
         return (CreatePlanUtil.isInRange(query, azMin! > azMax! ? 0 : azMin!, 360)) ? null : "Enter a valid maximum azimuth";
     }
+    validFilter['az_max'] = false;
     return null;
+  }
+
+  bool get isValidFilter {
+    return validFilter.values.every((element) => element);
   }
 
   void onChangeAltFilter(String newValue, [bool notify=true]){
@@ -93,8 +84,9 @@ class TargetViewModel extends ChangeNotifier {
     azMin = null;
     azMax = null;
 
-    validFilter['alt'] = false;
-    validFilter['az'] = false;
+    validFilter['alt'] = true;
+    validFilter['az_min'] = true;
+    validFilter['az_max'] = true;
 
     notifyListeners();
   }

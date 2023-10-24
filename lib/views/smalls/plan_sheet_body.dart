@@ -59,6 +59,10 @@ class _PlanSheetState extends State<PlanSheet> with SingleTickerProviderStateMix
 
       SearchViewModel().selectedResult = widget.planToLoad!.target;
     }
+    else {
+      SearchViewModel().selectedResult = null;
+      SearchViewModel().previewedResult = null;
+    }
   }
 
   @override
@@ -114,7 +118,7 @@ class _PlanSheetState extends State<PlanSheet> with SingleTickerProviderStateMix
                 margin: EdgeInsets.only(left: MediaQuery.of(context).size.width/5, right: MediaQuery.of(context).size.width/5),
                 padding: const EdgeInsets.only(top: 20),
                 child: CupertinoButton.filled(
-                    onPressed: (!dateTimeVm.validStartDate  || !locationVm.isValidLocation || SearchViewModel().selectedResult == null) ? null : () {
+                    onPressed: (!targetVm.isValidFilter || !dateTimeVm.validStartDate  || !locationVm.isValidLocation || SearchViewModel().selectedResult == null) ? null : () {
                       final newPlan = Plan(
                         SearchViewModel().selectedResult!,
                         dateTimeVm.startDateTime!,

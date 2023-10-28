@@ -106,6 +106,8 @@ class Plan {
 
   Future<WeatherData?> getWeatherData([RequestType requestType = RequestType.forecast]) async {
 
+    print('Setting state 1');
+
     final String weatherKey = await rootBundle.loadString('assets/.weather_key', cache: false);
 
     Uri weatherUrl = Uri.parse('https://weatherkit.apple.com/api/v1/weather/en-US/$latitude/$longitude?dataSets=forecastHourly&country=US');
@@ -116,9 +118,9 @@ class Plan {
       headers: {
         'Authorization': 'Bearer $weatherKey'
       }
-    ).timeout(const Duration(seconds: 5)).onError((error, stackTrace) => throw Exception(error));
+    ).timeout(const Duration(seconds: 10)).onError((error, stackTrace) => throw Exception(error));
 
-    dynamic timeResponse = await http.get(timeUrl).timeout(const Duration(seconds: 5));
+    dynamic timeResponse = await http.get(timeUrl).timeout(const Duration(seconds: 10));
 
     if(weatherResponse.statusCode == 200 && timeResponse.statusCode == 200){
       if(requestType == RequestType.planDuration){
@@ -131,6 +133,7 @@ class Plan {
       }
       return WeatherData.fromJson(jsonDecode(weatherResponse.body), jsonDecode(timeResponse.body));
     }
+    print('Error');
     throw Exception('Weather error code ${weatherResponse.statusCode}');
   }
 
@@ -149,21 +152,32 @@ class Plan {
 
   Future<SkyObjectData?> getObjInfo() async {
 
+    print('requesting');
+
     Uri url = Uri.parse(
-      'http://flask-env.eba-xndrjpjz.us-east-1.elasticbeanstalk.com'
+      'https://api.astro-alpha.com'
           '/api/search?objname=${target.catalogName}&starttime=${_formatter.format(timespan.startDateTime)}'
-          '&endtime=${_formatter.format(timespan.dateTimeRange.end)}&lat=$latitude&lon=$longitude&altthresh=$altThresh&azthresh=$azMin'
+          '&endtime=${_formatter.format(timespan.dateTimeRange.end)}&lat=$latitude&lon=$longitude&altthresh=$altThresh&azmin=$azMin&azmax=$azMax'
     );
 
-    final response = await http.get(url).timeout(const Duration(seconds: 10));
+    url = Uri.parse('https://api.astro-alpha.com/api/search?objname=M31&starttime=2023-10-2T21:15:31.0&endtime=2023-10-3T01:12:00.0&lat=40.8&lon=-73.1&altthresh=40&azmin=-1&azmax=-1');
+
+    print(target.catalogName);
+
+    final response = await http.get(url).timeout(const Duration(seconds: 30));
+
+    if(SearchViewModel().infoCache.keys.length > 100){
+      SearchViewModel().infoCache.clear();
+    }
 
     if(response.statusCode == 200) {
-
       final searchVm = SearchViewModel();
 
       //Caches data
-      if(!searchVm.infoCache.containsKey(uuid)){
-        searchVm.infoCache[uuid!] = _apiData = SkyObjectData.fromJson(jsonDecode(response.body));
+      if (!searchVm.infoCache.containsKey(uuid)) {
+        searchVm.infoCache[uuid!] = _apiData =
+            SkyObjectData.fromJson(jsonDecode(response.body));
+        return _apiData;
       }
       else {
         return searchVm.infoCache[uuid];
@@ -171,6 +185,7 @@ class Plan {
     }
     throw Exception('Error code ${response.statusCode}');
   }
+
 }
 
 enum RequestType {

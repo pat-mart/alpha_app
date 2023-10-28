@@ -83,7 +83,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   itemCount: searchVm.resultsList.length,
                   itemBuilder: (BuildContext context, int index) {
                     if(searchVm.resultsList.isNotEmpty){
-                      return SearchResult(index: index, searchVm: searchVm, dateTimeVm: dateTimeVm, locationVm: locationVm, csvData: searchVm.csvData[index]);
+                      return SearchResult(index: index, searchVm: searchVm, dateTimeVm: dateTimeVm, locationVm: locationVm);
                     }
                     return null;
                   }

@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import '../../models/json_data/skyobj_data.dart';
 import '../../models/plan_m.dart';
 import '../../models/sky_obj_m.dart';
+import '../../util/plan/cardinal.dart';
 
 class SearchResult extends StatefulWidget {
   final int index;
@@ -14,9 +15,7 @@ class SearchResult extends StatefulWidget {
   final LocationViewModel locationVm;
   final DateTimeViewModel dateTimeVm;
 
-  final SkyObj csvData;
-
-  const SearchResult({super.key, required this.index, required this.searchVm, required this.locationVm, required this.dateTimeVm, required this.csvData});
+  const SearchResult({super.key, required this.index, required this.searchVm, required this.locationVm, required this.dateTimeVm});
 
   @override
   State<SearchResult> createState() => _SearchResultState();
@@ -31,11 +30,13 @@ class _SearchResultState extends State<SearchResult> {
   void initState() {
     super.initState();
 
+    final csvData = widget.searchVm.resultsList[widget.index];
+
     if(widget.locationVm.lat != null && widget.locationVm.lon != null){
       Plan? plan = Plan.fromCsvRow(
-        widget.csvData,
-        widget.dateTimeVm.startDateTime,
-        widget.dateTimeVm.endDateTime,
+        csvData,
+        widget.dateTimeVm.startDateTime ?? DateTime.now(),
+        widget.dateTimeVm.endDateTime ?? DateTime.now(),
         widget.locationVm.lat!,
         widget.locationVm.lon!
       );
@@ -75,7 +76,15 @@ class _SearchResultState extends State<SearchResult> {
             future: dataFuture,
             builder: (BuildContext context, objData) {
               if(objData.hasData && objData.data != null){
-                return const Text('Has data');
+                if(objData.data!.hoursVis[0] != -1){
+                  return const Text('Never visible');
+                }
+                return Column(
+                  children: [
+                    Text('Visible from ${objData.data!.hoursVis[0]} to ${objData.data!.hoursVis[1]}'),
+                    Text('Peaks ${objData.data!.peakAlt} ${Cardinal.getCardinal(objData.data!.peakBearing)} at ${objData.data!.peakTime}')
+                  ]
+                );
               }
               return const Text('No data');
             },

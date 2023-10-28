@@ -20,8 +20,6 @@ class SearchViewModel extends ChangeNotifier {
 
   List<SkyObjectData?> dataList = [];
 
-  List<SkyObj> _csvData = [];
-
   final Map<String, Plan?> _infoMap = {};
   final Map<String, SkyObj> _searchMap = {};
 
@@ -47,8 +45,6 @@ class SearchViewModel extends ChangeNotifier {
   factory SearchViewModel(){
     return _instance;
   }
-
-  List<SkyObj> get csvData => _csvData;
 
   Map<String, Plan?> get infoMap => _infoMap;
 
@@ -83,7 +79,6 @@ class SearchViewModel extends ChangeNotifier {
         _searchMap[key] = value;
       }
     }
-    _csvData = _searchMap.values.toList();
   }
 
   String removeProperAlias(String properName){

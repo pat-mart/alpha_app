@@ -38,7 +38,7 @@ abstract class CreatePlanUtil {
   static Future<bool> hasInternetConnection() async {
     final connectivityResult = await(Connectivity().checkConnectivity());
 
-    return ([ConnectivityResult.ethernet, ConnectivityResult.wifi, ConnectivityResult.other].contains(connectivityResult));
+    return ([ConnectivityResult.ethernet, ConnectivityResult.wifi, ConnectivityResult.mobile, ConnectivityResult.other, ConnectivityResult.vpn].contains(connectivityResult));
   }
 
   static Future<WeatherData>? getForecastDays(double? latitude, double? longitude) {

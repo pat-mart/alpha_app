@@ -23,6 +23,13 @@ class DateTimeViewModel extends ChangeNotifier {
     return startDateTime!.isBefore(endDateTime!);
   }
 
+  bool get validDates {
+    if(startDateTime == null || endDateTime == null){
+      return false;
+    }
+    return startDateTime!.isBefore(endDateTime!);
+  }
+
   bool get canAdd {
     if(startDateTime == null || endDateTime == null){
       return false;

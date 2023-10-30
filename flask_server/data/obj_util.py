@@ -31,6 +31,9 @@ class ObjUtil:
         elif target_always_up and sun_always_down:
             return [start_time.to_datetime().time(), end_time.to_datetime().time()]
 
+        elif target_always_up:
+            return [-1, -1]
+
         rise_time = obj_rise_time
         set_time = obj_set_time
 

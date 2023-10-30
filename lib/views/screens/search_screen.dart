@@ -64,26 +64,29 @@ class _SearchScreenState extends State<SearchScreen> {
           margin: const EdgeInsets.only(left: 14, right: 14, top: 16),
           child: Column(
             children: [
-              CupertinoSearchTextField(
-                controller: controller,
-                onSuffixTap: () {
-                  controller.clear();
-                  searchVm.clearResults(doNotifyListeners: true);
-                },
-                onChanged: (String q)  {
-                  searchVm.loadSearchResults(q);
-                },
-                placeholder: 'Search for a target',
-                autofocus: true,
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: CupertinoSearchTextField(
+                  controller: controller,
+                  onSuffixTap: () {
+                    controller.clear();
+                    searchVm.clearResults(doNotifyListeners: true);
+                  },
+                  onChanged: (String q)  {
+                    searchVm.loadSearchResults(q);
+                  },
+                  placeholder: 'Search for a target',
+                  autofocus: true,
+                ),
               ),
               Expanded(
-                child: (searchVm.resultsList.isEmpty && controller.text.isNotEmpty) ? Center(child: Text('No results', style: TextStyle(color: CupertinoColors.systemGrey.darkColor)))
+                child: (searchVm.resultsList.isEmpty && controller.text.isNotEmpty) ? Center(child: Text('No results', style: TextStyle(color: CupertinoColors.secondaryLabel.darkColor)))
                 : ListView.builder(
                   shrinkWrap: true,
                   itemCount: searchVm.resultsList.length,
                   itemBuilder: (BuildContext context, int index) {
                     if(searchVm.resultsList.isNotEmpty){
-                      return SearchResult(index: index, searchVm: searchVm, dateTimeVm: dateTimeVm, locationVm: locationVm);
+                      return SearchResult(index: index, listLength: searchVm.resultsList.length, searchVm: searchVm, dateTimeVm: dateTimeVm, locationVm: locationVm, timestamp: DateTime.timestamp());
                     }
                     return null;
                   }

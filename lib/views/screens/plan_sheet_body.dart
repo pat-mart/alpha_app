@@ -87,8 +87,10 @@ class _PlanSheetState extends State<PlanSheet> with SingleTickerProviderStateMix
 
     final locationVm = Provider.of<LocationViewModel>(context);
     final targetVm = Provider.of<TargetViewModel>(context);
-    final weatherVm = Provider.of<WeatherViewModel>(context);
     final dateTimeVm = Provider.of<DateTimeViewModel>(context);
+
+    final weatherVm = Provider.of<WeatherViewModel>(context);
+    final planVm = Provider.of<PlanViewModel>(context);
 
     return CustomScrollView(
       scrollBehavior: const CupertinoScrollBehavior(),
@@ -118,23 +120,23 @@ class _PlanSheetState extends State<PlanSheet> with SingleTickerProviderStateMix
                 margin: EdgeInsets.only(left: MediaQuery.of(context).size.width/5, right: MediaQuery.of(context).size.width/5),
                 padding: const EdgeInsets.only(top: 20),
                 child: CupertinoButton.filled(
-                    onPressed: (!targetVm.isValidFilter || !dateTimeVm.validStartDate  || !locationVm.isValidLocation || SearchViewModel().selectedResult == null) ? null : () {
+                    onPressed: (!targetVm.isValidFilter || !dateTimeVm.validDates  || !locationVm.isValidLocation || SearchViewModel().selectedResult == null) ? null : () {
                       final newPlan = Plan(
                         SearchViewModel().selectedResult!,
-                        dateTimeVm.startDateTime!,
-                        dateTimeVm.endDateTime!,
+                        dateTimeVm.startDateTime ?? DateTime.now(),
+                        dateTimeVm.endDateTime ?? DateTime.now(),
                         locationVm.lat!,
                         locationVm.lon!,
                         dateTimeVm.now.timeZoneName,
                         null
                       );
                       if(widget.planToLoad == null){
-                        PlanViewModel().add(newPlan);
+                        planVm.add(newPlan);
                       }
                       else {
-                        PlanViewModel().update(widget.planToLoad!, newPlan);
+                        planVm.update(widget.planToLoad!, newPlan);
                       }
-                    Navigator.pop(context);
+                      Navigator.pop(context);
                   },
                   child: Text(widget.planToLoad == null ? 'Add plan' : 'Save', style: const TextStyle(color: CupertinoColors.white))
                 ),

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:astro_planner/viewmodels/plan_vm.dart';
 import 'package:astro_planner/views/screens/empty_modal_sheet.dart';
-import 'package:astro_planner/views/smalls/plan_sheet_body.dart';
+import 'package:astro_planner/views/screens/plan_sheet_body.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -26,11 +26,12 @@ class _PlanCardState extends State<PlanCard> {
 
   late Future<WeatherData?> weatherFuture;
 
-  final DateFormat dayFormat = DateFormat('E, M/d');
+  final DateFormat dayFormat = DateFormat('EEEE, M/d');
   final DateFormat timeFormat = DateFormat('H:mm');
 
   late Timer timeToHour;
   late Timer periodicTimer;
+
 
   @override
   void initState() {
@@ -49,6 +50,14 @@ class _PlanCardState extends State<PlanCard> {
   }
 
   @override
+  void didUpdateWidget(covariant old){
+    super.didUpdateWidget(old);
+
+    Plan plan = PlanViewModel().getPlan(widget.index);
+    weatherFuture = plan.getWeatherData(RequestType.planDuration);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
@@ -60,12 +69,18 @@ class _PlanCardState extends State<PlanCard> {
             children: [
               Text( //Date in EE, MM, d
                 plan.timespan.numDays > 1 ? plan.timespan.formattedRange : dayFormat.format(plan.timespan.startDateTime),
-                style: const TextStyle(color: CupertinoColors.white, fontSize: 20, fontWeight: FontWeight.bold)
+                style: const TextStyle(color: CupertinoColors.white, fontSize: 22, fontWeight: FontWeight.bold)
               ),
               Text(
                 '${timeFormat.format(plan.timespan.startDateTime)} (${plan.timezone}) to ${timeFormat.format(plan.timespan.dateTimeRange.end)}',
-                style: TextStyle(color: CupertinoColors.secondaryLabel.darkColor, fontSize: 16)
+                style: TextStyle(color: CupertinoColors.secondaryLabel.darkColor, fontSize: 18)
               ),
+              (plan.timespan.dateTimeRange.end.toUtc().isBefore(DateTime.now().toUtc()))
+                  ? Padding(
+                    padding: const EdgeInsets.only(top: 4, bottom: 4),
+                    child: Text('Passed', style: TextStyle(color: CupertinoColors.secondaryLabel.darkColor, fontSize: 14)),
+                  )
+                  : const Text(''),
               const Padding(padding: EdgeInsets.only(bottom: 8)),
               Card(
                 color: CupertinoColors.systemFill.darkColor,
@@ -107,7 +122,9 @@ class _PlanCardState extends State<PlanCard> {
                                   showCupertinoDialog(
                                       context: context,
                                       builder: (context) => CupertinoAlertDialog(
-                                        title: Text('Delete \'${plan.target.properName == '' ? plan.target.catalogName : plan.target.properName}\' plan on ${plan.formattedStartDate}?'),
+                                        title: Text('Delete \'${plan.target.properName == ''
+                                            ? plan.target.catalogName
+                                            : plan.target.properName}\' plan scheduled for ${plan.formattedStartDate}?'),
                                         content: const Text('This action cannot be undone.'),
                                         actions: [
                                           CupertinoDialogAction(
@@ -141,16 +158,18 @@ class _PlanCardState extends State<PlanCard> {
                         child: FutureBuilder(
                           future: weatherFuture,
                           builder: (context, snapshot) {
-                            if(snapshot.data != null && !snapshot.hasError){
 
+                            if(snapshot.data != null && !snapshot.hasError){
                               var data = snapshot.data!;
 
                               if(data.clearHours.isEmpty && data.hasData){
                                 return const Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Icon(CupertinoIcons.exclamationmark_triangle, color: CupertinoColors.systemRed),
-                                    Text('No clear weather for this plan')
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 8.0),
+                                      child: Text('No clear weather for this plan', style: TextStyle(color: CupertinoColors.systemRed, fontSize: 18)),
+                                    )
                                   ]
                                 );
                               }
@@ -164,13 +183,13 @@ class _PlanCardState extends State<PlanCard> {
                                 );
                               }
                               else if(data.clearHours.isNotEmpty && data.hasData && data.clearHours.length == 1){
-                                return Text('Clear at ${data.clearHours[0]}');
+                                return Text('Clear at ${data.clearHours[0]}', style: TextStyle(color: CupertinoColors.systemCyan.darkColor, fontSize: 18));
                               }
                               return Text('Clear weather from ${snapshot.data!.clearHours.first.hour} to ${snapshot.data!.clearHours.last.hour}',
-                                style: const TextStyle(color: CupertinoColors.systemCyan, fontSize: 18),
+                                style: TextStyle(color: CupertinoColors.systemCyan.darkColor, fontSize: 18),
                               );
                             }
-                            return const Text('No Data');
+                            return Text('No weather data', style: TextStyle(color: CupertinoColors.secondaryLabel.darkColor, fontSize: 18));
                           }
                         )
                       ),

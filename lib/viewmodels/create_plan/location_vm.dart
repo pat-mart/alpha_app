@@ -1,4 +1,3 @@
-import 'package:astro_planner/viewmodels/create_plan/weather_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart' as ph;
@@ -76,18 +75,11 @@ class LocationViewModel extends ChangeNotifier {
 
   void onChangeLat(String newValue, [bool notify=true]){
     lat = CreatePlanUtil.onChangeDegree(newValue);
-    if(lat != null && hasInternet) {
-      WeatherViewModel().dataCache.clear();
-    }
     if(notify) notifyListeners();
   }
 
   void onChangeLon(String newValue, [bool notify=true]){
     lon = CreatePlanUtil.onChangeDegree(newValue);
-    if(lon != null && hasInternet){
-      WeatherViewModel().dataCache.clear();
-    }
-
     if(notify) notifyListeners();
   }
 

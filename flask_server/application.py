@@ -1,12 +1,11 @@
-from datetime import timedelta
-
-from astropy.coordinates.name_resolve import NameResolveError
 from astropy.time import Time
-from flask import Flask, request, jsonify
+from flask import Flask, request, json, jsonify, make_response
 
 from data.helio_obj import HelioObj
 from data.obj_util import ObjUtil
 from data.sky_obj import SkyObject
+
+import gzip
 
 application = app = Flask(__name__)
 
@@ -41,9 +40,6 @@ def get_obj_pos():
             az_max=az_max
         )
 
-        start_time = obj.start_time.isoformat()
-        end_time = obj.end_time.isoformat()
-
     else:
         obj = SkyObject(
             start_time=start,
@@ -54,9 +50,6 @@ def get_obj_pos():
             az_min=az_min,
             az_max=az_max
         )
-
-        start_time = obj.start_time.iso
-        end_time = obj.end_time.iso
 
     rise_t = -1
     set_t = -1
@@ -69,11 +62,21 @@ def get_obj_pos():
     if hasattr(obj, 'rise_iso'):
         rise_t = obj.rise_iso.iso
 
+    elif hasattr(obj, 'obj_rise_time'):
+        rise_t = str(obj.obj_rise_time)
+
     if hasattr(obj, 'set_iso'):
         set_t = obj.set_iso.iso
 
+    elif hasattr(obj, 'obj_set_time'):
+        set_t = str(obj.obj_set_time)
+
     if hasattr(obj, 'peak_time'):
-        peak_t = obj.peak_time.iso
+        if hasattr(obj.peak_time, 'iso'):
+            peak_t = obj.peak_time.iso
+        else:
+            peak_t = obj.peak_time
+
         peak_altaz = obj.peak_alt_az
 
     if obj.sunrise_t is not None:
@@ -89,10 +92,10 @@ def get_obj_pos():
 
     obj_data = {
         'obj_name': obj.obj_name,
-        'time_start': start_time,
-        'time_end': end_time,
         'coords': obj.coords,
         'utc_offset': ObjUtil.utc_offset(obj.coords),
+        'target_always_up': obj.target_always_up,
+        'target_always_down': obj.target_always_down,
         'viewing_hours': {
             'h_visible': str_hrs,
             'h_suggested': obj.suggested_hours,
@@ -105,24 +108,21 @@ def get_obj_pos():
         'mer_flip': int(obj.needs_mer_flip)
     }
 
+    compressed_json = gzip.compress(json.dumps(obj_data).encode('utf-8'), 5)
+    response = make_response(compressed_json)
+    response.headers['Content-Length'] = len(compressed_json)
+    response.headers['Content-Encoding'] = 'gzip'
+
     return jsonify(obj_data)
 
 
 @app.route('/')
 def hello_world():
+    return "<h1></h1>"
 
-    mars = SkyObject(
-        start_time=Time.now(),
-        end_time=Time.now() + timedelta(hours=2),
-        obj_name='M31',
-        coords=(40.8, -73.1),
-        alt_threshold=30,
-        az_min=12,
-        az_max=200
-    )
 
-    print(mars.suggested_hours)
-
+@app.route('/healthcheck')
+def health_check():
     return "<h1></h1>"
 
 

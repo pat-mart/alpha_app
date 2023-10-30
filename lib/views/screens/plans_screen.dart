@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../models/plan_m.dart';
 import '../../viewmodels/plan_vm.dart';
-import '../smalls/plan_sheet_body.dart';
+import 'plan_sheet_body.dart';
 import '../smalls/plan_v.dart';
 
 class PlansScreen extends StatefulWidget {
@@ -34,7 +34,7 @@ class _PlansScreenState extends State<PlansScreen>{
       slivers: <Widget>[
         CupertinoSliverNavigationBar(
           backgroundColor: CupertinoColors.black,
-          largeTitle: const Text('My plans'),
+          largeTitle: const Text('Plans'),
           trailing: IconButton(
             icon: const Icon(CupertinoIcons.add_circled, size: 32),
             onPressed: () async {

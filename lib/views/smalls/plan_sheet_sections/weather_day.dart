@@ -22,6 +22,7 @@ class WeatherDay extends StatefulWidget {
 class _WeatherDayState extends State<WeatherDay> {
 
   Future<WeatherData?>? weatherFuture;
+  late Future<bool> degreeFuture;
 
   late final StreamSubscription<ConnectivityResult> subscription;
 
@@ -75,6 +76,7 @@ class _WeatherDayState extends State<WeatherDay> {
 
     if(locationVm.lat != null && locationVm.lon != null){
       final instance = WeatherViewModel();
+
       if(instance.dataCache.containsKey(instance.selectedIndex) && instance.dataCache[instance.selectedIndex] != null) {
         weatherFuture = instance.dataCache[instance.selectedIndex];
         return;
@@ -98,6 +100,8 @@ class _WeatherDayState extends State<WeatherDay> {
     });
 
     initFuture();
+
+    degreeFuture = WeatherViewModel().usingCelsiusAsync;
   }
 
   @override
@@ -138,9 +142,22 @@ class _WeatherDayState extends State<WeatherDay> {
               final node = weatherList[widget.weatherVm.selectedIndex][index];
               return Column(
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: FutureBuilder(
+                      future: degreeFuture,
+                      builder: (context, snapshot) {
+                        if(snapshot.hasData && !snapshot.data!) {
+                          var degrees = (node.degreesC * (9/5) + 32).roundToDouble().toStringAsFixed(0);
+                          return Text('$degrees°');
+                        }
+                        return Text('${node.degreesC.roundToDouble().toStringAsFixed(0)}°');
+                      }
+                    ),
+                  ),
                   SizedBox(height: 20, child: getWeatherIcon(node.condition, node.isDay)),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.only(left: 12, right: 12, top: 8),
                     child: Text(
                       Date.formatInt(snapshot.data!.hoursToDisplay[widget.weatherVm.selectedIndex][index]),
                       style: TextStyle(color: CupertinoColors.secondaryLabel.darkColor),

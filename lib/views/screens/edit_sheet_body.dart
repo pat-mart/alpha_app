@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../screens/empty_modal_sheet.dart';
+import 'empty_modal_sheet.dart';
 
 class EditSheet extends StatefulWidget {
 

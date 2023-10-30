@@ -8,7 +8,13 @@ class WeatherNode {
 
   bool isDay;
 
-  WeatherNode({required this.time, required this.condition, required this.isDay});
+  double degreesC;
+
+  WeatherNode({required this.time, required this.condition, required this.isDay, required this.degreesC});
+
+  double tempInFarenheit(){
+    return degreesC * (9/5) + 32;
+  }
 }
 
 class WeatherData {
@@ -63,6 +69,7 @@ class WeatherData {
         time: currentLocal.add(Duration(hours: i)),
         condition: hours[i]['conditionCode'],
         isDay: hours[i]['daylight'],
+        degreesC: hours[i]['temperature']
       ));
     }
 
@@ -81,7 +88,10 @@ class WeatherData {
 
     int hourDiff = timespan.dateTimeRange.end.toUtc().hour - timespan.startDateTime.toUtc().hour;
 
-    startIndex = timespan.startDateTime.toUtc().hour - DateTime.now().toUtc().hour;
+    final endRounded = timespan.dateTimeRange.end.toUtc().copyWith(minute: 0, second: 0, millisecond: 0, microsecond: 0);
+    final nowRounded = DateTime.now().copyWith(minute: 0, second: 0, millisecond: 0);
+
+    startIndex = endRounded.difference(nowRounded).inHours - 1;
     endIndex = (timespan.numDays > 2) ? 25 - startIndex : startIndex + hourDiff;
 
     List<dynamic> hours = json['forecastHourly']['hours'];

@@ -100,13 +100,13 @@ class Plan {
 
   PlanTimespan get timespan => _timespan!;
 
-  String get formattedStartDate => DateFormat('yyyy-MM-d').format(timespan.startDateTime);
+  String get formattedStartDate => DateFormat('yyyy/MM/d').format(timespan.startDateTime);
 
-  String get formattedEndDate => DateFormat('yyyy-MM-d').format(timespan.dateTimeRange.end);
+  String get formattedEndDate => DateFormat('yyyy/MM/d').format(timespan.dateTimeRange.end);
+
+  SkyObjectData? get skyObjData => _apiData;
 
   Future<WeatherData?> getWeatherData([RequestType requestType = RequestType.forecast]) async {
-
-    print('Setting state 1');
 
     final String weatherKey = await rootBundle.loadString('assets/.weather_key', cache: false);
 
@@ -133,7 +133,6 @@ class Plan {
       }
       return WeatherData.fromJson(jsonDecode(weatherResponse.body), jsonDecode(timeResponse.body));
     }
-    print('Error');
     throw Exception('Weather error code ${weatherResponse.statusCode}');
   }
 
@@ -150,40 +149,46 @@ class Plan {
     throw Exception('Weather error code ${timeResponse.statusCode}');
   }
 
-  Future<SkyObjectData?> getObjInfo() async {
+  Future<SkyObjectData?> getObjInfo(int listLength, int index, httpsClient) async {
 
-    print('requesting');
+    final name = target.catalogName.replaceAll(' ', '');
 
     Uri url = Uri.parse(
-      'https://api.astro-alpha.com'
-          '/api/search?objname=${target.catalogName}&starttime=${_formatter.format(timespan.startDateTime)}'
+      'https://api.astro-alpha.com/api/search?objname=$name&starttime=${_formatter.format(timespan.startDateTime)}'
           '&endtime=${_formatter.format(timespan.dateTimeRange.end)}&lat=$latitude&lon=$longitude&altthresh=$altThresh&azmin=$azMin&azmax=$azMax'
     );
 
-    url = Uri.parse('https://api.astro-alpha.com/api/search?objname=M31&starttime=2023-10-2T21:15:31.0&endtime=2023-10-3T01:12:00.0&lat=40.8&lon=-73.1&altthresh=40&azmin=-1&azmax=-1');
-
-    print(target.catalogName);
-
-    final response = await http.get(url).timeout(const Duration(seconds: 30));
-
-    if(SearchViewModel().infoCache.keys.length > 100){
-      SearchViewModel().infoCache.clear();
+    if(listLength > 5){
+      await Future.delayed(Duration(seconds: index~/2));
     }
 
-    if(response.statusCode == 200) {
-      final searchVm = SearchViewModel();
+    try {
+      HttpClientRequest request = await httpsClient.getUrl(url);
 
-      //Caches data
-      if (!searchVm.infoCache.containsKey(uuid)) {
-        searchVm.infoCache[uuid!] = _apiData =
-            SkyObjectData.fromJson(jsonDecode(response.body));
-        return _apiData;
+      HttpClientResponse response = await request.close().timeout(const Duration(seconds: 40));
+
+      if(response.statusCode == 200){
+
+        final searchVm = SearchViewModel();
+
+        final stringData = await response.transform(utf8.decoder).join();
+
+        if (!searchVm.infoCache.containsKey(uuid)) {
+          searchVm.infoCache[uuid!] = _apiData =
+              SkyObjectData.fromJson(jsonDecode(stringData));
+          return _apiData;
+        }
+        else {
+          return searchVm.infoCache[uuid];
+        }
       }
-      else {
-        return searchVm.infoCache[uuid];
-      }
+    } catch (e) {
+      throw Exception(e);
+
+    } finally {
+      httpsClient.close();
     }
-    throw Exception('Error code ${response.statusCode}');
+    return null;
   }
 
 }

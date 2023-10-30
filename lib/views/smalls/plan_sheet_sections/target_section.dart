@@ -63,22 +63,22 @@ class _TargetSectionState extends State<TargetSection> {
                     child: IconButton(
                       onPressed: () {
                         showCupertinoDialog(
-                            context: context,
-                            builder: (buildContext) =>
-                              CupertinoAlertDialog(
-                                title: const Padding(
-                                  padding: EdgeInsets.only(bottom: 8.0),
-                                  child: Text('About coordinate filtering'),
-                                ),
-                                content: const Text('Alpha can indicate what times a target is above a minimum altitude or azimuth'),
-                                actions: [
-                                  CupertinoDialogAction(
-                                      isDefaultAction: true,
-                                      onPressed: () => Navigator.pop(buildContext),
-                                      child: const Text('OK')
-                                  )
-                                ],
-                              )
+                          context: context,
+                          builder: (buildContext) =>
+                            CupertinoAlertDialog(
+                              title: const Padding(
+                                padding: EdgeInsets.only(bottom: 8.0),
+                                child: Text('About coordinate filtering'),
+                              ),
+                              content: const Text('Alpha can indicate what times a target is above a minimum altitude, or within a certain azimuth range.'),
+                              actions: [
+                                CupertinoDialogAction(
+                                  isDefaultAction: true,
+                                  onPressed: () => Navigator.pop(buildContext),
+                                  child: const Text('OK')
+                                )
+                              ],
+                            )
                         );
                       },
                       padding: EdgeInsets.zero,

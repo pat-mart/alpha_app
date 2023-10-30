@@ -33,6 +33,8 @@ class SearchViewModel extends ChangeNotifier {
 
   bool canUseData = false;
 
+  late DateTime lastEdited;
+
   final Map<int, dynamic> tappedInstance = {};
 
   SkyObj? previewedResult;
@@ -147,6 +149,9 @@ class SearchViewModel extends ChangeNotifier {
   }
 
   void loadSearchResults(String query) {
+
+    lastEdited = DateTime.timestamp();
+
     _currentQuery = query;
 
     resultsList = _filteredResults(_currentQuery).values.toList();
@@ -159,21 +164,21 @@ class SearchViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> loadSinglePlanData(String uuid) async {
-    bool hasInternet = await CreatePlanUtil.hasInternetConnection();
-
-    if(!hasInternet || _infoMap.isEmpty) {
-      return;
-    }
-
-    final plan = _infoMap[uuid];
-
-    if(plan != null && _cache.containsKey(uuid)){
-      dataList.add(_cache[plan.uuid]);
-    } else {
-      await plan?.getObjInfo();
-    }
-  }
+  // Future<void> loadSinglePlanData(String uuid) async {
+  //   bool hasInternet = await CreatePlanUtil.hasInternetConnection();
+  //
+  //   if(!hasInternet || _infoMap.isEmpty) {
+  //     return;
+  //   }
+  //
+  //   final plan = _infoMap[uuid];
+  //
+  //   if(plan != null && _cache.containsKey(uuid)){
+  //     dataList.add(_cache[plan.uuid]);
+  //   } else {
+  //     await plan?.getObjInfo(resultsList.length);
+  //   }
+  // }
 
   /// doNotifyListeners is used to prevent reloading of widgets not currently in context (-> runtime error)
   void clearResults({required bool doNotifyListeners}){

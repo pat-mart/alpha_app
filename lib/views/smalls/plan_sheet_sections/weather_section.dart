@@ -4,7 +4,6 @@ import 'package:astro_planner/viewmodels/create_plan/location_vm.dart';
 import 'package:astro_planner/viewmodels/create_plan/weather_vm.dart';
 import 'package:astro_planner/viewmodels/create_plan_util.dart';
 import 'package:astro_planner/views/smalls/plan_sheet_sections/weather_day.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -55,7 +54,7 @@ class _WeatherSectionState extends State<WeatherSection> with WidgetsBindingObse
     return Container(
       padding: const EdgeInsets.only(top: 10),
       margin: const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 10.0),
-      height: MediaQuery.of(context).size.height / (MediaQuery.of(context).orientation == Orientation.portrait ? 4 : 2),
+      height: MediaQuery.of(context).size.height / (MediaQuery.of(context).orientation == Orientation.portrait ? 3 : 2),
       child: Column (
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,6 +70,10 @@ class _WeatherSectionState extends State<WeatherSection> with WidgetsBindingObse
               )
             ]
           ),
+          const Padding(padding: EdgeInsets.only(bottom: 8)),
+          locationVm.lat != null && locationVm.lon != null ?
+              Text('at (${locationVm.lat}, ${locationVm.lon})', style: TextStyle(color: CupertinoColors.secondaryLabel.darkColor, fontSize: 14))
+              : const SizedBox.shrink(),
           Expanded(
             child: FutureBuilder(
               future: forecastFuture,
@@ -81,7 +84,7 @@ class _WeatherSectionState extends State<WeatherSection> with WidgetsBindingObse
                 }
 
                 return ListView.builder(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
+                  padding: EdgeInsets.zero,
                   clipBehavior: Clip.antiAlias,
                   scrollDirection: Axis.horizontal,
                   itemCount: 2,
@@ -93,6 +96,7 @@ class _WeatherSectionState extends State<WeatherSection> with WidgetsBindingObse
                       child: CupertinoButton(
                         borderRadius: BorderRadius.zero,
                         padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 30, 0),
+                        minSize: 0,
                         alignment: Alignment.centerLeft,
                         onPressed: (!locationVm.isValidLocation) ? null : () => weatherVm.onChangeTime(index),
                         child: Text(

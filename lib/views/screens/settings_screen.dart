@@ -1,26 +1,21 @@
+import 'package:astro_planner/views/screens/settings_body.dart';
 import 'package:flutter/cupertino.dart';
 
-class SettingsScreen extends StatefulWidget {
+class SettingsScreen extends StatelessWidget {
+
   const SettingsScreen({super.key});
 
   @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
-}
-
-class _SettingsScreenState extends State<SettingsScreen> {
-  @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
+    return const CustomScrollView(
       slivers: [
-        CupertinoSliverNavigationBar(
+         CupertinoSliverNavigationBar(
           backgroundColor: CupertinoColors.black,
-          largeTitle: const Text('Settings'),
+          largeTitle: Text('Settings'),
         ),
         SliverToBoxAdapter(
           child: SafeArea(
-            child: Column(
-              children: [],
-            )
+            child: SettingsBody()
           ),
         )
       ],

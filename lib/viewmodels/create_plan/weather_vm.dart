@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:core';
 import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/json_data/weather_data.dart';
 
@@ -14,6 +15,8 @@ class WeatherViewModel extends ChangeNotifier {
 
   List<DateTime>? dayCache;
 
+  bool _usingCelsius = false;
+
   static final WeatherViewModel instance = WeatherViewModel._();
 
   factory WeatherViewModel() => instance;
@@ -21,6 +24,27 @@ class WeatherViewModel extends ChangeNotifier {
   WeatherViewModel._();
 
   Map<int, Future<WeatherData?>?> get dataCache => _weatherCache;
+
+  bool get usingCelsius => _usingCelsius;
+
+  Future<bool> get usingCelsiusAsync async {
+    final sharedPrefs = await SharedPreferences.getInstance();
+
+    if(sharedPrefs.getBool('usingCelsius') ?? false){
+      _usingCelsius = sharedPrefs.getBool('usingCelsius')!;
+    }
+    return _usingCelsius;
+  }
+
+  Future<void> setUsingCelsius(newVal) async {
+    _usingCelsius = newVal;
+
+    final sharedPrefs = await SharedPreferences.getInstance();
+
+    sharedPrefs.setBool('usingCelsius', _usingCelsius);
+
+    notifyListeners();
+  }
 
   void startTimer(Duration minToHour) {
     Timer(minToHour, () {
@@ -47,9 +71,9 @@ class WeatherViewModel extends ChangeNotifier {
     _weatherCache[index] = data;
   }
 
-  void clearCaches(){
+  void clearCaches([bool notify = true]){
     _weatherCache.clear();
-    notifyListeners();
+    if(notify) notifyListeners();
   }
 
   void removeFromCache(int index){

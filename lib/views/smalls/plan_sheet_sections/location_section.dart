@@ -1,14 +1,13 @@
 import 'dart:async';
 
-import 'package:astro_planner/viewmodels/create_plan/datetime_vm.dart';
 import 'package:astro_planner/viewmodels/create_plan/location_vm.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../viewmodels/create_plan/weather_vm.dart';
 import '../../../viewmodels/create_plan_util.dart';
 
 class LocationSection extends StatefulWidget {
+
   final LocationViewModel locationVm;
   final WeatherViewModel weatherVm;
 
@@ -137,7 +136,7 @@ class _LocationSectionState extends State<LocationSection> with WidgetsBindingOb
                 onChanged: (String newVal) {
                   locationVm.onChangeLat(newVal);
                   if(internetSnapshot.hasData && internetSnapshot.data == true){
-                    WeatherViewModel().clearCaches();
+                    weatherVm.clearCaches();
                   }
                 },
                 validator: locationVm.latValidator,
@@ -161,7 +160,7 @@ class _LocationSectionState extends State<LocationSection> with WidgetsBindingOb
                 onChanged: (String newVal) {
                   locationVm.onChangeLon(newVal);
                   if(internetSnapshot.hasData && internetSnapshot.data == true){
-                    WeatherViewModel().clearCaches();
+                    weatherVm.clearCaches();
                   }
                 },
                 validator: locationVm.lonValidator,

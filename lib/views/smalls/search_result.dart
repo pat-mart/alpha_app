@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:astro_planner/viewmodels/create_plan/datetime_vm.dart';
@@ -17,9 +18,9 @@ class SearchResult extends StatefulWidget {
   final LocationViewModel locationVm;
   final DateTimeViewModel dateTimeVm;
 
-  final DateTime timestamp;
+  final HttpClient httpsClient;
 
-  const SearchResult({super.key, required this.index, required this.listLength, required this.searchVm, required this.locationVm, required this.dateTimeVm, required this.timestamp});
+  const SearchResult({super.key, required this.index, required this.listLength, required this.searchVm, required this.locationVm, required this.dateTimeVm, required this.httpsClient});
 
   @override
   State<SearchResult> createState() => _SearchResultState();
@@ -28,8 +29,6 @@ class SearchResult extends StatefulWidget {
 class _SearchResultState extends State<SearchResult> {
 
   late Future<SkyObjectData?>? dataFuture;
-
-  final httpsClient = HttpClient();
 
   Plan? plan;
 
@@ -56,18 +55,26 @@ class _SearchResultState extends State<SearchResult> {
 
     final csvData = widget.searchVm.resultsList[widget.index];
 
+    dataFuture = null;
+
     if(widget.locationVm.lat != null && widget.locationVm.lon != null){
       Plan? plan = Plan.fromCsvRow(
-        csvData,
-        widget.dateTimeVm.startDateTime ?? DateTime.now(),
-        widget.dateTimeVm.endDateTime ?? DateTime.now(),
-        widget.locationVm.lat!,
-        widget.locationVm.lon!
+          csvData,
+          widget.dateTimeVm.startDateTime ?? DateTime.now(),
+          widget.dateTimeVm.endDateTime ?? DateTime.now(),
+          widget.locationVm.lat!,
+          widget.locationVm.lon!
       );
-      dataFuture = plan.getObjInfo(widget.listLength, widget.index, httpsClient);
+
+      dataFuture = plan.getObjInfo(widget.listLength, widget.index, widget.httpsClient);
     } else {
       dataFuture = null;
     }
+  }
+
+  @override
+  void didUpdateWidget(covariant old){
+    super.didUpdateWidget(old);
   }
 
   @override
@@ -86,10 +93,16 @@ class _SearchResultState extends State<SearchResult> {
 
     return CupertinoListTile.notched(
       title: Text(hasProperName ? properName : csvRow.catalogName),
-      backgroundColor: (searchVm.previewedResult == csvRow) ? CupertinoColors.activeBlue : CupertinoColors.black,
+      backgroundColor: CupertinoColors.black,
       onTap: () {
-        searchVm.previewResult(csvRow);
+        if(searchVm.previewedResult != csvRow || searchVm.previewedResult == null){
+          searchVm.previewResult(csvRow);
+        }
+        else {
+          searchVm.deselectResult(csvRow);
+        }
       },
+      trailing: (searchVm.previewedResult == csvRow) ? const Icon(CupertinoIcons.check_mark_circled, color: CupertinoColors.activeBlue) : null,
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -100,9 +113,15 @@ class _SearchResultState extends State<SearchResult> {
                 : getSubtitle(csvRow.catalogName)
             ),
           ),
+          Text((csvRow.magnitude.isNaN ? 'Unknown magnitude' : 'Magnitude ${csvRow.magnitude}')),
           FutureBuilder<SkyObjectData?>(
             future: dataFuture,
             builder: (BuildContext context, objData) {
+
+              if(objData.hasError){
+                print(objData.error);
+              }
+
               if(objData.hasData && objData.data != null){
                 if(objData.data!.hoursVis[0] == -1){
                   return const Text('Never visible');
@@ -121,7 +140,6 @@ class _SearchResultState extends State<SearchResult> {
               if(widget.locationVm.lat == null && widget.locationVm.lon == null){
                 return const Text('Location needed for observational data');
               }
-              print(objData.error);
               return const Text('Data unavailable');
             },
           )

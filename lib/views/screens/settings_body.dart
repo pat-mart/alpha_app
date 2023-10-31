@@ -34,7 +34,6 @@ class _SettingsBodyState extends State<SettingsBody> {
               child: FutureBuilder(
                 future: usingCelsius,
                 builder: (context, snapshot) {
-
                   return CupertinoFormRow(
                     child: CupertinoSwitch(
                       value: weatherVm.usingCelsius,

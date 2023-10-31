@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'dart:io';
 
 import 'package:astro_planner/viewmodels/create_plan/location_vm.dart';
 import 'package:astro_planner/viewmodels/create_plan_util.dart';
@@ -20,7 +21,7 @@ class SearchViewModel extends ChangeNotifier {
 
   List<SkyObjectData?> dataList = [];
 
-  final Map<String, Plan?> _infoMap = {};
+  final Map<String, Plan?> _planMap = {};
   final Map<String, SkyObj> _searchMap = {};
 
   final Map<String, SkyObjectData> _cache = {};
@@ -35,8 +36,6 @@ class SearchViewModel extends ChangeNotifier {
 
   late DateTime lastEdited;
 
-  final Map<int, dynamic> tappedInstance = {};
-
   SkyObj? previewedResult;
   SkyObj? selectedResult;
 
@@ -48,7 +47,7 @@ class SearchViewModel extends ChangeNotifier {
     return _instance;
   }
 
-  Map<String, Plan?> get infoMap => _infoMap;
+  Map<String, Plan?> get planMap => _planMap;
 
   Map<String, SkyObjectData> get infoCache => _cache;
 
@@ -107,28 +106,24 @@ class SearchViewModel extends ChangeNotifier {
       return {};
     }
 
-    var startDt = dateTimeVm.startDateTime ?? DateTime.now();
-    var endDt = dateTimeVm.endDateTime ?? DateTime.now().add(const Duration(minutes: 1));
-
     _searchMap.forEach((key, value) {
 
       final upper = query.toUpperCase();
       final title = query.toTitle();
 
-      if(key.contains(',$upper') || key.contains(' $upper') || key.contains(',$title') || key.contains(' $title')) {
-        if(_results.length < 10 + numRemoved){
-          _results[key] = value;
+      bool notStar = !value.isStar && (
+          key.startsWith(upper) || key.startsWith(title) ||
+          key.contains(',$upper') || key.contains(' $upper') ||
+          key.contains(',$title') || key.contains(' $title'));
 
-          if(locationVm.lon != null && locationVm.lat != null) {
-            _infoMap[key] =
-              Plan.fromCsvRow(
-                value,
-                startDt,
-                endDt,
-                locationVm.lat!,
-                locationVm.lon!
-              );
-          }
+      bool forStar = value.isStar && (
+          key.startsWith(upper) || key.startsWith(title) ||
+          value.properName.toLowerCase().startsWith(query.toLowerCase()) ||
+          (value.catalogAlias + value.constellation).toLowerCase().startsWith(query.toLowerCase()));
+
+      if(notStar || forStar) {
+        if(_results.length < 5 + numRemoved){
+          _results[key] = value;
         }
       }
       else {
@@ -142,15 +137,13 @@ class SearchViewModel extends ChangeNotifier {
 
     for(String key in keysToRemove){
       _results.remove(key);
-      _infoMap.remove(key);
+      _planMap.remove(key);
     }
 
     return _results;
   }
 
   void loadSearchResults(String query) {
-
-    lastEdited = DateTime.timestamp();
 
     _currentQuery = query;
 
@@ -184,9 +177,6 @@ class SearchViewModel extends ChangeNotifier {
   void clearResults({required bool doNotifyListeners}){
     _currentQuery = '';
 
-    if(selectedResult == null || selectedResult != previewedResult){
-      previewedResult = null;
-    }
     resultsList.clear();
 
     if(doNotifyListeners){

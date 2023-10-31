@@ -37,7 +37,7 @@ class _PlansScreenState extends State<PlansScreen>{
           largeTitle: const Text('Plans'),
           trailing: IconButton(
             icon: const Icon(CupertinoIcons.add_circled, size: 32),
-            onPressed: () async {
+            onPressed: () {
               setState(() {
                 showCupertinoModalPopup(
                   context: context,

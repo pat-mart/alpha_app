@@ -121,7 +121,7 @@ class _WeatherSectionState extends State<WeatherSection> with WidgetsBindingObse
               return Center(
                 child: Text(
                   'Enter a valid location to view weather data.',
-                  style: TextStyle(fontSize: 12, color: CupertinoColors.inactiveGray.darkColor)
+                  style: TextStyle(fontSize: 14, color: CupertinoColors.secondaryLabel.darkColor)
                 )
               );
             }
@@ -131,7 +131,7 @@ class _WeatherSectionState extends State<WeatherSection> with WidgetsBindingObse
             children: [
               Text(
                   'Weather times are local to entered location',
-                  style: TextStyle(color: CupertinoColors.secondaryLabel.darkColor, fontSize: 10),
+                  style: TextStyle(color: CupertinoColors.inactiveGray.darkColor, fontSize: 11),
                   textAlign: TextAlign.start
               ),
               TextButton(
@@ -141,7 +141,7 @@ class _WeatherSectionState extends State<WeatherSection> with WidgetsBindingObse
                 },
                 child: Text(
                   'Data sources',
-                  style: TextStyle(color: CupertinoColors.secondaryLabel.darkColor, fontSize: 10, decoration: TextDecoration.underline),
+                  style: TextStyle(color: CupertinoColors.inactiveGray.darkColor, fontSize: 11, decoration: TextDecoration.underline),
                   textAlign: TextAlign.start
                 )
               ),

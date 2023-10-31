@@ -83,7 +83,7 @@ class _PlanCardState extends State<PlanCard> {
                   : const Text(''),
               const Padding(padding: EdgeInsets.only(bottom: 8)),
               Card(
-                color: CupertinoColors.systemFill.darkColor,
+                color: CupertinoColors.secondarySystemBackground.darkColor,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 child: SizedBox (
                   width: double.infinity,

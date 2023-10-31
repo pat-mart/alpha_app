@@ -19,10 +19,9 @@ class _EmptyModalSheetState extends State<EmptyModalSheet> {
       child: CupertinoPopupSurface(
         child: CupertinoPageScaffold(
           resizeToAvoidBottomInset: true,
-          child: Container(
-            height: MediaQuery.of(context).size.height / 1.1,
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height / 1.175,
             width: MediaQuery.of(context).size.width,
-            color: CupertinoColors.systemGroupedBackground.darkElevatedColor,
             child: Container(
               margin: const EdgeInsets.only(left: 14, right: 14),
               child: widget.child

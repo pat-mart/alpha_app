@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:astro_planner/viewmodels/create_plan/datetime_vm.dart';
 import 'package:astro_planner/viewmodels/create_plan/location_vm.dart';
 import 'package:astro_planner/viewmodels/search_vm.dart';
@@ -21,9 +23,13 @@ class _SearchScreenState extends State<SearchScreen> {
   TextEditingController controller = TextEditingController();
   SearchViewModel searchVm = SearchViewModel();
 
+  late HttpClient httpClient;
+
   @override
   void initState(){
     super.initState();
+
+    httpClient = HttpClient();
 
     controller.text = widget.initialQueryValue;
   }
@@ -32,6 +38,10 @@ class _SearchScreenState extends State<SearchScreen> {
   void dispose(){
     controller.dispose();
     searchVm.clearResults(doNotifyListeners: false);
+
+    httpClient.close(force: true);
+
+    print('disposing');
 
     super.dispose();
   }
@@ -43,6 +53,8 @@ class _SearchScreenState extends State<SearchScreen> {
     final locationVm = LocationViewModel();
 
     searchVm = Provider.of<SearchViewModel>(context);
+
+    searchVm.lastEdited = DateTime.timestamp();
 
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
@@ -86,7 +98,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   itemCount: searchVm.resultsList.length,
                   itemBuilder: (BuildContext context, int index) {
                     if(searchVm.resultsList.isNotEmpty){
-                      return SearchResult(index: index, listLength: searchVm.resultsList.length, searchVm: searchVm, dateTimeVm: dateTimeVm, locationVm: locationVm, timestamp: DateTime.timestamp());
+                      return SearchResult(index: index, listLength: searchVm.resultsList.length, searchVm: searchVm, dateTimeVm: dateTimeVm, locationVm: locationVm, httpsClient: httpClient);
                     }
                     return null;
                   }

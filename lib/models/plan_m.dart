@@ -158,10 +158,6 @@ class Plan {
           '&endtime=${_formatter.format(timespan.dateTimeRange.end)}&lat=$latitude&lon=$longitude&altthresh=$altThresh&azmin=$azMin&azmax=$azMax'
     );
 
-    if(listLength > 5){
-      await Future.delayed(Duration(seconds: index~/2));
-    }
-
     try {
       HttpClientRequest request = await httpsClient.getUrl(url);
 
@@ -184,13 +180,9 @@ class Plan {
       }
     } catch (e) {
       throw Exception(e);
-
-    } finally {
-      httpsClient.close();
     }
     return null;
   }
-
 }
 
 enum RequestType {

@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:uuid/uuid.dart';
 import 'dart:convert';
 
+import '../viewmodels/plan_vm.dart';
 import 'sky_obj_m.dart';
 import '../util/plan/plan_timespan.dart';
 import 'json_data/weather_data.dart';
@@ -16,7 +17,7 @@ class Plan {
 
   SkyObj? _target;
 
-  SkyObjectData? _apiData;
+  SkyObjectData? skyObjData;
 
   PlanTimespan? _timespan;
 
@@ -39,7 +40,7 @@ class Plan {
 
   final DateFormat _formatter = DateFormat('y-MM-ddTHH:MM:00');
 
-  Plan(this._target, DateTime startDt, DateTime endDt, this.latitude, this.longitude, this.timezone, this._apiData, [this.weatherSuitable=false, this.azMax=-1, this.azMin=-1, this.altThresh=-1, this.uuid]){
+  Plan(this._target, DateTime startDt, DateTime endDt, this.latitude, this.longitude, this.timezone, this.skyObjData, [this.weatherSuitable=false, this.azMax=-1, this.azMin=-1, this.altThresh=-1, this.uuid]){
     uuid ??= uuidGen.v4();
     _timespan = PlanTimespan(startDt, endDt);
   }
@@ -86,7 +87,7 @@ class Plan {
       'latitude': latitude,
       'longitude': longitude,
       'sky_obj': _target.toString(),
-      'sky_obj_data': _apiData.toString(),
+      'sky_obj_data': skyObjData.toString(),
       'az_filter_min': azMin,
       'az_filter_max': azMax,
       'alt_filter': altThresh,
@@ -103,8 +104,6 @@ class Plan {
   String get formattedStartDate => DateFormat('yyyy/MM/d').format(timespan.startDateTime);
 
   String get formattedEndDate => DateFormat('yyyy/MM/d').format(timespan.dateTimeRange.end);
-
-  SkyObjectData? get skyObjData => _apiData;
 
   Future<WeatherData?> getWeatherData([RequestType requestType = RequestType.forecast]) async {
 
@@ -149,37 +148,50 @@ class Plan {
     throw Exception('Weather error code ${timeResponse.statusCode}');
   }
 
-  Future<SkyObjectData?> getObjInfo(int listLength, int index, httpsClient) async {
+  Future<SkyObjectData?> getObjInfo(int listLength, int index, httpsClient, DateTime dateSaved, [bool isPlan = false]) async {
 
-    final name = target.catalogName.replaceAll(' ', '');
+    if(SearchViewModel().infoCache.containsKey(target.catalogName) && skyObjData != null && skyObjData!.dateEntered.difference(dateSaved).inDays.abs() >= 2){
+      SearchViewModel().cleanInfoCache(PlanViewModel().didChangeFilter, skyObjData!, target.catalogName);
+    }
+
+    else if(SearchViewModel().infoCache.containsKey(target.catalogName) && !PlanViewModel().didChangeFilter){
+      skyObjData = SearchViewModel().infoCache[target.catalogName];
+      return SearchViewModel().infoCache[target.catalogName];
+    }
+
+    var name = target.catalogName.replaceAll(' ', '');
+
+    if(target.catalogAlias.startsWith('M ')){
+      name = target.catalogAlias.replaceAll(' ', '');
+    }
 
     Uri url = Uri.parse(
       'https://api.astro-alpha.com/api/search?objname=$name&starttime=${_formatter.format(timespan.startDateTime)}'
           '&endtime=${_formatter.format(timespan.dateTimeRange.end)}&lat=$latitude&lon=$longitude&altthresh=$altThresh&azmin=$azMin&azmax=$azMax'
     );
 
-    try {
-      HttpClientRequest request = await httpsClient.getUrl(url);
+    if(target.catalogName.startsWith('H') && listLength > 1){
+      Future.delayed(Duration(seconds: index));
+    }
 
-      HttpClientResponse response = await request.close().timeout(const Duration(seconds: 40));
+    HttpClientRequest request = await httpsClient.getUrl(url);
 
-      if(response.statusCode == 200){
+    SearchViewModel().objQueryMap[target] = request;
 
-        final searchVm = SearchViewModel();
+    HttpClientResponse response = await request.close().timeout(const Duration(seconds: 40));
 
-        final stringData = await response.transform(utf8.decoder).join();
+    if(response.statusCode == 200) {
+      final searchVm = SearchViewModel();
 
-        if (!searchVm.infoCache.containsKey(uuid)) {
-          searchVm.infoCache[uuid!] = _apiData =
-              SkyObjectData.fromJson(jsonDecode(stringData));
-          return _apiData;
-        }
-        else {
-          return searchVm.infoCache[uuid];
-        }
+      final stringData = await response.transform(utf8.decoder).join();
+
+      searchVm.infoCache[target.catalogName] = SkyObjectData.fromJson(jsonDecode(stringData), timespan.startDateTime);
+      skyObjData = searchVm.infoCache[target.catalogName];
+
+      if(isPlan){
+        await PlanViewModel().updateSkyObjData(this, skyObjData!);
       }
-    } catch (e) {
-      throw Exception(e);
+      return skyObjData;
     }
     return null;
   }

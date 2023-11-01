@@ -4,14 +4,16 @@ import 'package:flutter/material.dart';
 
 class PlanSheetHeader extends StatelessWidget {
 
-  const PlanSheetHeader({super.key});
+  final bool isEdit;
+
+  const PlanSheetHeader({super.key, required this.isEdit});
 
   @override
   Widget build(BuildContext context) {
 
     return CupertinoSliverNavigationBar(
       automaticallyImplyLeading: false,
-      largeTitle: const Text('New plan'),
+      largeTitle: (isEdit) ? const Text('Edit plan') : const Text('New plan'),
       trailing: Material(
         type: MaterialType.transparency,
         borderOnForeground: true,

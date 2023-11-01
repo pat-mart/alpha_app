@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:astro_planner/viewmodels/plan_vm.dart';
 import 'package:astro_planner/views/screens/empty_modal_sheet.dart';
@@ -9,14 +10,16 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_down_button/pull_down_button.dart';
 
+import '../../models/json_data/skyobj_data.dart';
 import '../../models/json_data/weather_data.dart';
 import '../../models/plan_m.dart';
 
 class PlanCard extends StatefulWidget {
 
   final int index;
+  final HttpClient httpsClient;
 
-  const PlanCard({super.key, required this.index});
+  const PlanCard({super.key, required this.index, required this.httpsClient});
 
   @override
   State<StatefulWidget> createState() => _PlanCardState();
@@ -25,6 +28,7 @@ class PlanCard extends StatefulWidget {
 class _PlanCardState extends State<PlanCard> {
 
   late Future<WeatherData?> weatherFuture;
+  late Future<SkyObjectData?> objFuture;
 
   final DateFormat dayFormat = DateFormat('EEEE, M/d');
   final DateFormat timeFormat = DateFormat('H:mm');
@@ -32,19 +36,32 @@ class _PlanCardState extends State<PlanCard> {
   late Timer timeToHour;
   late Timer periodicTimer;
 
-
   @override
   void initState() {
     super.initState();
     Plan plan = PlanViewModel().getPlan(widget.index);
 
     weatherFuture = plan.getWeatherData(RequestType.planDuration);
+    objFuture = plan.getObjInfo(1, 0, widget.httpsClient, plan.timespan.startDateTime, true);
+
+    var diff = plan.timespan.dateTimeRange.end.toUtc().difference(DateTime.timestamp());
+
+    if(!diff.isNegative){
+      Timer(diff, (){
+        if(mounted) {
+          setState(() {});
+        }
+      });
+    }
 
     timeToHour = Timer(Duration(minutes: 60 - DateTime.now().minute), (){
       periodicTimer = Timer.periodic(const Duration(hours: 1), (timer) {
-        setState(() {
-          weatherFuture = plan.getWeatherData(RequestType.planDuration); // Not sure if this is necessary
-        });
+        if(mounted) {
+          setState(() {
+            weatherFuture = plan.getWeatherData(
+                RequestType.planDuration); // Not sure if this is necessary
+          });
+        }
       });
     });
   }
@@ -54,7 +71,7 @@ class _PlanCardState extends State<PlanCard> {
     super.didUpdateWidget(old);
 
     Plan plan = PlanViewModel().getPlan(widget.index);
-    weatherFuture = plan.getWeatherData(RequestType.planDuration);
+    objFuture = plan.getObjInfo(1, 0, widget.httpsClient, plan.timespan.startDateTime, true);
   }
 
   @override
@@ -87,7 +104,7 @@ class _PlanCardState extends State<PlanCard> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 child: SizedBox (
                   width: double.infinity,
-                  height: (MediaQuery.of(context).orientation == Orientation.portrait) ? MediaQuery.of(context).size.height/5 : MediaQuery.of(context).size.height/2.5,
+                  height: (MediaQuery.of(context).orientation == Orientation.portrait) ? MediaQuery.of(context).size.height/4 : MediaQuery.of(context).size.height/2.5,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -107,7 +124,7 @@ class _PlanCardState extends State<PlanCard> {
                                     showCupertinoModalPopup(
                                       context: context,
                                       barrierDismissible: false,
-                                      barrierColor: CupertinoColors.secondarySystemFill.darkColor,
+                                      barrierColor: CupertinoColors.darkBackgroundGray,
                                       builder: (context) {
                                         return EmptyModalSheet(child: PlanSheet(planToLoad: plan));
                                       }
@@ -154,10 +171,68 @@ class _PlanCardState extends State<PlanCard> {
                         ]
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 12, top: 12, bottom: 12),
+                        padding: const EdgeInsets.only(left: 12, bottom: 24),
+                        child: FutureBuilder(
+                          future: objFuture,
+                          builder: (context, snapshot) {
+
+                            if(snapshot.hasData && snapshot.connectionState == ConnectionState.done && snapshot.data!.hoursVis.length >= 2){
+                              if(snapshot.data!.hoursVis[0].startsWith('[')){
+                                snapshot.data!.hoursVis[0] = snapshot.data!.hoursVis[0].substring(1, 6);
+                                snapshot.data!.hoursVis[1] = snapshot.data!.hoursVis[1].substring(1, 6);
+                              }
+                              else {
+                                snapshot.data!.hoursVis[0] = snapshot.data!.hoursVis[0].substring(0, 5);
+                                snapshot.data!.hoursVis[1] = snapshot.data!.hoursVis[1].substring(0, 5);
+                              }
+                            }
+                            bool usedFilters = plan.azMin != -1 || plan.azMax != -1 || plan.altThresh != -1;
+                            String filterMsg = "Not visible within filters";
+
+                            if(snapshot.connectionState == ConnectionState.done && usedFilters && snapshot.data!.hoursSuggested.length >= 2){
+                              filterMsg = "Within filters from ${snapshot.data!.hoursSuggested[0]} to ${snapshot.data!.hoursSuggested[1]}";
+                            }
+
+                            if(snapshot.hasData && snapshot.connectionState == ConnectionState.waiting){
+                              return const CupertinoActivityIndicator();
+                            }
+                            if(snapshot.hasData && snapshot.data != null && snapshot.data!.hoursVis[0] == -1 && snapshot.connectionState == ConnectionState.done){
+                              return Text('Object is not visible', style: TextStyle(color: CupertinoColors.secondaryLabel.darkColor, fontSize: 14));
+                            }
+                            else if(snapshot.hasData && snapshot.data != null && snapshot.data!.hoursVis.length == 2 && snapshot.connectionState == ConnectionState.done){
+                              return Column (
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 8.0),
+                                    child: Text('Peaks at ${snapshot.data!.peakAlt.toStringAsFixed(2)}°, ${snapshot.data!.peakBearing.toStringAsFixed(2)}° at ${snapshot.data!.peakTime.substring(11, 16)}', style: TextStyle(color: CupertinoColors.secondaryLabel.darkColor, fontSize: 16)),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 8.0),
+                                    child: Text('Visible from ${(snapshot.data!.hoursVis[0])} to ${(snapshot.data!.hoursVis[1])}',
+                                        style: TextStyle(color: CupertinoColors.secondaryLabel.darkColor, fontSize: 16)),
+                                  ),
+                                    (usedFilters) ? Text(filterMsg, style: TextStyle(color: CupertinoColors.secondaryLabel.darkColor, fontSize: 16)) : const SizedBox.shrink()
+
+                                ],
+                              );
+                            }
+                            return Text('Observational data unavailable', style: TextStyle(color: CupertinoColors.secondaryLabel.darkColor, fontSize: 16));
+                          }
+                        )
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 12),
                         child: FutureBuilder(
                           future: weatherFuture,
                           builder: (context, snapshot) {
+
+                            if(snapshot.connectionState == ConnectionState.waiting){
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 12.0),
+                                child: Text('Loading weather data...', style: TextStyle(color: CupertinoColors.secondaryLabel.darkColor, fontSize: 14)),
+                              );
+                            }
 
                             if(snapshot.data != null && !snapshot.hasError){
                               var data = snapshot.data!;
@@ -173,15 +248,6 @@ class _PlanCardState extends State<PlanCard> {
                                   ]
                                 );
                               }
-                              else if(data.clearHours.isEmpty && !data.hasData){
-                                return const Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Icon(CupertinoIcons.question_circle, color: CupertinoColors.systemGrey),
-                                      Text('Weather data unavailable')
-                                    ]
-                                );
-                              }
                               else if(data.clearHours.isNotEmpty && data.hasData && data.clearHours.length == 1){
                                 return Text('Clear at ${data.clearHours[0]}', style: TextStyle(color: CupertinoColors.systemCyan.darkColor, fontSize: 18));
                               }
@@ -189,7 +255,10 @@ class _PlanCardState extends State<PlanCard> {
                                 style: TextStyle(color: CupertinoColors.systemCyan.darkColor, fontSize: 18),
                               );
                             }
-                            return Text('No weather data', style: TextStyle(color: CupertinoColors.secondaryLabel.darkColor, fontSize: 18));
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 12.0),
+                              child: Text('Weather data unavailable', style: TextStyle(color: CupertinoColors.secondaryLabel.darkColor, fontSize: 14)),
+                            );
                           }
                         )
                       ),

@@ -1,4 +1,8 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:astro_planner/views/screens/empty_modal_sheet.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
@@ -19,11 +23,27 @@ class _PlansScreenState extends State<PlansScreen>{
 
   late Future<List<Plan>> planListFuture;
 
+  final httpsClient = HttpClient();
+
+  late final StreamSubscription<ConnectivityResult> subscription;
+
   @override
   void initState() {
     super.initState();
 
     planListFuture = PlanViewModel().savedPlans;
+
+    subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result){
+      if([ConnectivityResult.wifi, ConnectivityResult.ethernet, ConnectivityResult.mobile, ConnectivityResult.other].contains(result)){
+        setState(() {});
+      }
+    });
+  }
+
+  @override
+  void dispose(){
+    subscription.cancel();
+    super.dispose();
   }
 
   @override
@@ -37,7 +57,29 @@ class _PlansScreenState extends State<PlansScreen>{
           largeTitle: const Text('Plans'),
           trailing: IconButton(
             icon: const Icon(CupertinoIcons.add_circled, size: 32),
-            onPressed: () {
+            onPressed: () async {
+              if((await PlanViewModel().savedPlans).length >= 64){
+                setState(() {
+                  showCupertinoDialog(
+                    context: context,
+                    builder: (context) =>
+                      CupertinoAlertDialog(
+                        title: const Padding(
+                          padding: EdgeInsets.only(bottom: 8.0),
+                          child: Text('Maximum plan number reached'),
+                        ),
+                        content: const Text('You can store a maximum of 64 plans'),
+                        actions: [
+                          CupertinoDialogAction(
+                              isDefaultAction: true,
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text('OK')
+                          )
+                        ],
+                      ),
+                  );
+                });
+              }
               setState(() {
                 showCupertinoModalPopup(
                   context: context,
@@ -67,7 +109,7 @@ class _PlansScreenState extends State<PlansScreen>{
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: snapshot.data == null ? 0 : snapshot.data!.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return PlanCard(index: index);
+                          return PlanCard(index: index, httpsClient: httpsClient);
                         }
                       );
                     }

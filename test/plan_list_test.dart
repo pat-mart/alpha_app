@@ -1,5 +1,4 @@
 import 'package:astro_planner/main.dart';
-import 'package:astro_planner/viewmodels/plan_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 

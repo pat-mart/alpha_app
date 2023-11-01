@@ -1,6 +1,4 @@
 import 'package:astro_planner/viewmodels/create_plan/datetime_vm.dart';
-import 'package:astro_planner/viewmodels/create_plan/location_vm.dart';
-import 'package:astro_planner/views/smalls/plan_sheet_sections/weather_section.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';

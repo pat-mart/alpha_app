@@ -37,13 +37,19 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void dispose(){
     controller.dispose();
+
     searchVm.clearResults(doNotifyListeners: false);
+    searchVm.searchMap.clear();
 
     httpClient.close(force: true);
 
-    print('disposing');
-
     super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(covariant old){
+    super.didUpdateWidget(old);
+    SearchViewModel().cancelDeadRequests();
   }
 
   @override
@@ -53,8 +59,6 @@ class _SearchScreenState extends State<SearchScreen> {
     final locationVm = LocationViewModel();
 
     searchVm = Provider.of<SearchViewModel>(context);
-
-    searchVm.lastEdited = DateTime.timestamp();
 
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(

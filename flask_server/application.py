@@ -29,7 +29,7 @@ def get_obj_pos():
     az_min = float(args.get('azmin'))
     az_max = float(args.get('azmax'))
 
-    if obj_name in ['mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'moon']:
+    if obj_name in ['mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'moon', 'sun']:
         obj = HelioObj(
             start_time=start,
             end_time=end,
@@ -59,17 +59,11 @@ def get_obj_pos():
     sunrise = -1
     sunset = -1
 
-    if hasattr(obj, 'rise_iso'):
-        rise_t = obj.rise_iso.iso
+    if hasattr(obj, 'obj_rise_t'):
+        rise_t = str(obj.obj_rise_t)
 
-    elif hasattr(obj, 'obj_rise_time'):
-        rise_t = str(obj.obj_rise_time)
-
-    if hasattr(obj, 'set_iso'):
-        set_t = obj.set_iso.iso
-
-    elif hasattr(obj, 'obj_set_time'):
-        set_t = str(obj.obj_set_time)
+    if hasattr(obj, 'obj_set_t'):
+        set_t = str(obj.obj_set_t)
 
     if hasattr(obj, 'peak_time'):
         if hasattr(obj.peak_time, 'iso'):
@@ -90,6 +84,8 @@ def get_obj_pos():
     else:
         str_hrs = [-1]
 
+    print(rise_t)
+
     obj_data = {
         'obj_name': obj.obj_name,
         'coords': obj.coords,
@@ -108,7 +104,7 @@ def get_obj_pos():
         'mer_flip': int(obj.needs_mer_flip)
     }
 
-    compressed_json = gzip.compress(json.dumps(obj_data).encode('utf-8'), 5)
+    compressed_json = gzip.compress(json.dumps(obj_data).encode('utf-8'), 8)
     response = make_response(compressed_json)
     response.headers['Content-Length'] = len(compressed_json)
     response.headers['Content-Encoding'] = 'gzip'

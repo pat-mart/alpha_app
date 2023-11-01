@@ -93,15 +93,26 @@ class _WeatherDayState extends State<WeatherDay> {
   void initState(){
     super.initState();
 
-    subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result){
-      if([ConnectivityResult.wifi, ConnectivityResult.ethernet, ConnectivityResult.mobile, ConnectivityResult.other].contains(result)){
-        widget.weatherVm.clearCaches();
-      }
-    });
+    if (mounted) {
+      subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result){
+        if([ConnectivityResult.wifi, ConnectivityResult.ethernet, ConnectivityResult.mobile, ConnectivityResult.other].contains(result)){
+          widget.weatherVm.clearCaches();
+        }
+      });
+    }
 
     initFuture();
 
     degreeFuture = WeatherViewModel().usingCelsiusAsync;
+
+    if (mounted) {
+      Timer(Duration(minutes: (60 - DateTime.timestamp().minute) + 1), (){
+        setState((){});
+        Timer.periodic(const Duration(hours: 1), (timer) {
+          setState(() {});
+        });
+      });
+    }
   }
 
   @override

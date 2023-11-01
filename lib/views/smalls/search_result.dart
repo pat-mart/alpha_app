@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import '../../models/json_data/skyobj_data.dart';
 import '../../models/plan_m.dart';
 import '../../util/plan/cardinal.dart';
+import '../../viewmodels/create_plan/target_vm.dart';
 
 class SearchResult extends StatefulWidget {
   final int index;
@@ -28,7 +29,7 @@ class SearchResult extends StatefulWidget {
 
 class _SearchResultState extends State<SearchResult> {
 
-  late Future<SkyObjectData?>? dataFuture;
+  late Future<SkyObjectData?>? objDataFuture;
 
   Plan? plan;
 
@@ -49,13 +50,10 @@ class _SearchResultState extends State<SearchResult> {
     return index == null ? catalogName : 'The $index planet';
   }
 
-  @override
-  void initState() {
-    super.initState();
-
+  Future<SkyObjectData?>? get dataFuture {
     final csvData = widget.searchVm.resultsList[widget.index];
 
-    dataFuture = null;
+    Future<SkyObjectData?>? dataFuture;
 
     if(widget.locationVm.lat != null && widget.locationVm.lon != null){
       Plan? plan = Plan.fromCsvRow(
@@ -65,16 +63,33 @@ class _SearchResultState extends State<SearchResult> {
           widget.locationVm.lat!,
           widget.locationVm.lon!
       );
-
-      dataFuture = plan.getObjInfo(widget.listLength, widget.index, widget.httpsClient);
+      dataFuture = plan.getObjInfo(widget.listLength, widget.index, widget.httpsClient, widget.dateTimeVm.startDateTime ?? DateTime.now());
     } else {
       dataFuture = null;
     }
+
+    return dataFuture;
   }
 
   @override
   void didUpdateWidget(covariant old){
     super.didUpdateWidget(old);
+
+    objDataFuture = dataFuture;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    objDataFuture = dataFuture;
+  }
+
+  @override
+  void dispose() {
+    SearchViewModel().cancelDeadRequests();
+
+    super.dispose();
   }
 
   @override
@@ -102,7 +117,7 @@ class _SearchResultState extends State<SearchResult> {
           searchVm.deselectResult(csvRow);
         }
       },
-      trailing: (searchVm.previewedResult == csvRow) ? const Icon(CupertinoIcons.check_mark_circled, color: CupertinoColors.activeBlue) : null,
+      trailing: (searchVm.selectedResult == csvRow || searchVm.previewedResult == csvRow) ? const Icon(CupertinoIcons.check_mark_circled, color: CupertinoColors.activeBlue) : null,
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -113,16 +128,19 @@ class _SearchResultState extends State<SearchResult> {
                 : getSubtitle(csvRow.catalogName)
             ),
           ),
-          Text((csvRow.magnitude.isNaN ? 'Unknown magnitude' : 'Magnitude ${csvRow.magnitude}')),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 6.0),
+            child: Text((csvRow.magnitude.isNaN ? 'Unknown magnitude' : 'Magnitude ${csvRow.magnitude}')),
+          ),
           FutureBuilder<SkyObjectData?>(
-            future: dataFuture,
+            future: objDataFuture,
             builder: (BuildContext context, objData) {
 
-              if(objData.hasError){
-                print(objData.error);
-              }
-
               if(objData.hasData && objData.data != null){
+                String filterMsg = "Not visible within filters";
+                if(TargetViewModel().isUsingFilter && !TargetViewModel().validFilter.containsValue(false) && objData.data!.hoursSuggested.length >= 2){
+                  filterMsg = "Within filters from ${objData.data!.hoursSuggested[0].substring(12, 17)} to ${objData.data!.hoursSuggested[1].substring(12, 17)}";
+                }
                 if(objData.data!.hoursVis[0] == -1){
                   return const Text('Never visible');
                 }
@@ -130,11 +148,12 @@ class _SearchResultState extends State<SearchResult> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('Visible from ${(objData.data!.hoursVis[0] as String).substring(0, 5)} to ${(objData.data!.hoursVis[1] as String).substring(0, 5)}'),
-                    Text('Peaks (${objData.data!.peakAlt}°, ${objData.data!.peakBearing.toStringAsFixed(2)}°) (${Cardinal.getCardinal(objData.data!.peakBearing)}) at ${objData.data!.peakTime.substring(5, 16)}')
+                    Text('Peaks (${objData.data!.peakAlt}°, ${objData.data!.peakBearing.toStringAsFixed(2)}°) (${Cardinal.getCardinal(objData.data!.peakBearing)}) at ${objData.data!.peakTime.substring(5, 16)}'),
+                    (TargetViewModel().isUsingFilter) ? Text(filterMsg) : const SizedBox.shrink()
                   ]
                 );
               }
-              else if(objData.connectionState == ConnectionState.waiting){
+              else if(objData.connectionState == ConnectionState.waiting || objData.connectionState == ConnectionState.active){
                 return const CupertinoActivityIndicator();
               }
               if(widget.locationVm.lat == null && widget.locationVm.lon == null){

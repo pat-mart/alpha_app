@@ -9,7 +9,6 @@ import 'package:astro_planner/views/parent_screen.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 void main () {
@@ -32,6 +31,7 @@ class Main extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ThemeViewModel())
       ],
       child: const CupertinoApp (
+        debugShowCheckedModeBanner: false,
         theme: CupertinoThemeData(brightness: Brightness.dark, applyThemeToAll: true),
         home: Scaffold (
           body: ParentScreen()

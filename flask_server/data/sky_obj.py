@@ -49,13 +49,13 @@ class SkyObject:
             self.observer_loc.target_set_time(end_time, self.target)
 
         except TargetAlwaysUpWarning:
-            self.obj_rise_time = None
-            self.obj_set_time = None
+            self.obj_rise_t = None
+            self.obj_set_t = None
             self.target_always_up = True
 
         except TargetNeverUpWarning:
-            self.obj_rise_time = None
-            self.obj_set_time = None
+            self.obj_rise_t = None
+            self.obj_set_t = None
             self.target_always_down = True
 
         # Initializes sunset and sunrise, if applicable
@@ -85,8 +85,8 @@ class SkyObject:
             self.rise_iso = self.observer_loc.target_rise_time(start_time, self.target) + self.utc_td
             self.set_iso = self.observer_loc.target_set_time(start_time, self.target) + self.utc_td
 
-            self.obj_rise_time = datetime.fromisoformat(self.rise_iso.iso).time()
-            self.obj_set_time = datetime.fromisoformat(self.set_iso.iso).time()
+            self.obj_rise_t = datetime.fromisoformat(self.rise_iso.iso).time()
+            self.obj_set_t = datetime.fromisoformat(self.set_iso.iso).time()
 
     @property
     def hours_visible(self) -> [datetime]:
@@ -105,8 +105,8 @@ class SkyObject:
             sun_always_down=self.sun_always_down,
             start_time=self.start_time,
             end_time=self.end_time,
-            obj_rise_time=self.obj_rise_time,
-            obj_set_time=self.obj_set_time,
+            obj_rise_time=self.obj_rise_t,
+            obj_set_time=self.obj_set_t,
             even_twi=_evening_twilight,
             morn_twi=_morning_twilight
         )

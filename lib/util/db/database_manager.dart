@@ -16,9 +16,6 @@ class DatabaseManager {
   Future<Database> get database async => db ??= await initDatabase();
 
   Future<void> clearDatabase() async {
-    Directory dbDirectory = await getApplicationDocumentsDirectory();
-    String path = join(dbDirectory.path, 'plans.db');
-
     final db = await database;
 
     db.delete('plans');

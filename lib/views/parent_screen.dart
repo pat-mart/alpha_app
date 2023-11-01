@@ -50,16 +50,17 @@ class ParentScreenState extends State<ParentScreen> { // Like main but stateful
                 activeColor: CupertinoColors.activeBlue,
                 currentIndex:  _cIndex,
                 onTap: (int index) => setState(() => _cIndex = index),
-                backgroundColor: CupertinoColors.black,
                 iconSize: 40,
-                height: 60,
+                height: 65,
                 items : const <BottomNavigationBarItem> [
                   BottomNavigationBarItem(
-                    icon: Icon(CupertinoIcons.list_bullet, color: Colors.white),
+                    icon: Icon(CupertinoIcons.list_bullet_below_rectangle, color: Colors.white),
+                    activeIcon: Icon(CupertinoIcons.list_bullet_below_rectangle, color: CupertinoColors.activeBlue),
                     label: 'My plans'
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(CupertinoIcons.settings, color: Colors.white),
+                    activeIcon: Icon(CupertinoIcons.settings, color: CupertinoColors.activeBlue),
                     label: 'Settings',
                   )
                 ]

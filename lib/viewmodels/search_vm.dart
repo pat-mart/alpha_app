@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:core';
 import 'dart:io';
 
@@ -21,6 +22,8 @@ class SearchViewModel extends ChangeNotifier {
 
   List<SkyObjectData?> dataList = [];
 
+  Map<SkyObj, HttpClientRequest> objQueryMap = {};
+
   final Map<String, Plan?> _planMap = {};
   final Map<String, SkyObj> _searchMap = {};
 
@@ -33,8 +36,6 @@ class SearchViewModel extends ChangeNotifier {
   DateTimeViewModel dateTimeVm = DateTimeViewModel();
 
   bool canUseData = false;
-
-  late DateTime lastEdited;
 
   SkyObj? previewedResult;
   SkyObj? selectedResult;
@@ -111,15 +112,24 @@ class SearchViewModel extends ChangeNotifier {
       final upper = query.toUpperCase();
       final title = query.toTitle();
 
+      var starName = '';
+
+      if(value.isStar && value.catalogAlias != ''){
+        starName = value.catalogAlias + value.constellation;
+      }
+      else {
+        starName = '';
+      }
+
       bool notStar = !value.isStar && (
           key.startsWith(upper) || key.startsWith(title) ||
-          key.contains(',$upper') || key.contains(' $upper') ||
+          key.toUpperCase().contains(',$upper') || key.toUpperCase().contains(' $upper') ||
           key.contains(',$title') || key.contains(' $title'));
 
       bool forStar = value.isStar && (
           key.startsWith(upper) || key.startsWith(title) ||
           value.properName.toLowerCase().startsWith(query.toLowerCase()) ||
-          (value.catalogAlias + value.constellation).toLowerCase().startsWith(query.toLowerCase()));
+          (starName).toLowerCase().startsWith(query.toLowerCase()));
 
       if(notStar || forStar) {
         if(_results.length < 5 + numRemoved){
@@ -157,21 +167,25 @@ class SearchViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Future<void> loadSinglePlanData(String uuid) async {
-  //   bool hasInternet = await CreatePlanUtil.hasInternetConnection();
-  //
-  //   if(!hasInternet || _infoMap.isEmpty) {
-  //     return;
-  //   }
-  //
-  //   final plan = _infoMap[uuid];
-  //
-  //   if(plan != null && _cache.containsKey(uuid)){
-  //     dataList.add(_cache[plan.uuid]);
-  //   } else {
-  //     await plan?.getObjInfo(resultsList.length);
-  //   }
-  // }
+  void cleanInfoCache(bool didChangeFilter, SkyObjectData instance, String catalogName){
+    if(infoCache[catalogName] == instance || didChangeFilter){
+      infoCache.remove(catalogName);
+    }
+  }
+
+  void cancelDeadRequests() {
+    List<dynamic> keysToRemove = [];
+    objQueryMap.forEach((key, value) {
+      if(!resultsList.contains(key) && !infoCache.containsValue(value)){
+        value.abort();
+        keysToRemove.add(key);
+      }
+    });
+
+    for(var key in keysToRemove){
+      objQueryMap.remove(key);
+    }
+  }
 
   /// doNotifyListeners is used to prevent reloading of widgets not currently in context (-> runtime error)
   void clearResults({required bool doNotifyListeners}){

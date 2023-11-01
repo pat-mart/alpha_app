@@ -64,7 +64,7 @@ class ObjUtil:
         return [-1, -1]
 
     @staticmethod
-    def suggested_hours(coords,az_min: float, az_max: float, alt_threshold: float, start_time: datetime, end_time: datetime,
+    def suggested_hours(coords, az_min: float, az_max: float, alt_threshold: float, start_time: datetime, end_time: datetime,
                         ra_rad: float, dec_rad: float,
                         peak_time: datetime, hours_visible: [datetime]) -> [datetime]:
         az_start = az_end = -1
@@ -115,13 +115,22 @@ class ObjUtil:
             return [-1, -1]
 
         elif alt_start != -1 and alt_end != -1 and (az_start == -1 or az_end == -1):
-            return [alt_start, alt_end]
+            return [alt_start.isoformat(), alt_end.isoformat()]
 
         elif az_start != -1 and az_end != -1 and (alt_start == -1 or alt_end == -1):
-            return [az_start, az_end]
+            return [az_start.isoformat(), az_end.isoformat()]
 
-        return [max(alt_start, az_start), max(alt_end, az_end)]
+        first = -1
+        if max(alt_start, az_start) != -1:
+            first = datetime.strptime(max(alt_start, az_start).isoformat(), '%a, %d %b %y %H:%M:%S')
+            first = first.isoformat()
 
+        second = -1
+        if max(alt_end, az_end) != -1:
+            second = datetime.strptime(max(az_end, az_end).isoformat(), '%a, %d %b %y %H:%M:%S')
+            second = second.isoformat()
+
+        return [first, second]
 
     @staticmethod
     def to_float(angle: ephem.Angle) -> float:

@@ -23,6 +23,10 @@ class TargetSection extends StatefulWidget {
 
 class _TargetSectionState extends State<TargetSection> {
 
+  final TextEditingController azMinController = TextEditingController();
+  final TextEditingController azMaxController = TextEditingController();
+  final TextEditingController altThreshController = TextEditingController();
+
 
   @override
   void initState() {
@@ -36,12 +40,28 @@ class _TargetSectionState extends State<TargetSection> {
 
     if(widget.isEdit){
       if(validFilter(targetVm.altFilter) || validFilter(targetVm.azMax) || validFilter(targetVm.azMin)){
+        widget.animationController.value = widget.animationController.upperBound;
+
+        altThreshController.text = targetVm.altFilter != -1 ? targetVm.altFilter.toString() : '';
+        azMaxController.text = targetVm.azMax != -1 ? targetVm.azMax.toString() : '';
+        azMinController.text = targetVm.azMin != -1 ? targetVm.azMin.toString() : '';
+
         targetVm.usingFilter(true, false);
       }
       else {
         targetVm.usingFilter(false, false);
       }
     }
+  }
+
+  @override
+  void dispose() {
+
+    azMinController.dispose();
+    azMaxController.dispose();
+    altThreshController.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -110,6 +130,7 @@ class _TargetSectionState extends State<TargetSection> {
                       children: [
                         CupertinoTextFormFieldRow(
                           key: const Key('Azimuth minimum'),
+                          controller: azMinController,
                           validator: targetVm.azMinValidator,
                           onChanged: targetVm.onChangeAzMin,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -127,6 +148,7 @@ class _TargetSectionState extends State<TargetSection> {
                         CupertinoTextFormFieldRow(
                           key: const Key('Azimuth maximum'),
                           validator: targetVm.azMaxValidator,
+                          controller: azMaxController,
                           onChanged: targetVm.onChangeAzMax,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           prefix: Padding(
@@ -142,6 +164,7 @@ class _TargetSectionState extends State<TargetSection> {
                         ),
                         CupertinoTextFormFieldRow(
                           key: const Key('Altitude filter'),
+                          controller: altThreshController,
                           validator: targetVm.altValidator,
                           onChanged: targetVm.onChangeAltFilter,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -177,7 +200,10 @@ class _TargetSectionState extends State<TargetSection> {
                 },
               )
             ): CupertinoButton(
-                onPressed: () {
+                onPressed: () async {
+
+                  await searchVm.loadCsvData();
+
                   searchVm.previewedResult = searchVm.selectedResult;
 
                   String toLoad;

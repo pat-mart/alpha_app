@@ -27,7 +27,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Alpha can use your current location when you create a plan. If this setting is disabled, you will need to enter coordinates when creating a plan</string>
+	<string>Alpha will be able to access your current location when you create a plan. If this setting is disabled, you will need to enter coordinates when creating a plan</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

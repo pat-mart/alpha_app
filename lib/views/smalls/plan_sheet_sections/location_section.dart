@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 
 import '../../../viewmodels/create_plan/weather_vm.dart';
 import '../../../viewmodels/create_plan_util.dart';
+import '../../../viewmodels/search_vm.dart';
 
 class LocationSection extends StatefulWidget {
 
@@ -135,6 +136,7 @@ class _LocationSectionState extends State<LocationSection> with WidgetsBindingOb
                 controller: latController,
                 onChanged: (String newVal) {
                   locationVm.onChangeLat(newVal);
+                  SearchViewModel().infoCache.clear();
                   if(internetSnapshot.hasData && internetSnapshot.data == true){
                     weatherVm.clearCaches();
                   }
@@ -159,6 +161,7 @@ class _LocationSectionState extends State<LocationSection> with WidgetsBindingOb
                 controller: lonController,
                 onChanged: (String newVal) {
                   locationVm.onChangeLon(newVal);
+                  SearchViewModel().infoCache.clear();
                   if(internetSnapshot.hasData && internetSnapshot.data == true){
                     weatherVm.clearCaches();
                   }

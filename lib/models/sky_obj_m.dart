@@ -45,4 +45,9 @@ class SkyObj{
   String toString(){
     return '$properName*$catalogName*$catalogAlias*$objType*$constellation*$magnitude*$isStar';
   }
+
+  @override
+  bool operator ==(Object other) {
+    return toString() == other.toString();
+  }
 }

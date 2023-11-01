@@ -1,3 +1,4 @@
+import 'package:astro_planner/models/json_data/skyobj_data.dart';
 import 'package:astro_planner/viewmodels/create_plan/datetime_vm.dart';
 import 'package:astro_planner/viewmodels/create_plan/location_vm.dart';
 import 'package:astro_planner/viewmodels/create_plan/target_vm.dart';
@@ -54,6 +55,10 @@ class _PlanSheetState extends State<PlanSheet> with SingleTickerProviderStateMix
       targetVm.onChangeAzMax(widget.planToLoad!.azMax.toString(), false);
       targetVm.onChangeAltFilter(widget.planToLoad!.altThresh.toString(), false);
 
+      bool usingFilter = widget.planToLoad!.azMin > 0 || widget.planToLoad!.azMax > 0 || widget.planToLoad!.altThresh > 0;
+
+      targetVm.usingFilter(usingFilter, false);
+
       dateTimeVm.setStartDateTime(widget.planToLoad!.timespan.dateTimeRange.start, false);
       dateTimeVm.setEndDateTime(widget.planToLoad!.timespan.dateTimeRange.end, false);
 
@@ -62,6 +67,11 @@ class _PlanSheetState extends State<PlanSheet> with SingleTickerProviderStateMix
     else {
       SearchViewModel().selectedResult = null;
       SearchViewModel().previewedResult = null;
+
+      TargetViewModel().altFilter = null;
+      TargetViewModel().azMax = null;
+      TargetViewModel().azMin = null;
+      TargetViewModel().usingFilter(false, false);
     }
   }
 
@@ -74,10 +84,8 @@ class _PlanSheetState extends State<PlanSheet> with SingleTickerProviderStateMix
     DateTimeViewModel().startDateTime = null;
     DateTimeViewModel().endDateTime = null;
 
-    TargetViewModel().altFilter = null;
-    TargetViewModel().azMax = null;
-    TargetViewModel().azMin = null;
-    TargetViewModel().usingFilter(false, false);
+    SearchViewModel().selectedResult = null;
+    SearchViewModel().previewedResult = null;
 
     super.dispose();
   }
@@ -91,6 +99,7 @@ class _PlanSheetState extends State<PlanSheet> with SingleTickerProviderStateMix
 
     final weatherVm = Provider.of<WeatherViewModel>(context);
     final planVm = Provider.of<PlanViewModel>(context);
+    final searchVm = Provider.of<SearchViewModel>(context);
 
     return CustomScrollView(
       scrollBehavior: const CupertinoScrollBehavior(),
@@ -100,7 +109,7 @@ class _PlanSheetState extends State<PlanSheet> with SingleTickerProviderStateMix
             padding: EdgeInsets.only(top: 10)
           )
         ),
-        const PlanSheetHeader(),
+        PlanSheetHeader(isEdit: isEdit),
         SliverToBoxAdapter(
           child: ListView(
             physics: const NeverScrollableScrollPhysics(),
@@ -118,9 +127,13 @@ class _PlanSheetState extends State<PlanSheet> with SingleTickerProviderStateMix
               TargetSection(targetVm: targetVm, animationController: animationController, animation: animation, isEdit: isEdit),
               Container(
                 margin: EdgeInsets.only(left: MediaQuery.of(context).size.width/5, right: MediaQuery.of(context).size.width/5),
-                padding: const EdgeInsets.only(top: 20),
+                padding: const EdgeInsets.only(top: 20, bottom: 8),
                 child: CupertinoButton.filled(
-                    onPressed: (!targetVm.isValidFilter || !dateTimeVm.validDates  || !locationVm.isValidLocation || SearchViewModel().selectedResult == null) ? null : () {
+                    onPressed: (!targetVm.isValidFilter || !dateTimeVm.validDates  || !locationVm.isValidLocation || searchVm.selectedResult == null) ? null : () {
+                      SkyObjectData? objData;
+                      if(SearchViewModel().infoCache[SearchViewModel().selectedResult?.catalogName] != null){
+                        objData = SearchViewModel().infoCache[SearchViewModel().selectedResult?.catalogName];
+                      }
                       final newPlan = Plan(
                         SearchViewModel().selectedResult!,
                         dateTimeVm.startDateTime ?? DateTime.now(),
@@ -128,7 +141,11 @@ class _PlanSheetState extends State<PlanSheet> with SingleTickerProviderStateMix
                         locationVm.lat!,
                         locationVm.lon!,
                         dateTimeVm.now.timeZoneName,
-                        null
+                        objData,
+                        false,
+                        targetVm.azMax ?? -1,
+                        targetVm.azMin ?? -1,
+                        targetVm.altFilter ?? -1
                       );
                       if(widget.planToLoad == null){
                         planVm.add(newPlan);

@@ -61,6 +61,7 @@ class HelioObj:
         try:
             self.observer.disallow_circumpolar(self.sun.dec)
         except ephem.NeverUpError or ephem.AlwaysUpError:
+            print('Exception sun')
             # Odd workaround because NeverUpError is always returned from PyEphem (bug)
             self.sun_always_up = self.sun.alt >= 0
             self.sun_always_down = not self.sun_always_up
@@ -87,6 +88,8 @@ class HelioObj:
             self.target.compute(self.observer)
 
             self.obj_set_t = (self.observer.next_setting(self.target).datetime() + self.utc_offset_td).time()
+
+        print(self.obj_rise_t, self.obj_set_t)
 
     @property
     def hours_visible(self) -> [datetime]:

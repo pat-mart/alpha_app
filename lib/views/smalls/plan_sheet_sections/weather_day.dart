@@ -106,10 +106,14 @@ class _WeatherDayState extends State<WeatherDay> {
     degreeFuture = WeatherViewModel().usingCelsiusAsync;
 
     if (mounted) {
-      Timer(Duration(minutes: (60 - DateTime.timestamp().minute) + 1), (){
-        setState((){});
+      Timer(Duration(minutes: (60 - DateTime.timestamp().minute) + 1), () {
+        if (mounted) {
+          setState((){});
+        }
         Timer.periodic(const Duration(hours: 1), (timer) {
-          setState(() {});
+          if (mounted) {
+            setState((){});
+          }
         });
       });
     }
@@ -119,7 +123,9 @@ class _WeatherDayState extends State<WeatherDay> {
   void didUpdateWidget(covariant old){
     super.didUpdateWidget(old);
 
-    initFuture();
+    if (mounted) {
+      initFuture();
+    }
   }
 
   @override

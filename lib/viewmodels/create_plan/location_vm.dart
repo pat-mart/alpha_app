@@ -53,7 +53,12 @@ class LocationViewModel extends ChangeNotifier {
 
     _serviceEnabled = true;
 
-    _locData = await _location.getLocation().timeout(const Duration(seconds: 4));
+    try {
+      _locData = await _location.getLocation().timeout(const Duration(seconds: 5));
+    } catch (e) {
+      _locData = null;
+      _usingService = false;
+    }
 
     lat = _locData?.latitude;
     lon = _locData?.longitude;

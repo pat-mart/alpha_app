@@ -117,7 +117,7 @@ class _SearchResultState extends State<SearchResult> {
           searchVm.deselectResult(csvRow);
         }
       },
-      trailing: (searchVm.selectedResult == csvRow || searchVm.previewedResult == csvRow) ? const Icon(CupertinoIcons.check_mark_circled, color: CupertinoColors.activeBlue) : null,
+      trailing: (searchVm.selectedResult == csvRow || searchVm.previewedResult == csvRow) ? const Icon(CupertinoIcons.check_mark_circled, color: CupertinoColors.activeBlue) : Icon(CupertinoIcons.circle, color: CupertinoColors.inactiveGray.darkColor),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

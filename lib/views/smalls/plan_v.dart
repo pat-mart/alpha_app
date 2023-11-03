@@ -31,7 +31,7 @@ class _PlanCardState extends State<PlanCard> {
   late Future<SkyObjectData?> objFuture;
 
   final DateFormat dayFormat = DateFormat('EEEE, M/d');
-  final DateFormat timeFormat = DateFormat('H:mm');
+  DateFormat timeFormat = DateFormat('hh:mm');
 
   late Timer timeToHour;
   late Timer periodicTimer;
@@ -72,6 +72,7 @@ class _PlanCardState extends State<PlanCard> {
 
     Plan plan = PlanViewModel().getPlan(widget.index);
     objFuture = plan.getObjInfo(1, 0, widget.httpsClient, plan.timespan.startDateTime, true);
+    weatherFuture = plan.getWeatherData(RequestType.planDuration);
   }
 
   @override
@@ -113,7 +114,7 @@ class _PlanCardState extends State<PlanCard> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(left: 12, top: 8, bottom: 12),
+                            padding: const EdgeInsets.only(left: 12),
                             child: Text(plan.target.properName == '' ? plan.target.catalogName : plan.target.properName, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white)),
                           ),
                           PullDownButton(
@@ -166,7 +167,7 @@ class _PlanCardState extends State<PlanCard> {
                                 icon: CupertinoIcons.delete,
                               )
                             ],
-                            buttonBuilder: (context, showMenu) => CupertinoButton(onPressed: showMenu, child: const Icon(CupertinoIcons.pencil_ellipsis_rectangle))
+                            buttonBuilder: (context, showMenu) => CupertinoButton(onPressed: showMenu, child: const Icon(CupertinoIcons.ellipsis, size: 34))
                           )
                         ]
                       ),
@@ -205,12 +206,12 @@ class _PlanCardState extends State<PlanCard> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(bottom: 8.0),
-                                    child: Text('Peaks at ${snapshot.data!.peakAlt.toStringAsFixed(2)}°, ${snapshot.data!.peakBearing.toStringAsFixed(2)}° at ${snapshot.data!.peakTime.substring(11, 16)}', style: TextStyle(color: CupertinoColors.secondaryLabel.darkColor, fontSize: 16)),
+                                    child: Text('Peaks at (${snapshot.data!.peakAlt.toStringAsFixed(2)}°, ${snapshot.data!.peakBearing.toStringAsFixed(2)}°) at ${snapshot.data!.peakTime.substring(11, 16)}', style: TextStyle(color: CupertinoColors.secondaryLabel.darkColor, fontSize: 18)),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(bottom: 8.0),
                                     child: Text('Visible from ${(snapshot.data!.hoursVis[0])} to ${(snapshot.data!.hoursVis[1])}',
-                                        style: TextStyle(color: CupertinoColors.secondaryLabel.darkColor, fontSize: 16)),
+                                        style: TextStyle(color: CupertinoColors.secondaryLabel.darkColor, fontSize: 18)),
                                   ),
                                     (usedFilters) ? Text(filterMsg, style: TextStyle(color: CupertinoColors.secondaryLabel.darkColor, fontSize: 16)) : const SizedBox.shrink()
 
@@ -238,21 +239,27 @@ class _PlanCardState extends State<PlanCard> {
                               var data = snapshot.data!;
 
                               if(data.clearHours.isEmpty && data.hasData){
-                                return const Row(
-                                  children: [
-                                    Icon(CupertinoIcons.exclamationmark_triangle, color: CupertinoColors.systemRed),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 8.0),
-                                      child: Text('No clear weather for this plan', style: TextStyle(color: CupertinoColors.systemRed, fontSize: 18)),
-                                    )
-                                  ]
+                                return const Padding(
+                                  padding: EdgeInsets.only(bottom: 12.0),
+                                  child: Row(
+                                    children: [
+                                      Icon(CupertinoIcons.exclamationmark_triangle, color: CupertinoColors.systemRed),
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 8.0),
+                                        child: Text('No clear weather for this plan', style: TextStyle(color: CupertinoColors.systemRed, fontSize: 18)),
+                                      )
+                                    ]
+                                  ),
                                 );
                               }
                               else if(data.clearHours.isNotEmpty && data.hasData && data.clearHours.length == 1){
                                 return Text('Clear at ${data.clearHours[0]}', style: TextStyle(color: CupertinoColors.systemCyan.darkColor, fontSize: 18));
                               }
-                              return Text('Clear weather from ${snapshot.data!.clearHours.first.hour} to ${snapshot.data!.clearHours.last.hour}',
-                                style: TextStyle(color: CupertinoColors.systemCyan.darkColor, fontSize: 18),
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 12.0),
+                                child: Text('Clear weather from ${timeFormat.format(snapshot.data!.clearHours.first)} to ${timeFormat.format(snapshot.data!.clearHours.last)}',
+                                  style: TextStyle(color: CupertinoColors.systemCyan.darkColor, fontSize: 18),
+                                ),
                               );
                             }
                             return Padding(

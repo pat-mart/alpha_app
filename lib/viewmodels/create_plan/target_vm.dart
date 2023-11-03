@@ -32,63 +32,43 @@ class TargetViewModel extends ChangeNotifier {
 
   String? azMinValidator(String? query){
 
-    bool hasMax = (azMax != null && azMax != -1);
-    bool hasMin = (azMin != null && azMin != -1);
+    bool hasRangedMax = (azMax != null && azMax! > 0 && azMax!  < 360);
+    bool hasRangedMin = (azMin != null && azMin! > 0 && azMin! < 360);
 
-    if(hasMin && !hasMax){
-      if(!CreatePlanUtil.isInRange(query, 0, 360)) {
-        validFilter['az_min'] = false;
-        return "Enter a valid minimum azimuth";
+    if(azMin == null && (query ?? '').isEmpty){
+      validFilter['az_min'] = true;
+      return null;
+    }
+
+    else if(hasRangedMin){
+      if(!hasRangedMax || (azMin! < azMax!)){
+        validFilter['az_min'] = true;
+        return null;
       }
-      validFilter['az_min'] = false;
-      return "Enter a valid minimum azimuth";
     }
-    else if(hasMin && hasMax){
-      if(!CreatePlanUtil.isInRange(query, 0, (azMax! > azMin!) ? 360 : azMax!)) {
-        validFilter['az_min'] = false;
-        return "Enter a valid minimum azimuth";
-      }
-      validFilter['az_min'] = false;
-      return "Enter a valid minimum azimuth";
-    }
-    else if(query != null && query.isNotEmpty){
-      validFilter['az_min'] = false;
-      return "Enter a valid minimum azimuth";
-    }
-    validFilter['az_min'] = true;
-    return null;
+    validFilter['az_min'] = false;
+    return "Enter a valid minimum azimuth";
   }
 
   String? azMaxValidator(String? query){
 
-    bool hasMax = (azMax != null && azMax != -1);
-    bool hasMin = (azMin != null && azMin != -1);
+    bool hasRangedMax = (azMax != null && azMax! > 0 && azMax!  < 360);
+    bool hasRangedMin = (azMin != null && azMin! > 0 && azMin!  < 360);
 
-    print(azMin);
-    print(azMax);
+    if(azMax == null){
+      validFilter['az_max'] = true;
+      return null;
+    }
 
-    if(hasMax && !hasMin && query != null && query.isNotEmpty){
-      if(CreatePlanUtil.isInRange(query, 0, 360)){
+    else if(hasRangedMax){
+      if(!hasRangedMin || (azMax! > azMin!)){
         validFilter['az_max'] = true;
         return null;
       }
-      validFilter['az_max'] = false;
-      return "Enter a valid maximum azimuth";
     }
-    else if(hasMax && hasMin && query != null && query.isNotEmpty){
-        if(CreatePlanUtil.isInRange(query, azMin! > azMax! && azMin! > 0 ? 0 : azMin!, 360)){
-          validFilter['az_max'] = true;
-          return null;
-        }
-        validFilter['az_max'] = false;
-        return "Enter a valid maximum azimuth";
-    }
-    else if(query != null && query.isNotEmpty){
-      validFilter['az_max'] = false;
-      return "Enter a valid maximum azimuth";
-    }
-    validFilter['az_max'] = true;
-    return null;
+
+    validFilter['az_max'] = false;
+    return "Enter a valid maximum azimuth";
   }
 
   bool get isValidFilter {

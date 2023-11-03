@@ -114,6 +114,10 @@ class _TargetSectionState extends State<TargetSection> {
                     targetVm.usingFilter(newVal);
                     targetVm.showFilterWidgets(animationController);
 
+                    azMaxController.clear();
+                    azMinController.clear();
+                    altThreshController.clear();
+
                     if(!newVal){
                       targetVm.clearFilters();
                     }
@@ -215,7 +219,6 @@ class _TargetSectionState extends State<TargetSection> {
                   else {
                     toLoad = searchVm.removeProperAlias(result.properName);
                   }
-
                   searchVm.loadSearchResults(toLoad);
 
                   Navigator.push(

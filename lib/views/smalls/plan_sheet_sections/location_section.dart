@@ -104,13 +104,7 @@ class _LocationSectionState extends State<LocationSection> with WidgetsBindingOb
                   prefix: Text('Use this location', style: TextStyle(color: locationVm.serviceEnabled ? CupertinoColors.white : CupertinoColors.inactiveGray.darkColor)),
                   helper: !locationVm.serviceEnabled ? Text('Location permission denied', style: TextStyle(fontSize: 12, color: CupertinoColors.inactiveGray.darkColor)) : null,
                   child: CupertinoSwitch(
-                    onChanged: (newVal) async { // DO NOT TOUCH
-                      await locationVm.hasLocationPermission();
-
-                      if(!locationVm.serviceEnabled){
-                        locationVm.usingService = false;
-                        return;
-                      }
+                    onChanged: (!locationVm.serviceEnabled) ? null : (newVal) async { // DO NOT TOUCH
 
                       locationVm.usingService = newVal;
 

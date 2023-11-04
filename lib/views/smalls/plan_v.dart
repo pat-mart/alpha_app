@@ -106,7 +106,7 @@ class _PlanCardState extends State<PlanCard> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 child: SizedBox (
                   width: double.infinity,
-                  height: (MediaQuery.of(context).orientation == Orientation.portrait) ? MediaQuery.of(context).size.height/3.8 : MediaQuery.of(context).size.height/2.2,
+                  height: (MediaQuery.of(context).orientation == Orientation.portrait) ? MediaQuery.of(context).size.height/3.8 : MediaQuery.of(context).size.height/2,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

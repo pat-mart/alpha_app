@@ -5,6 +5,7 @@ import 'package:astro_planner/viewmodels/plan_vm.dart';
 import 'package:astro_planner/views/screens/empty_modal_sheet.dart';
 import 'package:astro_planner/views/screens/plan_sheet_body.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -105,7 +106,7 @@ class _PlanCardState extends State<PlanCard> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 child: SizedBox (
                   width: double.infinity,
-                  height: (MediaQuery.of(context).orientation == Orientation.portrait) ? MediaQuery.of(context).size.height/4 : MediaQuery.of(context).size.height/2.5,
+                  height: (MediaQuery.of(context).orientation == Orientation.portrait) ? MediaQuery.of(context).size.height/3.8 : MediaQuery.of(context).size.height/2.2,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -172,6 +173,10 @@ class _PlanCardState extends State<PlanCard> {
                         ]
                       ),
                       Padding(
+                        padding: const EdgeInsets.only(left: 12),
+                        child: Text('at coordinate (${plan.latitude}°, ${plan.longitude}°)', style: TextStyle(color: CupertinoColors.secondaryLabel.darkColor, fontSize: 14)),
+                      ),
+                      Padding(
                         padding: const EdgeInsets.only(left: 12, bottom: 24),
                         child: FutureBuilder(
                           future: objFuture,
@@ -194,7 +199,7 @@ class _PlanCardState extends State<PlanCard> {
                               filterMsg = "Within filters from ${snapshot.data!.hoursSuggested[0]} to ${snapshot.data!.hoursSuggested[1]}";
                             }
 
-                            if(snapshot.hasData && snapshot.connectionState == ConnectionState.waiting){
+                            if(snapshot.connectionState == ConnectionState.waiting){
                               return const CupertinoActivityIndicator();
                             }
                             if(snapshot.hasData && snapshot.data != null && snapshot.data!.hoursVis[0] == -1 && snapshot.connectionState == ConnectionState.done){

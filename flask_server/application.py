@@ -1,5 +1,5 @@
 from astropy.time import Time
-from flask import Flask, request, json, jsonify, make_response
+from flask import Flask, request, json, jsonify, make_response, render_template
 
 from data.helio_obj import HelioObj
 from data.obj_util import ObjUtil
@@ -116,6 +116,13 @@ def get_obj_pos():
 def hello_world():
     return "<h1></h1>"
 
+@app.route('/support')
+def support_tab():
+    return render_template('support.html')
+
+@app.route('/privacy-policy')
+def privacy_policy():
+    return render_template('privpol.html')
 
 @app.route('/healthcheck')
 def health_check():

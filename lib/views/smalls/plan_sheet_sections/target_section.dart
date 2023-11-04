@@ -206,7 +206,7 @@ class _TargetSectionState extends State<TargetSection> {
             ): CupertinoButton(
                 onPressed: () async {
 
-                  await searchVm.loadCsvData();
+                  //await searchVm.loadCsvData();
 
                   searchVm.previewedResult = searchVm.selectedResult;
 

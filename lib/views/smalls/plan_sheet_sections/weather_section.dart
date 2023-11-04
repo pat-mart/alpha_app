@@ -54,7 +54,7 @@ class _WeatherSectionState extends State<WeatherSection> with WidgetsBindingObse
     return Container(
       padding: const EdgeInsets.only(top: 10),
       margin: const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 10.0),
-      height: MediaQuery.of(context).size.height / (MediaQuery.of(context).orientation == Orientation.portrait ? 3 : 2),
+      height: MediaQuery.of(context).size.height / (MediaQuery.of(context).orientation == Orientation.portrait ? 2.7 : 2),
       child: Column (
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,

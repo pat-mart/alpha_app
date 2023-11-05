@@ -12,26 +12,26 @@ import '../../../models/json_data/weather_data.dart';
 import '../../../util/plan/date.dart';
 
 class WeatherSection extends StatefulWidget {
-
   final LocationViewModel locationVm;
   final WeatherViewModel weatherVm;
 
-  const WeatherSection({super.key, required this.locationVm, required this.weatherVm});
+  const WeatherSection(
+      {super.key, required this.locationVm, required this.weatherVm});
 
   @override
   State<WeatherSection> createState() => _WeatherSectionState();
 }
 
-class _WeatherSectionState extends State<WeatherSection> with WidgetsBindingObserver {
-
+class _WeatherSectionState extends State<WeatherSection>
+    with WidgetsBindingObserver {
   Future<WeatherData>? forecastFuture;
 
   void checkDays() {
     final locationVm = LocationViewModel();
 
-    forecastFuture = CreatePlanUtil.getForecastDays(locationVm.lat, locationVm.lon);
+    forecastFuture =
+        CreatePlanUtil.getForecastDays(locationVm.lat, locationVm.lon);
   }
-
 
   @override
   void initState() {
@@ -40,115 +40,124 @@ class _WeatherSectionState extends State<WeatherSection> with WidgetsBindingObse
   }
 
   @override
-  void didUpdateWidget(covariant old){
+  void didUpdateWidget(covariant old) {
     super.didUpdateWidget(old);
     checkDays();
   }
 
   @override
   Widget build(BuildContext context) {
-
     final locationVm = widget.locationVm;
     final weatherVm = widget.weatherVm;
 
     return Container(
-      padding: const EdgeInsets.only(top: 10),
-      margin: const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 10.0),
-      height: MediaQuery.of(context).size.height / (MediaQuery.of(context).orientation == Orientation.portrait ? 2.7 : 2),
-      child: Column (
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        padding: const EdgeInsets.only(top: 10),
+        margin: const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 10.0),
+        height: MediaQuery.of(context).size.height /
+            (MediaQuery.of(context).orientation == Orientation.portrait
+                ? 2.5
+                : 2),
+        child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Weather forecast', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-              Image.asset(
-                './assets/combined-mark-dark.png',
-                scale: 5.5
-              )
-            ]
-          ),
-          const Padding(padding: EdgeInsets.only(bottom: 8)),
-          locationVm.lat != null && locationVm.lon != null ?
-              Text('at (${locationVm.lat}, ${locationVm.lon})', style: TextStyle(color: CupertinoColors.secondaryLabel.darkColor, fontSize: 14))
-              : const SizedBox.shrink(),
-          Expanded(
-            child: FutureBuilder(
-              future: forecastFuture,
-              builder: (context, snapshot) {
-
-                if(snapshot.connectionState == ConnectionState.done && !snapshot.hasError && snapshot.data?.forecastDays != null){
-                  weatherVm.dayCache = snapshot.data!.forecastDays;
-                }
-
-                return ListView.builder(
-                  padding: EdgeInsets.zero,
-                  clipBehavior: Clip.antiAlias,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 2,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Transform.scale(
-                      scale: (!locationVm.isValidLocation)
-                        ? 1 : (index == weatherVm.selectedIndex ? 1.1 : 0.9),
-                      child: CupertinoButton(
-                        borderRadius: BorderRadius.zero,
-                        padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 30, 0),
-                        minSize: 0,
-                        alignment: Alignment.centerLeft,
-                        onPressed: (!locationVm.isValidLocation) ? null : () => weatherVm.onChangeTime(index),
-                        child: Text(
-                          (locationVm.isValidLocation) ? Date.previewOf(snapshot.data?.forecastDays[index])
-                              ?? Date.previewOf(weatherVm.dayCache?[index]) ?? ''
-                              : '',
-                          style: TextStyle(fontWeight: index == weatherVm.selectedIndex && locationVm.isValidLocation
-                              ? FontWeight.bold : FontWeight.normal)
-                        ),
-                      ),
-                    );
+              Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Weather forecast',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20)),
+                    Image.asset('./assets/combined-mark-dark.png', scale: 5.5)
+                  ]),
+              const Padding(padding: EdgeInsets.only(bottom: 8)),
+              locationVm.lat != null && locationVm.lon != null
+                  ? Text('at (${locationVm.lat}, ${locationVm.lon})',
+                      style: TextStyle(
+                          color: CupertinoColors.secondaryLabel.darkColor,
+                          fontSize: 14))
+                  : const SizedBox.shrink(),
+              Expanded(
+                  child: FutureBuilder(
+                future: forecastFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done &&
+                      !snapshot.hasError &&
+                      snapshot.data?.forecastDays != null) {
+                    weatherVm.dayCache = snapshot.data!.forecastDays;
                   }
-                );
-              },
-            )
-          ),
-          Builder(
-            builder: (context){
-              if(locationVm.isValidLocation){
-                return Expanded(child: WeatherDay(weatherVm: weatherVm));
-              }
-              return Center(
-                child: Text(
-                  'Enter a valid location to view weather data.',
-                  style: TextStyle(fontSize: 14, color: CupertinoColors.secondaryLabel.darkColor)
-                )
-              );
-            }
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                  'Weather times are local to entered location',
-                  style: TextStyle(color: CupertinoColors.secondaryLabel.darkColor, fontSize: 11),
-                  textAlign: TextAlign.start
-              ),
-              TextButton(
-                autofocus: false,
-                onPressed: () async {
-                  launchUrl(Uri.parse('https://developer.apple.com/weatherkit/data-source-attribution/'));
+
+                  return ListView.builder(
+                      padding: EdgeInsets.zero,
+                      clipBehavior: Clip.antiAlias,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 2,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return Transform.scale(
+                          scale: (!locationVm.isValidLocation)
+                              ? 1
+                              : (index == weatherVm.selectedIndex ? 1.1 : 0.9),
+                          child: CupertinoButton(
+                            borderRadius: BorderRadius.zero,
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                0, 0, 30, 0),
+                            minSize: 0,
+                            alignment: Alignment.centerLeft,
+                            onPressed: (!locationVm.isValidLocation)
+                                ? null
+                                : () => weatherVm.onChangeTime(index),
+                            child: Text(
+                                (locationVm.isValidLocation)
+                                    ? Date.previewOf(snapshot
+                                            .data?.forecastDays[index]) ??
+                                        Date.previewOf(
+                                            weatherVm.dayCache?[index]) ??
+                                        ''
+                                    : '',
+                                style: TextStyle(
+                                    fontWeight:
+                                        index == weatherVm.selectedIndex &&
+                                                locationVm.isValidLocation
+                                            ? FontWeight.bold
+                                            : FontWeight.normal)),
+                          ),
+                        );
+                      });
                 },
-                child: Text(
-                  'Data sources',
-                  style: TextStyle(color: CupertinoColors.secondaryLabel.darkColor, fontSize: 11, decoration: TextDecoration.underline),
-                  textAlign: TextAlign.start
-                )
-              ),
-            ],
-          )
-        ]
-      )
-    );
+              )),
+              Builder(builder: (context) {
+                if (locationVm.isValidLocation) {
+                  return Expanded(child: WeatherDay(weatherVm: weatherVm));
+                }
+                return Center(
+                    child: Text('Enter a valid location to view weather data.',
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: CupertinoColors.secondaryLabel.darkColor)));
+              }),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Weather times are local to entered location',
+                      style: TextStyle(
+                          color: CupertinoColors.secondaryLabel.darkColor,
+                          fontSize: 11),
+                      textAlign: TextAlign.start),
+                  TextButton(
+                      autofocus: false,
+                      onPressed: () async {
+                        launchUrl(Uri.parse(
+                            'https://developer.apple.com/weatherkit/data-source-attribution/'));
+                      },
+                      child: Text('Data sources',
+                          style: TextStyle(
+                              color: CupertinoColors.secondaryLabel.darkColor,
+                              fontSize: 11,
+                              decoration: TextDecoration.underline),
+                          textAlign: TextAlign.start)),
+                ],
+              )
+            ]));
   }
 }

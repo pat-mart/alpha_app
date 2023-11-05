@@ -5,7 +5,6 @@ import 'package:permission_handler/permission_handler.dart' as ph;
 import '../create_plan_util.dart';
 
 class LocationViewModel extends ChangeNotifier {
-
   double? lat, lon;
 
   bool _usingService = false;
@@ -27,7 +26,7 @@ class LocationViewModel extends ChangeNotifier {
   factory LocationViewModel() => instance;
 
   Future<bool> hasLocationPermission() async {
-    _permissionStatus = await ph.Permission.locationWhenInUse.status;
+    _permissionStatus = await ph.Permission.locationWhenInUse.request();
 
     _serviceEnabled = _permissionStatus!.isGranted;
 
@@ -39,10 +38,9 @@ class LocationViewModel extends ChangeNotifier {
   }
 
   Future<void> get location async {
-
     await hasLocationPermission();
 
-    if(!_permissionStatus!.isGranted){
+    if (!_permissionStatus!.isGranted) {
       _usingService = false;
       _serviceEnabled = false;
       lat = lon = null;
@@ -54,7 +52,8 @@ class LocationViewModel extends ChangeNotifier {
     _serviceEnabled = true;
 
     try {
-      _locData = await _location.getLocation().timeout(const Duration(seconds: 5));
+      _locData =
+          await _location.getLocation().timeout(const Duration(seconds: 5));
     } catch (e) {
       _locData = null;
       _usingService = false;
@@ -66,30 +65,30 @@ class LocationViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void clearControllers(List<TextEditingController> textEditingControllers){
-    for(final c in textEditingControllers){
+  void clearControllers(List<TextEditingController> textEditingControllers) {
+    for (final c in textEditingControllers) {
       c.clear();
     }
     notifyListeners();
   }
 
-  void nullCoordinates(){
+  void nullCoordinates() {
     lat = lon = null;
     notifyListeners();
   }
 
-  void onChangeLat(String newValue, [bool notify=true]){
+  void onChangeLat(String newValue, [bool notify = true]) {
     lat = CreatePlanUtil.onChangeDegree(newValue);
-    if(notify) notifyListeners();
+    if (notify) notifyListeners();
   }
 
-  void onChangeLon(String newValue, [bool notify=true]){
+  void onChangeLon(String newValue, [bool notify = true]) {
     lon = CreatePlanUtil.onChangeDegree(newValue);
-    if(notify) notifyListeners();
+    if (notify) notifyListeners();
   }
 
-  String? latValidator(String? query){
-    if(CreatePlanUtil.isInRange(query, -90, 90)){
+  String? latValidator(String? query) {
+    if (CreatePlanUtil.isInRange(query, -90, 90)) {
       validCoord['lat'] = true;
       return null;
     }
@@ -106,11 +105,12 @@ class LocationViewModel extends ChangeNotifier {
     return "Enter a valid longitude";
   }
 
-  set usingService(newVal){
+  usingService(newVal, [bool notify = true]) {
     _usingService = newVal;
-    notifyListeners();
+    if (notify) notifyListeners();
   }
-  set serviceEnabled(newVal){
+
+  set serviceEnabled(newVal) {
     _serviceEnabled = newVal;
     notifyListeners();
   }

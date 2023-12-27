@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Astro Planner</string>
+	<string>Alpha for Astronomy</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -27,7 +27,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Alpha for Astronomy will be able to access your current location when you create a plan. If this setting is disabled, you will need to enter coordinates when creating a plan</string>
+	<string>Alpha for Astronomy will be able to access your current location when you create a plan. If this setting is disabled, you will need to enter coordinates when creating a plan.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

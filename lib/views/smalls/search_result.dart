@@ -36,7 +36,7 @@ class _SearchResultState extends State<SearchResult> {
   String getSubtitle(String catalogName){
     final planetNames = ['mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune'];
 
-    final indexes = {1: 'first', 2: 'second', 3: 'third', 4: 'fourth', 5: 'fifth', 6: 'sixth', 7: 'seventh', 8: 'eighth', 9: 'ninth'};
+    final indexes = {0: 'first', 1: 'second', 2: 'fourth', 3: 'fifth', 4: 'sixth', 5: 'seventh', 6: 'eighth'};
 
     String? index;
 
@@ -63,7 +63,13 @@ class _SearchResultState extends State<SearchResult> {
           widget.locationVm.lat!,
           widget.locationVm.lon!
       );
-      dataFuture = plan.getObjInfo(widget.listLength, widget.index, widget.httpsClient, widget.dateTimeVm.startDateTime ?? DateTime.now());
+      if(plan.target.isPlanet){
+        dataFuture = plan.getPlanetInfo(widget.listLength, widget.httpsClient, widget.dateTimeVm.startDateTime ?? DateTime.now());
+      }
+      else {
+        dataFuture = plan.getDeepSkyInfo(true, 0);
+      }
+
     } else {
       dataFuture = null;
     }
@@ -130,31 +136,64 @@ class _SearchResultState extends State<SearchResult> {
           ),
           Padding(
             padding: const EdgeInsets.only(bottom: 6.0),
-            child: Text((csvRow.magnitude.isNaN ? 'Unknown magnitude' : 'Magnitude ${csvRow.magnitude}')),
+            child: Builder(
+              builder: (context) {
+                if(csvRow.isPlanet && csvRow.magnitude != 0.0 || !csvRow.isPlanet){
+                  return Text((csvRow.magnitude.isNaN ? 'Unknown magnitude' : 'Magnitude ${csvRow.magnitude.toStringAsFixed(2)}'));
+                }
+                return const SizedBox.shrink();
+              }
+            ),
           ),
           FutureBuilder<SkyObjectData?>(
             future: objDataFuture,
             builder: (BuildContext context, objData) {
 
+              if(objData.connectionState == ConnectionState.waiting){
+                return const CupertinoActivityIndicator();
+              }
+
               if(objData.hasData && objData.data != null){
+
                 String filterMsg = "Not visible within filters";
-                if(TargetViewModel().isUsingFilter && !TargetViewModel().validFilter.containsValue(false) && objData.data!.hoursSuggested.length >= 2){
-                  filterMsg = "Within filters from ${objData.data!.hoursSuggested[0].substring(12, 17)} to ${objData.data!.hoursSuggested[1].substring(12, 17)}";
+
+                String visibleMsg = "";
+
+                String peakMsg = "";
+
+                if(objData.data!.peakTime.length >= 16 && !objData.data!.neverSets){
+                  peakMsg = "Peaks ${objData.data!.peakAlt.toStringAsFixed(1)}° above ${Cardinal.getCardinal(objData.data!.peakBearing)} horizon at ${objData.data!.peakTime.substring(11, 16)} UTC";
                 }
-                if(objData.data!.hoursVis[0] == -1){
-                  return const Text('Never visible');
+
+                if(!objData.data!.hoursVis.contains("-1") || !objData.data!.hoursVis.contains(-1)){ // Planets have different time lengths, going to fix from Flask side at some point
+                  if(objData.data!.hoursVis[0].toString().length >= 16){
+                    visibleMsg = "Visible from ${objData.data!.hoursVis[0].toString().substring(11, 16)} to ${objData.data!.hoursVis[1].substring(11, 16)} UTC";
+                  }
+                  else if(objData.data!.hoursVis[0].toString().length >= 5){
+                    visibleMsg = "Visible from ${objData.data!.hoursVis[0].toString().substring(0, 5)} to ${objData.data!.hoursVis[1].substring(0, 5)} UTC";
+                  }
                 }
+
+                if(objData.data!.hoursVis.contains("-1") || objData.data!.hoursVis.contains(-1)){
+                  peakMsg = "";
+                  visibleMsg = "Never visible";
+                }
+                else if(objData.data!.hoursVis[0].toString() == "0.0" && objData.data!.hoursVis[1].toString() == "0.0"){
+                  visibleMsg = "Always visible";
+                }
+
+                if(TargetViewModel().isUsingFilter && !TargetViewModel().validFilter.containsValue(false) && !objData.data!.hoursSuggested.contains(-1)){
+                  filterMsg = "Within filters from ${objData.data!.hoursSuggested[0].substring(11, 16)} to ${objData.data!.hoursSuggested[1].substring(11, 15)} UTC";
+                }
+
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Visible from ${(objData.data!.hoursVis[0] as String).substring(0, 5)} to ${(objData.data!.hoursVis[1] as String).substring(0, 5)}'),
-                    Text('Peaks (${objData.data!.peakAlt}°, ${objData.data!.peakBearing.toStringAsFixed(2)}°) (${Cardinal.getCardinal(objData.data!.peakBearing)}) at ${objData.data!.peakTime.substring(5, 16)}'),
+                    Text(visibleMsg),
+                    (peakMsg == "") ? const SizedBox.shrink() : Text(peakMsg),
                     (TargetViewModel().isUsingFilter) ? Text(filterMsg) : const SizedBox.shrink()
                   ]
                 );
-              }
-              else if(objData.connectionState == ConnectionState.waiting || objData.connectionState == ConnectionState.active){
-                return const CupertinoActivityIndicator();
               }
               if(widget.locationVm.lat == null && widget.locationVm.lon == null){
                 return const Text('Location needed for observational data');

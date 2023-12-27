@@ -194,13 +194,12 @@ class _TargetSectionState extends State<TargetSection> {
               child: (searchVm.selectedResult == null) ? (CupertinoSearchTextField(
                 enabled: true,
                 placeholder: 'Search for a target',
-                onTap: () async {
+                onTap: () {
                   FocusScope.of(context).unfocus();
                   Navigator.push(
                     context,
                     CupertinoPageRoute(builder: (context) => SearchScreen(initialQueryValue: '', isEdit: widget.isEdit))
                   );
-                  await searchVm.loadCsvData();
                 },
               )
             ): CupertinoButton(

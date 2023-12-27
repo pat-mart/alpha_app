@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 
 import ephem
-from astropy.coordinates import Angle
 from astropy.time import Time
 
 from data.obj_util import ObjUtil
@@ -17,7 +16,6 @@ class HelioObj:
                  alt_threshold: float, az_min: float, az_max: float):
 
         self.target = ephem.Jupiter()  # Placeholder
-        self.utc_offset_td = timedelta(hours=ObjUtil.utc_offset(coords))
         self.obj_name = obj_name.lower()
 
         self.start_astropy_time = start_time
@@ -39,8 +37,8 @@ class HelioObj:
         self.start_time = start_time.to_datetime()
         self.end_time = end_time.to_datetime()
 
-        self.start_dt = datetime.combine(self.start_time.date(), (self.start_time + self.utc_offset_td).time())
-        self.end_dt = datetime.combine(self.end_time.date(), (self.end_time + self.utc_offset_td).time())
+        self.start_dt = datetime.combine(self.start_time.date(), self.start_time.time())
+        self.end_dt = datetime.combine(self.end_time.date(), self.end_time.time())
 
         self.start_dt = self.start_dt.strftime('%Y/%m/%d %H:%M')
         self.end_dt = self.end_dt.strftime('%Y/%m/%d %H:%M')
@@ -58,38 +56,42 @@ class HelioObj:
         self.sun = ephem.Sun()
 
         self.sun.compute(self.observer)
+
         try:
             self.observer.disallow_circumpolar(self.sun.dec)
         except ephem.NeverUpError or ephem.AlwaysUpError:
-            print('Exception sun')
             # Odd workaround because NeverUpError is always returned from PyEphem (bug)
             self.sun_always_up = self.sun.alt >= 0
             self.sun_always_down = not self.sun_always_up
 
+            self.sunrise_t = None
+            self.sunset_t = None
+
         self.target.compute(self.observer)
         try:
             self.observer.disallow_circumpolar(self.target.dec)
-        except ephem.NeverUpError or ephem.AlwaysUpError:
+        except ephem.CircumpolarError:
             self.target_always_up = self.target.alt >= 0
             self.target_always_down = not self.target_always_up
 
+            self.obj_set_t = None
+            self.obj_rise_t = None
+
         if not (self.sun_always_up or self.sun_always_down):
-            self.sunrise_t = (self.observer.next_rising(self.sun).datetime() + self.utc_offset_td).time()
+            self.sunrise_t = self.observer.next_rising(self.sun).datetime().time()
 
             self.observer.date = self.end_dt
             self.target.compute(self.observer)
 
-            self.sunset_t = (self.observer.next_setting(self.sun).datetime() + self.utc_offset_td).time()
+            self.sunset_t = self.observer.next_setting(self.sun).datetime().time()
 
         if not (self.target_always_up or self.target_always_down):
-            self.obj_rise_t = (self.observer.next_rising(self.target).datetime() + self.utc_offset_td).time()
+            self.obj_rise_t = self.observer.next_rising(self.target).datetime().time()
 
             self.observer.date = self.end_dt
             self.target.compute(self.observer)
 
-            self.obj_set_t = (self.observer.next_setting(self.target).datetime() + self.utc_offset_td).time()
-
-        print(self.obj_rise_t, self.obj_set_t)
+            self.obj_set_t = self.observer.next_setting(self.target).datetime().time()
 
     @property
     def hours_visible(self) -> [datetime]:
@@ -97,13 +99,15 @@ class HelioObj:
         if self.target_always_down:
             return [-1, -1]
 
+        elif self.sun_always_down:
+            if self.target_always_up:
+                return [0, 0]
+            return [self.obj_rise_t, self.obj_set_t]
+
         elif self.sun_always_up:
-            if self.obj_name == 'sun':
-                return [self.start_dt, self.end_dt]
-            elif self.obj_name == 'moon':
+            if self.obj_name == 'sun' or self.obj_name == 'moon':
                 return [self.obj_rise_t, self.obj_set_t]
-            else:
-                return [-1, -1]
+            return [-1, -1]
 
         elif self.obj_name in ['sun', 'moon']:
             return [self.obj_rise_t, self.obj_set_t]
@@ -123,11 +127,9 @@ class HelioObj:
 
     @property
     def peak_time(self):
-        gmt_time = self.observer.next_transit(self.target, start=self.start_time.date().strftime('%Y/%m/%d')).datetime()
+        gmt_time = self.observer.next_transit(self.target, start=self.start_time.date().strftime('%Y/%m/%d')).datetime() + timedelta(hours=ObjUtil.utc_offset(coords=self.coords))
 
-        gmt_time += timedelta(hours=ObjUtil.utc_offset(self.coords))
-
-        local_time = gmt_time.strftime('%Y/%m/%d %H:%M')
+        local_time = gmt_time.strftime('%Y-%m-%d %H:%M')
 
         return local_time
 
@@ -137,20 +139,18 @@ class HelioObj:
         gmt_peak = self.observer.next_transit(self.target, start=self.start_time.date().strftime('%Y/%m/%d')).datetime()
 
         obs_copy = self.observer.copy()
-        obs_copy.date = gmt_peak.strftime('%Y/%m/%d %H:%M')
+        obs_copy.date = gmt_peak.strftime('%Y-%m-%d %H:%M')
 
         target_copy = self.target
 
         target_copy.compute(obs_copy)
 
-        return {"alt": Angle(f'{target_copy.alt} degrees'), "az": Angle(f'{target_copy.az} degrees')}
+        return {"alt": ephem.degrees(target_copy.alt), "az": ephem.degrees(target_copy.az)}
 
     @property
     def suggested_hours(self) -> [datetime]:
         dec_rad = float(repr(self.target.dec))
         ra_rad = float(repr(self.target.ra))
-
-        print(self.peak_time)
 
         return ObjUtil.suggested_hours(
             self.coords,
@@ -161,14 +161,6 @@ class HelioObj:
             end_time=self.end_time,
             ra_rad=ra_rad,
             dec_rad=dec_rad,
-            peak_time=datetime.strptime(self.peak_time, '%Y/%m/%d %H:%M'),
+            peak_time=datetime.strptime(self.peak_time, '%Y-%m-%d %H:%M'),
             hours_visible=self.hours_visible
-        )
-
-    @property
-    def needs_mer_flip(self) -> bool:
-        return ObjUtil.needs_mer_flip(
-            hours_visible=self.hours_visible,
-            peak_time=self.peak_time,
-            peak_alt=self.peak_alt_az['alt']
         )

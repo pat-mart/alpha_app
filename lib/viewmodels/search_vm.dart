@@ -1,19 +1,19 @@
+import 'dart:async';
 import 'dart:core';
 import 'dart:io';
 
+import 'package:astro_planner/viewmodels/create_plan/location_vm.dart';
 import 'package:astro_planner/models/sky_obj_m.dart';
 import 'package:astro_planner/viewmodels/create_plan/datetime_vm.dart';
-import 'package:astro_planner/viewmodels/create_plan/location_vm.dart';
-import 'package:astro_planner/viewmodels/create_plan_util.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import '../models/json_data/skyobj_data.dart';
-import '../models/plan_m.dart';
 
 class SearchViewModel extends ChangeNotifier {
+
   static final SearchViewModel _instance = SearchViewModel._();
 
   List<SkyObj> resultsList = [];
@@ -22,7 +22,6 @@ class SearchViewModel extends ChangeNotifier {
 
   Map<SkyObj, HttpClientRequest> objQueryMap = {};
 
-  final Map<String, Plan?> _planMap = {};
   final Map<String, SkyObj> _searchMap = {};
 
   final Map<String, SkyObjectData> _cache = {};
@@ -42,62 +41,61 @@ class SearchViewModel extends ChangeNotifier {
 
   SearchViewModel._();
 
-  factory SearchViewModel() {
+  factory SearchViewModel(){
     return _instance;
   }
-
-  Map<String, Plan?> get planMap => _planMap;
 
   Map<String, SkyObjectData> get infoCache => _cache;
 
   Future<void> loadCsvData() async {
     if (_searchMap.isEmpty) {
-      final astroData = await rootBundle
-          .loadString('assets/alpha_astro_data.csv', cache: false);
+      final astroData = await rootBundle.loadString('assets/alpha_data_v2.csv', cache: false);
 
-      List<List<dynamic>> data =
-          const CsvToListConverter().convert(astroData, eol: '\n');
+      List<List<dynamic>> data = const CsvToListConverter().convert(astroData);
+
+      if (data.length == 1) {
+        data = const CsvToListConverter().convert(astroData, eol: '\n');
+      }
 
       for (List<dynamic> row in data) {
         String key;
-
-        if (row[2] == 'Planet') {
+        if(row[3] == 'planet'){
           key = ',${row[0].toString().toUpperCase()}';
-        } else {
-          key = (row[2] != 'Star')
-              ? ',${row[0]},${row[1]},${row[5].toString().toUpperCase()}'
-              : ',${row[1].toString().toUpperCase()} ${row[3].toUpperCase()},${row[0]},${row[5].toString().toUpperCase()}';
         }
-
+        else {
+          key = (row[3] != 'star')
+            ? ',${row[0]},${row[1]},${row[7].toString().toUpperCase()}' // NGC, catalog alias, proper name
+            : ',${row[1].toString().toUpperCase()} ${row[2].toUpperCase()},${row[0]},${row[7].toString().toUpperCase()}'; // ex: alpha lyrae, HRXXXX, Vega
+        }
         SkyObj value = SkyObj(
-            catalogName: row[0],
-            catalogAlias:
-                (row[1] is String && row[1] != '_' || row[2] == 'Planet')
-                    ? row[1]
-                    : '',
-            objType: row[2],
-            constellation: row[3],
-            magnitude: (row[4] is num) ? row[4] : double.nan,
-            properName: (row[2] == 'Planet') ? row[0] : row[5],
-            isStar: (row[2] == 'Star'));
-
+          catalogName: row[0],
+          catalogAlias: (row[4] == 'star' || row[1] is String) ? row[1].toString() : '',
+          constellation: row[2],
+          magnitude: (row[6] is num) ? row[6] : double.nan,
+          properName: (row[3] == 'planet') ? row[0] : row[7],
+          isStar: (row[3] == 'star'),
+          isPlanet: (row[3] == 'planet'),
+          ra: row[4],
+          dec: row[5]
+        );
         _searchMap[key] = value;
       }
     }
   }
 
-  String removeProperAlias(String properName) {
-    if (properName.contains(',')) {
+  String removeProperAlias(String properName){
+    if(properName.contains(',')){
       return properName.substring(0, properName.indexOf(','));
     }
     return properName;
   }
 
-  String _cleanQuery(String query) {
+  String _cleanQuery(String query){
     return query.replaceAll(',', '');
   }
 
-  Map<String, SkyObj> _filteredResults(String query) {
+  Map<String, SkyObj> _filteredResults (String query) {
+
     final List<String> keysToRemove = [];
     final List<String> dataKeysToRemove = [];
 
@@ -105,42 +103,39 @@ class SearchViewModel extends ChangeNotifier {
 
     int numRemoved = 0;
 
-    if (query.isEmpty) {
+    if(query.isEmpty){
       return {};
     }
 
     _searchMap.forEach((key, value) {
+
       final upper = query.toUpperCase();
-      final title = query.toTitle();
 
       var starName = '';
 
-      if (value.isStar && value.catalogAlias != '') {
+      if(value.isStar && value.catalogAlias != ''){
         starName = value.catalogAlias + value.constellation;
-      } else {
+      }
+      else {
         starName = '';
       }
 
-      bool notStar = !value.isStar &&
-          (key.startsWith(upper) ||
-              key.startsWith(title) ||
-              key.toUpperCase().contains(',$upper') ||
-              key.toUpperCase().contains(' $upper') ||
-              key.contains(',$title') ||
-              key.contains(' $title'));
+      bool notStar = !value.isStar && (
+          key.startsWith(upper) ||
+          key.toUpperCase().contains(',$upper') || key.toUpperCase().contains(' $upper'));
 
-      bool forStar = value.isStar &&
-          (key.startsWith(upper) ||
-              key.startsWith(title) ||
-              value.properName.toLowerCase().startsWith(query.toLowerCase()) ||
-              (starName).toLowerCase().startsWith(query.toLowerCase()));
+      bool forStar = value.isStar && (
+          key.startsWith(upper) || key.toUpperCase().contains(',$upper') ||
+          value.properName.toUpperCase().startsWith(upper) ||
+          starName.toLowerCase().startsWith(upper));
 
-      if (notStar || forStar) {
-        if (_results.length < 5 + numRemoved) {
+      if(notStar || forStar) {
+        if(_results.length < 5 + numRemoved){
           _results[key] = value;
         }
-      } else {
-        if (_results.containsKey(key)) {
+      }
+      else {
+        if(_results.containsKey(key)) {
           numRemoved++;
           keysToRemove.add(key);
           dataKeysToRemove.add(key);
@@ -148,20 +143,20 @@ class SearchViewModel extends ChangeNotifier {
       }
     });
 
-    for (String key in keysToRemove) {
+    for(String key in keysToRemove){
       _results.remove(key);
-      _planMap.remove(key);
     }
 
     return _results;
   }
 
   void loadSearchResults(String query) {
+
     _currentQuery = query;
 
     resultsList = _filteredResults(_currentQuery).values.toList();
 
-    if (!resultsList.contains(previewedResult)) {
+    if(!resultsList.contains(previewedResult)){
       canAdd = false;
       previewedResult = null;
     }
@@ -169,9 +164,8 @@ class SearchViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void cleanInfoCache(
-      bool didChangeFilter, SkyObjectData instance, String catalogName) {
-    if (infoCache[catalogName] == instance || didChangeFilter) {
+  void cleanInfoCache(bool didChangeFilter, SkyObjectData instance, String catalogName){
+    if(infoCache[catalogName] == instance || didChangeFilter){
       infoCache.remove(catalogName);
     }
   }
@@ -179,43 +173,44 @@ class SearchViewModel extends ChangeNotifier {
   void cancelDeadRequests() {
     List<dynamic> keysToRemove = [];
     objQueryMap.forEach((key, value) {
-      if (!resultsList.contains(key) && !infoCache.containsValue(value)) {
+      if(!resultsList.contains(key) && !infoCache.containsValue(value)){
         value.abort();
         keysToRemove.add(key);
       }
     });
 
-    for (var key in keysToRemove) {
+    for(var key in keysToRemove){
       objQueryMap.remove(key);
     }
   }
 
   /// doNotifyListeners is used to prevent reloading of widgets not currently in context (-> runtime error)
-  void clearResults({required bool doNotifyListeners}) {
+  void clearResults({required bool doNotifyListeners}){
     _currentQuery = '';
 
     resultsList.clear();
 
-    if (doNotifyListeners) {
+    if(doNotifyListeners){
       notifyListeners();
     }
   }
 
-  void selectResult() {
+  void selectResult(){
+
     selectedResult = previewedResult;
     previewedResult = null;
 
     notifyListeners();
   }
 
-  void previewResult(SkyObj row) {
+  void previewResult(SkyObj row){
     previewedResult = row;
     canAdd = true;
 
     notifyListeners();
   }
 
-  void deselectResult(SkyObj row) {
+  void deselectResult(SkyObj row){
     previewedResult = null;
     canAdd = false;
 

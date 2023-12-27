@@ -122,13 +122,19 @@ class ObjUtil:
 
         first = -1
         if max(alt_start, az_start) != -1:
-            first = datetime.strptime(max(alt_start, az_start).isoformat(), '%a, %d %b %y %H:%M:%S')
-            first = first.isoformat()
+            try:
+                first = datetime.strptime(max(alt_start, az_start).isoformat(), '%a, %d %b %y %H:%M:%S')
+                first = first.isoformat()
+            except ValueError:
+                first = -1
 
         second = -1
         if max(alt_end, az_end) != -1:
-            second = datetime.strptime(max(az_end, az_end).isoformat(), '%a, %d %b %y %H:%M:%S')
-            second = second.isoformat()
+            try:
+                second = datetime.strptime(max(az_end, az_end).isoformat(), '%a, %d %b %y %H:%M:%S')
+                second = second.isoformat()
+            except ValueError:
+                second = -1
 
         return [first, second]
 
@@ -140,14 +146,3 @@ class ObjUtil:
         degrees = hours + minutes / 60.0 + seconds / 3600.0
 
         return degrees
-
-    @staticmethod
-    def needs_mer_flip(hours_visible: [datetime], peak_time: str, peak_alt: u.deg):
-        if hours_visible[0] == -1 or peak_alt.value <= 87.0:
-            return False
-
-        dt = datetime.fromisoformat(peak_time)
-
-        peaks_during_observation = hours_visible[0] <= dt.time() <= hours_visible[1]
-
-        return peaks_during_observation

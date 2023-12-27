@@ -54,12 +54,12 @@ class ParentScreenState extends State<ParentScreen> { // Like main but stateful
                 height: 65,
                 items : const <BottomNavigationBarItem> [
                   BottomNavigationBarItem(
-                    icon: Icon(CupertinoIcons.list_bullet_below_rectangle, color: Colors.white),
+                    icon: Icon(CupertinoIcons.list_bullet_below_rectangle, color: CupertinoColors.systemGrey5),
                     activeIcon: Icon(CupertinoIcons.list_bullet_below_rectangle, color: CupertinoColors.activeBlue),
-                    label: 'My plans'
+                    label: 'Plans'
                   ),
                   BottomNavigationBarItem(
-                    icon: Icon(CupertinoIcons.settings, color: Colors.white),
+                    icon: Icon(CupertinoIcons.settings, color: CupertinoColors.systemGrey5),
                     activeIcon: Icon(CupertinoIcons.settings, color: CupertinoColors.activeBlue),
                     label: 'Settings',
                   )

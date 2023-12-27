@@ -28,8 +28,6 @@ class LocationViewModel extends ChangeNotifier {
   Future<bool> hasLocationPermission() async {
     _permissionStatus = await ph.Permission.locationWhenInUse.request();
 
-    _serviceEnabled = _permissionStatus!.isGranted;
-
     if (!_serviceEnabled) {
       _usingService = false;
       return false;

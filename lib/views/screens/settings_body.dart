@@ -1,7 +1,6 @@
 import 'package:astro_planner/viewmodels/create_plan/weather_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingsBody extends StatefulWidget {
@@ -33,7 +32,7 @@ class _SettingsBodyState extends State<SettingsBody> {
           header: const Text('TEMPERATURE'),
           children: [
             CupertinoFormRow(
-              prefix: const Text('Use Celsius temperatures'),
+              prefix: const Text('Celsius temperatures'),
               child: FutureBuilder(
                 future: usingCelsius,
                 builder: (context, snapshot) {
@@ -51,20 +50,20 @@ class _SettingsBodyState extends State<SettingsBody> {
           ]
         ),
         CupertinoFormSection.insetGrouped(
-          header: const Text('INFORMATION'),
+          header: const Text('RESOURCES'),
           children: [
             CupertinoFormRow(
-              prefix: const Text('View support page'),
+              prefix: const Text('Support'),
               child: CupertinoButton(
                 onPressed: () {launchUrl(Uri.parse('https://api.astro-alpha.com/support'));},
-                child: const Icon(CupertinoIcons.chevron_forward),
+                child: const Icon(CupertinoIcons.link),
               ),
             ),
             CupertinoFormRow(
               prefix: const Text('Privacy Policy'),
               child: CupertinoButton(
                 onPressed: () {launchUrl(Uri.parse('https://api.astro-alpha.com/privacy-policy'));},
-                child: const Icon(CupertinoIcons.chevron_forward),
+                child: const Icon(CupertinoIcons.link),
               ),
             )
           ],

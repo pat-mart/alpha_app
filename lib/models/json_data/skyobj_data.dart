@@ -1,5 +1,3 @@
-import '../../util/plan/date.dart';
-
 class SkyObjectData {
 
   final List<dynamic> hoursVis;
@@ -13,11 +11,14 @@ class SkyObjectData {
 
   final DateTime dateEntered;
 
+  bool neverRises = false;
+  bool neverSets = false;
+
   SkyObjectData({
     required this.hoursVis, required this.hoursSuggested,
     required this.peakTime, required this.name,
     required this.peakBearing, required this.peakAlt,
-    required this.dateEntered
+    required this.dateEntered, this.neverRises = false, this.neverSets = false
   });
 
   factory SkyObjectData.fromJson(Map<String, dynamic> json, DateTime dateEntered){

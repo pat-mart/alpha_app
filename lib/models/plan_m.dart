@@ -6,8 +6,10 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:uuid/uuid.dart';
+import 'package:alpha_lib/alpha_lib.dart';
 import 'dart:convert';
 
+import '../util/plan/date.dart';
 import '../viewmodels/plan_vm.dart';
 import 'sky_obj_m.dart';
 import '../util/plan/plan_timespan.dart';
@@ -38,7 +40,7 @@ class Plan {
   String? uuid;
   int? primaryKey;
 
-  final DateFormat _formatter = DateFormat('y-MM-ddTHH:MM:00');
+  final DateFormat _timeFormatter = DateFormat('y-M-d HH:mm');
 
   Plan(this._target, DateTime startDt, DateTime endDt, this.latitude, this.longitude, this.timezone, this.skyObjData, [this.weatherSuitable=false, this.azMax=-1, this.azMin=-1, this.altThresh=-1, this.uuid]){
     uuid ??= uuidGen.v4();
@@ -148,37 +150,63 @@ class Plan {
     throw Exception('Weather error code ${timeResponse.statusCode}');
   }
 
-  Future<SkyObjectData?> getObjInfo(int listLength, int index, httpsClient, DateTime dateSaved, [bool isPlan = false]) async {
-
-    if(SearchViewModel().infoCache.containsKey(target.catalogName) && skyObjData != null && skyObjData!.dateEntered.difference(dateSaved).inDays.abs() >= 2){
-      SearchViewModel().cleanInfoCache(PlanViewModel().didChangeFilter, skyObjData!, target.catalogName);
+  Future<SkyObjectData?> getDeepSkyInfo([bool isPlan = false, double utcOffset = 0]) async {
+    if(target.ra.isNaN || target.dec.isNaN || _timespan == null){
+      return null;
     }
 
-    else if(SearchViewModel().infoCache.containsKey(target.catalogName) && !PlanViewModel().didChangeFilter){
+    var filters = [altThresh, azMin, azMax];
+    for (int i = 0; i < 3; i++){
+      if(filters[i] != -1){
+        filters[i] = filters[i].toRadians(Units.degrees);
+      }
+    }
+
+    DeepSky obj = DeepSky(latitude: latitude, longitude: longitude, raRad: target.ra, decRad: target.dec, time: _timespan!.startDateTime.toUtc(), utcOffset: 0, maxAz: azMax, minAz: azMin, minAlt: altThresh);
+
+    dynamic hoursVis = Date.hoursToDtList(_timespan!.startDateTime.toUtc(), obj.hoursVisible.normalizedRadianTimes, utcOffset);
+
+    hoursVis ??= [-1, -1];
+
+    dynamic hoursSuggested = Date.hoursToDtList(_timespan!.startDateTime.toUtc(), obj.hoursSuggested.normalizedRadianTimes, utcOffset);
+
+    hoursSuggested ??= [-1, -1];
+
+    dynamic peakTime = Date.hourToDt(_timespan!.startDateTime.toUtc(), obj.peakInfo['time']!);
+
+    peakTime ??= '';
+
+    if(peakTime != null && peakTime != -1){
+      peakTime = _timeFormatter.format(peakTime);
+    }
+
+
+    final data = SkyObjectData(
+        hoursVis: [hoursVis[0].toString(), hoursVis[1].toString()], hoursSuggested: [hoursSuggested[0].toString(), hoursSuggested[1].toString()],
+        peakTime: peakTime.toString(), name: target.catalogName, peakBearing: obj.peakInfo['az']!.toDegrees(Units.radians), peakAlt: obj.peakInfo['alt']!.toDegrees(Units.radians),
+        dateEntered: timespan.startDateTime, neverRises: obj.localRiseSetTimes[0] == -1.0, neverSets: obj.localRiseSetTimes[0] == 0.0);
+
+    return data;
+  }
+
+  Future<SkyObjectData?> getPlanetInfo(int listLength, httpsClient, DateTime dateSaved, [bool isPlan = false]) async {
+
+    if(SearchViewModel().infoCache.containsKey(target.catalogName) && !PlanViewModel().didChangeFilter){
       skyObjData = SearchViewModel().infoCache[target.catalogName];
+
       return SearchViewModel().infoCache[target.catalogName];
     }
 
-    var name = target.catalogName.replaceAll(' ', '');
-
-    if(target.catalogAlias.startsWith('M ')){
-      name = target.catalogAlias.replaceAll(' ', '');
-    }
-
     Uri url = Uri.parse(
-      'https://api.astro-alpha.com/api/search?objname=$name&starttime=${_formatter.format(timespan.startDateTime)}'
-          '&endtime=${_formatter.format(timespan.dateTimeRange.end)}&lat=$latitude&lon=$longitude&altthresh=$altThresh&azmin=$azMin&azmax=$azMax'
+      'https://api.astro-alpha.com/api/search?objname=${target.catalogName}&starttime=${_timeFormatter.format(timespan.startDateTime)}'
+          '&endtime=${_timeFormatter.format(timespan.dateTimeRange.end)}&lat=$latitude&lon=$longitude&altthresh=$altThresh&azmin=$azMin&azmax=$azMax'
     );
-
-    if(target.catalogName.startsWith('H') && listLength > 1){
-      Future.delayed(Duration(seconds: index));
-    }
 
     HttpClientRequest request = await httpsClient.getUrl(url);
 
     SearchViewModel().objQueryMap[target] = request;
 
-    HttpClientResponse response = await request.close().timeout(const Duration(seconds: 40));
+    HttpClientResponse response = await request.close().timeout(const Duration(seconds: 30));
 
     if(response.statusCode == 200) {
       final searchVm = SearchViewModel();

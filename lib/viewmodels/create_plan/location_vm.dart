@@ -60,6 +60,8 @@ class LocationViewModel extends ChangeNotifier {
     lat = _locData?.latitude;
     lon = _locData?.longitude;
 
+    print('Called!');
+
     notifyListeners();
   }
 

@@ -72,7 +72,8 @@ class _WeatherSectionState extends State<WeatherSection>
                   ]),
               const Padding(padding: EdgeInsets.only(bottom: 8)),
               locationVm.lat != null && locationVm.lon != null
-                  ? Text('at latitude ${locationVm.lat!.toStringAsFixed(3)}°, longitude ${locationVm.lon!.toStringAsFixed(3)}°',
+                  ? Text(
+                      'at latitude ${locationVm.lat!.toStringAsFixed(3)}°, longitude ${locationVm.lon!.toStringAsFixed(3)}°',
                       style: TextStyle(
                           color: CupertinoColors.secondaryLabel.darkColor,
                           fontSize: 14))
@@ -142,7 +143,7 @@ class _WeatherSectionState extends State<WeatherSection>
                   Text('Weather times are local to entered location',
                       style: TextStyle(
                           color: CupertinoColors.secondaryLabel.darkColor,
-                          fontSize: 12),
+                          fontSize: 11),
                       textAlign: TextAlign.start),
                   TextButton(
                       autofocus: false,

@@ -94,10 +94,11 @@ class _LocationSectionState extends State<LocationSection>
                   future: locationPermissionFuture,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CupertinoFormRow(
+                      return CupertinoFormRow(
                         child: Text('Loading location ...',
                             style: TextStyle(
-                                color: CupertinoColors.secondaryLabel)),
+                                color:
+                                    CupertinoColors.secondaryLabel.darkColor)),
                       );
                     }
 
@@ -119,7 +120,6 @@ class _LocationSectionState extends State<LocationSection>
                               ? null
                               : (newVal) async {
                                   // DO NOT TOUCH
-
                                   locationVm.usingService(newVal);
 
                                   if (newVal) {

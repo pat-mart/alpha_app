@@ -8,4 +8,4 @@ Alpha for Astronomy uses Flutter's Cupertino library extensively. I developed a 
 
 My reasoning behind developing this API was that it would be easier to use AstroPy and PyEphem (in conjunction with Flask) than learn how to do astronomy math on my own. This was not entirely true, and development of the API delayed the projecy considerably. 
 
-I have since developed a [https://pub.dev/packages/alpha_lib/versions, dart package] that allows for offline positional calculations of "fixed" (non-heliocentric) objects. 
+I have since developed an [open-source dart package](https://pub.dev/packages/alpha_lib/versions) that allows for offline positional calculations of "fixed" (non-heliocentric) objects. 

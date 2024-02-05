@@ -12,7 +12,7 @@ class WeatherNode {
 
   WeatherNode({required this.time, required this.condition, required this.isDay, required this.degreesC});
 
-  double tempInFarenheit(){
+  double tempInFahrenheit(){
     return degreesC * (9/5) + 32;
   }
 }

@@ -174,12 +174,9 @@ class Plan {
 
     dynamic peakTime = Date.hourToDt(_timespan!.startDateTime.toUtc(), obj.peakInfo['time']!);
 
-    peakTime ??= '';
-
     if(peakTime != null && peakTime != -1){
       peakTime = _timeFormatter.format(peakTime);
     }
-
 
     final data = SkyObjectData(
         hoursVis: [hoursVis[0].toString(), hoursVis[1].toString()], hoursSuggested: [hoursSuggested[0].toString(), hoursSuggested[1].toString()],

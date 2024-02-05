@@ -1,4 +1,4 @@
-import 'dart:async';
+import 'dart:collection';
 import 'dart:core';
 import 'dart:io';
 
@@ -22,10 +22,10 @@ class SearchViewModel extends ChangeNotifier {
 
   Map<SkyObj, HttpClientRequest> objQueryMap = {};
 
-  final Map<String, SkyObj> _searchMap = {};
+  final HashSet<SkyObj> _searchList = HashSet<SkyObj>();
 
   final Map<String, SkyObjectData> _cache = {};
-  final Map<String, SkyObj> _results = {};
+  final HashSet<SkyObj> _results = HashSet<SkyObj>();
 
   String _currentQuery = '';
 
@@ -48,7 +48,9 @@ class SearchViewModel extends ChangeNotifier {
   Map<String, SkyObjectData> get infoCache => _cache;
 
   Future<void> loadCsvData() async {
-    if (_searchMap.isEmpty) {
+
+    if (_searchList.isEmpty) {
+
       final astroData = await rootBundle.loadString('assets/alpha_data_v2.csv', cache: false);
 
       List<List<dynamic>> data = const CsvToListConverter().convert(astroData);
@@ -58,15 +60,7 @@ class SearchViewModel extends ChangeNotifier {
       }
 
       for (List<dynamic> row in data) {
-        String key;
-        if(row[3] == 'planet'){
-          key = ',${row[0].toString().toUpperCase()}';
-        }
-        else {
-          key = (row[3] != 'star')
-            ? ',${row[0]},${row[1]},${row[7].toString().toUpperCase()}' // NGC, catalog alias, proper name
-            : ',${row[1].toString().toUpperCase()} ${row[2].toUpperCase()},${row[0]},${row[7].toString().toUpperCase()}'; // ex: alpha lyrae, HRXXXX, Vega
-        }
+
         SkyObj value = SkyObj(
           catalogName: row[0],
           catalogAlias: (row[4] == 'star' || row[1] is String) ? row[1].toString() : '',
@@ -78,7 +72,7 @@ class SearchViewModel extends ChangeNotifier {
           ra: row[4],
           dec: row[5]
         );
-        _searchMap[key] = value;
+        _searchList.add(value);
       }
     }
   }
@@ -94,10 +88,9 @@ class SearchViewModel extends ChangeNotifier {
     return query.replaceAll(',', '');
   }
 
-  Map<String, SkyObj> _filteredResults (String query) {
+  Set<SkyObj> _filteredResults (String query) {
 
-    final List<String> keysToRemove = [];
-    final List<String> dataKeysToRemove = [];
+    final List<SkyObj> valsToRemove = [];
 
     query = _cleanQuery(query).trim();
 
@@ -107,44 +100,41 @@ class SearchViewModel extends ChangeNotifier {
       return {};
     }
 
-    _searchMap.forEach((key, value) {
+    // Realized how to drastically improve this randomly one night as I was falling asleep
+    // I think my original concept of map iteration was misguided
+    //Behold, linear-ish prefix based searching
+
+    for (var value in _searchList) {
 
       final upper = query.toUpperCase();
 
       var starName = '';
 
       if(value.isStar && value.catalogAlias != ''){
-        starName = value.catalogAlias + value.constellation;
-      }
-      else {
-        starName = '';
+        starName = (value.catalogAlias + value.constellation).toUpperCase();
       }
 
-      bool notStar = !value.isStar && (
-          key.startsWith(upper) ||
-          key.toUpperCase().contains(',$upper') || key.toUpperCase().contains(' $upper'));
-
-      bool forStar = value.isStar && (
-          key.startsWith(upper) || key.toUpperCase().contains(',$upper') ||
-          value.properName.toUpperCase().startsWith(upper) ||
-          starName.toLowerCase().startsWith(upper));
-
-      if(notStar || forStar) {
-        if(_results.length < 5 + numRemoved){
-          _results[key] = value;
+      if(value.catalogName.toUpperCase().startsWith(upper) || value.properName.toUpperCase().startsWith(upper) ||
+          value.constellation.toUpperCase().startsWith(upper) ||
+          value.catalogAlias.toUpperCase().startsWith(upper) ||
+          starName.startsWith(upper) ||
+          value.properName.toUpperCase().contains(upper)
+      ) {
+        if(_results.length < 10 + numRemoved && !_results.contains(value)){
+          _results.add(value);
         }
       }
+
       else {
-        if(_results.containsKey(key)) {
+        if(_results.contains(value)) {
           numRemoved++;
-          keysToRemove.add(key);
-          dataKeysToRemove.add(key);
+          valsToRemove.add(value);
         }
       }
-    });
+    }
 
-    for(String key in keysToRemove){
-      _results.remove(key);
+    for(SkyObj obj in valsToRemove){
+      _results.remove(obj);
     }
 
     return _results;
@@ -154,7 +144,7 @@ class SearchViewModel extends ChangeNotifier {
 
     _currentQuery = query;
 
-    resultsList = _filteredResults(_currentQuery).values.toList();
+    resultsList = _filteredResults(query).toList();
 
     if(!resultsList.contains(previewedResult)){
       canAdd = false;
@@ -217,5 +207,5 @@ class SearchViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Map<String, SkyObj> get searchMap => _searchMap;
+  HashSet<SkyObj> get searchList => _searchList;
 }

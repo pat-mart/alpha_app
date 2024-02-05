@@ -41,7 +41,7 @@ class _SearchScreenState extends State<SearchScreen> {
     controller.dispose();
 
     searchVm.clearResults(doNotifyListeners: false);
-    searchVm.searchMap.clear();
+    searchVm.searchList.clear();
 
     httpClient.close(force: true);
 
@@ -116,7 +116,8 @@ class _SearchScreenState extends State<SearchScreen> {
                       itemCount: searchVm.resultsList.length,
                       itemBuilder: (BuildContext context, int index) {
                         if(searchVm.resultsList.isNotEmpty){
-                          return SearchResult(index: index, listLength: searchVm.resultsList.length, searchVm: searchVm, dateTimeVm: dateTimeVm, locationVm: locationVm, httpsClient: httpClient);
+                          return SearchResult(index: index, listLength: searchVm.resultsList.length, searchVm: searchVm,
+                              dateTimeVm: dateTimeVm, locationVm: locationVm, httpsClient: httpClient);
                         }
                         return null;
                       }

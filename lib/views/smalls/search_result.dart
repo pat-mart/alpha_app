@@ -161,8 +161,8 @@ class _SearchResultState extends State<SearchResult> {
 
                 String peakMsg = "";
 
-                if(objData.data!.peakTime.length >= 16 && !objData.data!.neverSets){
-                  peakMsg = "Peaks ${objData.data!.peakAlt.toStringAsFixed(1)}° above ${Cardinal.getCardinal(objData.data!.peakBearing)} horizon at ${objData.data!.peakTime.substring(11, 16)} UTC";
+                if(objData.data!.peakTime.length >= 14){
+                  peakMsg = "Peaks ${objData.data!.peakAlt.toStringAsFixed(1)}° above ${Cardinal.getCardinal(objData.data!.peakBearing)} horizon at ${objData.data!.peakTime.substring(9, 14)} UTC";
                 }
 
                 if(!objData.data!.hoursVis.contains("-1") || !objData.data!.hoursVis.contains(-1)){ // Planets have different time lengths, going to fix from Flask side at some point

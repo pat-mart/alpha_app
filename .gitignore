@@ -11,7 +11,8 @@
 .svn/
 migrate_working_dir/
 
-/flask_server/templates/privpol.html
+/flask_server/templates/.privpol.html
+/flask_server/templates/support.html
 
 # IntelliJ related
 *.iml

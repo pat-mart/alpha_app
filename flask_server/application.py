@@ -108,7 +108,7 @@ def support_tab():
 
 @app.route('/privacy-policy')
 def privacy_policy():
-    return render_template('privpol.html')
+    return render_template('.privpol.html')
 
 
 @app.route('/healthcheck')

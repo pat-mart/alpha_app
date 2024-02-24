@@ -149,7 +149,7 @@ class _SearchResultState extends State<SearchResult> {
             future: objDataFuture,
             builder: (BuildContext context, objData) {
 
-              if(objData.connectionState == ConnectionState.waiting){
+              if(objData.connectionState == ConnectionState.waiting && (plan?.target.isStar ?? false)){
                 return const CupertinoActivityIndicator();
               }
 
@@ -162,7 +162,7 @@ class _SearchResultState extends State<SearchResult> {
                 String peakMsg = "";
 
                 if(objData.data!.peakTime.length >= 14){
-                  peakMsg = "Peaks ${objData.data!.peakAlt.toStringAsFixed(1)}° above ${Cardinal.getCardinal(objData.data!.peakBearing)} horizon at ${objData.data!.peakTime.substring(9, 14)} UTC";
+                  peakMsg = "Peaks ${objData.data!.peakAlt.toStringAsFixed(1)}° above ${Cardinal.getCardinal(objData.data!.peakBearing)} horizon at ${objData.data!.peakTime.substring(9, 15)} UTC";
                 }
 
                 if(!objData.data!.hoursVis.contains("-1") || !objData.data!.hoursVis.contains(-1)){ // Planets have different time lengths, going to fix from Flask side at some point

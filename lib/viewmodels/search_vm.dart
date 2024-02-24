@@ -102,7 +102,7 @@ class SearchViewModel extends ChangeNotifier {
 
     // Realized how to drastically improve this randomly one night as I was falling asleep
     // I think my original concept of map iteration was misguided
-    //Behold, linear-ish prefix based searching
+    // Behold, linear-ish (time, not sure about space) prefix-based searching
 
     for (var value in _searchList) {
 

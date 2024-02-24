@@ -68,4 +68,8 @@ class SkyObj{
   bool operator ==(Object other) {
     return toString() == other.toString();
   }
+
+  @override
+  int get hashCode => properName.hashCode ^ catalogName.hashCode;
+
 }

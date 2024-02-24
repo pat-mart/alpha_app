@@ -226,9 +226,9 @@ class _PlanCardState extends State<PlanCard> {
                                 visibleMsg = "Visible from ${snapshot.data!.hoursVis[0].toString().substring(0, 5)} to ${snapshot.data!.hoursVis[1].substring(0, 5)} UTC";
                               }
 
-                              if(snapshot.data!.peakTime.length >= 16 && !snapshot.data!.neverSets){
+                              if(snapshot.data!.peakTime.length >= 15 && !snapshot.data!.neverSets){
                                 peakMsg = "Peaks ${snapshot.data!.peakAlt.toStringAsFixed(2)}° above (${snapshot.data!.peakBearing.toStringAsFixed(2)}° "
-                                    "${Cardinal.getCardinal(snapshot.data!.peakBearing)}) horizon at ${snapshot.data!.peakTime.substring(11, 16)} UTC";
+                                    "${Cardinal.getCardinal(snapshot.data!.peakBearing)}) horizon at ${snapshot.data!.peakTime.substring(9, 15)} UTC";
                               }
                             }
 
@@ -297,7 +297,7 @@ class _PlanCardState extends State<PlanCard> {
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: 12.0),
                                 child: Text('Clear weather from ${timeFormat.format(snapshot.data!.clearHours.first)} to ${timeFormat.format(snapshot.data!.clearHours.last)}',
-                                  style: TextStyle(color: CupertinoColors.systemCyan.darkColor, fontSize: 18),
+                                  style: TextStyle(color: CupertinoColors.systemGreen.darkColor, fontSize: 18),
                                 ),
                               );
                             }
